@@ -1,0 +1,19 @@
+{
+  "name": "ebaskicim",
+  "version": "1.0.0",
+  "description": "Shopping theme for Ebaskicim",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass --watch assets/css/main.scss assets/css/main.css --style compressed",
+    "tailwind": "npx @tailwindcss/cli -i ./assets/css/tw-input.css -o ./assets/css/tw-output.css --watch",
+    "watch": "npm run sass && npm run tailwind"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "tailwindcss": "^4.1.13"
+  }
+}
