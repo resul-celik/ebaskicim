@@ -31,3 +31,10 @@ var swiper = new Swiper(".swiper", {
   slidesPerView: 4,
   spaceBetween: 20,
 });
+
+var mainSlider = new Swiper(".main-slider", {
+  slidesPerView: 1,
+  spaceBetween: 0,
+  wrapperClass: "main-slider-wrapper",
+  slideClass: "main-slider-item",
+});

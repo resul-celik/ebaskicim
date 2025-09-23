@@ -5,10 +5,19 @@ class Section
 
     public function sectionHead($title, $url)
     {
+
+        $buttonArgs = array(
+            "url" => $url,
+            "text" => "Tümünü Gör",
+            "trailingIcon" => "arrow-right",
+            //"hierarchy" => "primary",  // Default is primary
+            //"theme" => "light", // Default is light
+            //"size" => "medium" // Default is medium
+        );
         return (
             '<div class="w-full flex flex-row items-center justify-between">
                 <h2 class="section-title">' . $title . '</h2>
-                ' . get_button("Daha Fazla", $url) . '
+                ' . get_button($buttonArgs) . '
              </div>'
         );
     }

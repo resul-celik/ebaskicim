@@ -2,42 +2,36 @@
   font-size: var(--text-xs);
   line-height: 140%;
   letter-spacing: 0.04em;
-  font-weight: 400;
 }
 
 @mixin text-sm {
   font-size: var(--text-sm);
   line-height: 140%;
   letter-spacing: 0.02em;
-  font-weight: 400;
 }
 
 @mixin text-md {
   font-size: var(--text-md);
   line-height: 140%;
   letter-spacing: 0;
-  font-weight: 400;
 }
 
 @mixin text-lg {
   font-size: var(--text-lg);
   line-height: 140%;
   letter-spacing: 0;
-  font-weight: 400;
 }
 
 @mixin text-xl {
   font-size: var(--text-xl);
   line-height: 140%;
   letter-spacing: 0;
-  font-weight: 400;
 }
 
 @mixin text-2xl {
   font-size: var(--text-2xl);
   line-height: 140%;
   letter-spacing: 0;
-  font-weight: 400;
 }
 
 @mixin display-sm {

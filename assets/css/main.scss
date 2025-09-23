@@ -1,19 +1,6 @@
 @use "icons";
 @use "typography";
 
-:root {
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f1f3f5;
-  --color-gray-200: #eaedef;
-  --color-gray-300: #dee1e6;
-  --color-gray-400: #cfd4da;
-  --color-gray-500: #adb5bd;
-  --color-gray-600: #868e96;
-  --color-gray-700: #495058;
-  --color-gray-800: #343a40;
-  --color-gray-900: #20242a;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -54,6 +41,191 @@ body {
   -moz-osx-font-smoothing: antialiased;
 }
 
+.paragraph-regular {
+  font-weight: 400;
+}
+.paragraph-medium {
+  font-weight: 600;
+}
+.paragraph-bold {
+  font-weight: 800;
+}
+
+.paragraph-xs {
+  @include typography.text-xs;
+}
+
+.paragraph-sm {
+  @include typography.text-sm;
+}
+
+.paragraph-md {
+  @include typography.text-md;
+}
+
+.paragraph-lg {
+  @include typography.text-lg;
+}
+
+.paragraph-xl {
+  @include typography.text-xl;
+}
+
+.paragraph-2xl {
+  @include typography.text-2xl;
+}
+
+.display-sm {
+  @include typography.display-sm;
+}
+
+.display-md {
+  @include typography.display-md;
+}
+
+.display-lg {
+  @include typography.display-lg;
+}
+
+.display-xl {
+  @include typography.display-xl;
+}
+
+/* BUTTON (Start) */
+
+.button,
+.wpcf7-submit {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 30px;
+  @include typography.text-md;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.medium-button {
+  height: 40px;
+  padding: 0 25px;
+}
+
+.large-button {
+  height: 46px;
+  padding: 0 30px;
+}
+
+.trailing-icon {
+  .icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+
+    &:before {
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+      margin-right: -3px;
+    }
+  }
+}
+
+.leading-icon {
+  .icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+
+    &:before {
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+      margin-left: -3px;
+    }
+  }
+}
+
+.icon-only {
+  padding: 0;
+  aspect-ratio: 1/1;
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+
+    &:before {
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+    }
+  }
+}
+
+.primary-button,
+.wpcf7-submit {
+  background: var(--color-primary-400);
+  color: var(--color-gray-900);
+
+  &:hover {
+    background: var(--color-primary-200);
+  }
+}
+
+.primary-button-dark {
+  background: var(--color-white);
+  color: var(--color-gray-900);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.secondary-button {
+  background: var(--color-gray-200);
+  color: var(--color-gray-900);
+
+  &:hover {
+    background-color: var(--color-gray-400);
+  }
+}
+
+.secondary-button-dark {
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-gray-900);
+
+  &:hover {
+    background-color: var(--color-white);
+  }
+}
+
+.tertiary-button {
+  background: transparent;
+  color: var(--color-gray-900);
+
+  &:hover {
+    background-color: var(--color-gray-200);
+  }
+}
+
+.tertiary-button-dark {
+  background: transparent;
+  color: var(--color-white);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* BUTTON (End) */
+
 .header-button {
   display: flex;
   flex-direction: row;
@@ -84,7 +256,11 @@ body {
   margin: 0;
 }
 
-.product {
+.product-item {
+  transition: box-shadow 0.2s ease-in-out 0s, transform 0.2s ease-in-out 0s,
+    outline 0.2s ease-in-out 0s, border-radius 0.2s ease-in-out 0s;
+  outline: 0px solid white;
+
   .product-image {
     img {
       width: 100%;
@@ -95,5 +271,38 @@ body {
 
   .product-title {
     @include typography.text-lg;
+  }
+
+  &:hover {
+    box-shadow: var(--shadow-xl);
+    transform: scale(1.02);
+    outline: 20px solid white;
+    border-radius: 10px;
+    z-index: 1;
+  }
+}
+.old-price {
+  text-decoration: none;
+  position: relative;
+  color: var(--color-gray-500);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-primary-400);
+    transform: rotate(-5deg);
+  }
+}
+
+.main-slider-item {
+  figure,
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }

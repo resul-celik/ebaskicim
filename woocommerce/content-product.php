@@ -35,61 +35,53 @@ if (empty($product) || ! $product->is_visible()) {
 
 ?>
 
-
-
-<a href=<?php echo esc_url(get_permalink($product->get_id())); ?> class="product flex shrink-0 flex-col swiper-slide<?php echo $product->is_in_stock() ? '' : ' sold-out'; ?>">
-
-    <figure class="product-image w-full aspect-4/3 relative overflow-hidden">
+<a href=<?php echo esc_url(get_permalink($product->get_id())); ?> class="product-item flex shrink-0 flex-col swiper-slide<?php echo $product->is_in_stock() ? '' : ' sold-out'; ?>">
+    <figure class="product-image w-full aspect-4/3 relative overflow-hidden rounded-[10px]">
         <?php echo woocommerce_get_product_thumbnail('medium_large'); ?>
         <?php woocommerce_show_product_sale_flash(); ?>
-        <div class="product-tags">
-            <?php if ($product->is_in_stock()) : ?>
-                <?php
+        <div class="absolute top-20 left-20 flex flex-col gap-[3px] justify-start items-start z-10">
+            <?php if ($product->is_in_stock()) {
+                // New tag
                 $post_date = get_the_date('U', $product->get_id());
                 $current_date = current_time('timestamp');
                 $date_diff = $current_date - $post_date;
 
                 if ($date_diff < DAY_IN_SECONDS) {
-                ?>
-                    <div class="product-tag new-tag">
-                        <div class="icon icon-fire"></div>
-                        <?php _e('New', 'junobjects'); ?>
-                    </div>
-                <?php
+                    echo product_status_tag("Yeni", "bg-black text-white");
                 }
-                ?>
 
-                <?php
+                // Discount tag
                 $sale_price = $product->get_sale_price();
                 $regular_price = $product->get_regular_price();
 
                 if ($sale_price && $regular_price) {
-                    echo '<div class="product-tag discount-tag">';
                     $discount_percentage = round((($regular_price - $sale_price) / $regular_price) * 100);
-                    echo '<div class="icon icon-smile"></div>' . sprintf(__('%d%% off', 'junobjects'), $discount_percentage);
-                    echo '</div>';
+                    echo product_status_tag("%$discount_percentage indirim", "bg-primary-400 text-gray-900");
                 }
-                ?>
-                <?php if ($product->is_featured()) : ?>
-                    <div class="product-tag best-tag">
-                        <div class="icon icon-diamond"></div>
-                        <?php _e('Best seller', 'junobjects'); ?>
-                    </div>
-                <?php endif; ?>
-            <?php else : ?>
-                <div class="product-tag sold-out-tag">
-                    <div class="icon icon-sad"></div>
-                    <?php _e('Sold out', 'junobjects'); ?>
-                </div>
-            <?php endif; ?>
+
+                // Featured tag
+                if ($product->is_featured()) {
+                    echo product_status_tag("Çok Satan", "bg-gray-700 text-white");
+                }
+            } else {
+                echo product_status_tag("Tükendi", "bg-red-500 text-white");
+            } ?>
         </div>
     </figure>
     <div class="flex flex-col gap-[5px] pt-[20px]">
-        <div class="content-product-title m-0">
-            <?php _e(get_the_title($product->get_id()), 'junobjects'); ?>
+        <div class="paragraph-lg text-gray-600">
+            <?php echo get_the_title($product->get_id()); ?>
         </div>
-        <span class="price content-price">
-            <?php echo $product->get_price_html(); ?>
+        <span class="price flex flex-row gap-[8px] justify-start display-sm text-gray-900">
+            <?php
+            // get sale price
+            if ($product->is_on_sale()) {
+                echo "<del class='old-price'>" . wc_price($product->get_regular_price()) . "</del>";
+                echo wc_price($product->get_sale_price());
+            } else {
+                echo wc_price($product->get_regular_price());
+            }
+            ?>
         </span>
     </div>
 </a>
