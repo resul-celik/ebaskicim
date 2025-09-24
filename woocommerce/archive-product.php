@@ -10,4 +10,5 @@ get_template_part('components/header');
     <?php get_template_part('components/features'); ?>
     <?php echo get_section('Ürünlerimiz', '#', 1, "get_products"); ?>
 </main>
-<?php get_footer('shop');
+<?php get_template_part('components/footer');
+get_footer('shop');

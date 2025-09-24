@@ -1,4 +1,5 @@
 <?php
+
 /**
  * My Addresses
  *
@@ -10,21 +11,21 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see     https://docs.woocommerce.com/document/template-structure/
+ * @see     https://woocommerce.com/document/template-structure/
  * @package WooCommerce\Templates
- * @version 2.6.0
+ * @version 9.3.0
  */
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 $customer_id = get_current_user_id();
 
-if ( ! wc_ship_to_billing_address_only() && wc_shipping_enabled() ) {
+if (! wc_ship_to_billing_address_only() && wc_shipping_enabled()) {
 	$get_addresses = apply_filters(
 		'woocommerce_my_account_get_addresses',
 		array(
-			'billing'  => __( 'Billing address', 'woocommerce' ),
-			'shipping' => __( 'Shipping address', 'woocommerce' ),
+			'billing'  => __('Billing address', 'woocommerce'),
+			'shipping' => __('Shipping address', 'woocommerce'),
 		),
 		$customer_id
 	);
@@ -32,7 +33,7 @@ if ( ! wc_ship_to_billing_address_only() && wc_shipping_enabled() ) {
 	$get_addresses = apply_filters(
 		'woocommerce_my_account_get_addresses',
 		array(
-			'billing' => __( 'Billing address', 'woocommerce' ),
+			'billing' => __('Billing address', 'woocommerce'),
 		),
 		$customer_id
 	);
@@ -41,54 +42,56 @@ if ( ! wc_ship_to_billing_address_only() && wc_shipping_enabled() ) {
 $oldcol = 1;
 $col    = 1;
 ?>
-<h1 class="title main-title">Adres:</h1>
-<p class="address-description">
-	<?php echo apply_filters( 'woocommerce_my_account_my_address_description', esc_html__( 'The following addresses will be used on the checkout page by default.', 'woocommerce' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-</p>
 
-<?php if ( ! wc_ship_to_billing_address_only() && wc_shipping_enabled() ) : ?>
-	<div class="u-columns woocommerce-Addresses col2-set addresses">
-<?php endif; ?>
-<div class="row">
-<?php foreach ( $get_addresses as $name => $address_title ) : ?>
+<div class="account-addresses-container">
+	<p>
+		<?php echo apply_filters('woocommerce_my_account_my_address_description', esc_html__('The following addresses will be used on the checkout page by default.', 'woocommerce')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+		?>
+	</p>
+
+	<?php if (! wc_ship_to_billing_address_only() && wc_shipping_enabled()) : ?>
+		<div class="u-columns woocommerce-Addresses col2-set addresses">
+		<?php endif; ?>
+
+		<?php foreach ($get_addresses as $name => $address_title) : ?>
+			<?php
+			$address = wc_get_account_formatted_address($name);
+			$col     = $col * -1;
+			$oldcol  = $oldcol * -1;
+			?>
+
+			<div class="u-column<?php echo $col < 0 ? 1 : 2; ?> col-<?php echo $oldcol < 0 ? 1 : 2; ?> woocommerce-Address">
+				<header class="woocommerce-Address-title title">
+					<h2><?php echo esc_html($address_title); ?></h2>
+					<a href="<?php echo esc_url(wc_get_endpoint_url('edit-address', $name)); ?>" class="edit">
+						<?php
+						printf(
+							/* translators: %s: Address title */
+							$address ? esc_html__('Edit %s', 'woocommerce') : esc_html__('Add %s', 'woocommerce'),
+							esc_html($address_title)
+						);
+						?>
+					</a>
+				</header>
+				<address>
+					<?php
+					echo $address ? wp_kses_post($address) : esc_html_e('You have not set up this type of address yet.', 'woocommerce');
+
+					/**
+					 * Used to output content after core address fields.
+					 *
+					 * @param string $name Address type.
+					 * @since 8.7.0
+					 */
+					do_action('woocommerce_my_account_after_my_address', $name);
+					?>
+				</address>
+			</div>
+
+		<?php endforeach; ?>
+
+		<?php if (! wc_ship_to_billing_address_only() && wc_shipping_enabled()) : ?>
+		</div>
 	<?php
-		$address = wc_get_account_formatted_address( $name );
-		$col     = $col * -1;
-		$oldcol  = $oldcol * -1;
-        
-        $firstname = get_user_meta( $customer_id, $name.'_first_name', true );
-        $lastname = get_user_meta( $customer_id, $name.'_last_name', true );
-        $addressAddress = get_user_meta( $customer_id, $name.'_address_1', true);
-        $addressAddress .= ', '.get_user_meta( $customer_id, $name.'_address_2', true );
-        $addressAddress .= ', '.get_user_meta( $customer_id, $name.'_city', true );
-        $addressAddress .= ', '.get_user_meta( $customer_id, $name.'_state', true );
-        $addressAddress .= ', '.get_user_meta( $customer_id, $name.'_postcode', true );
-        $addressAddress .= ', '.get_user_meta( $customer_id, $name.'_country', true );
-    
-	?>
-    
-    
-
-	<div class="col-lg-6 woocommerce-Address">
-		<div class="account-address-wrapper">
-            <header class="woocommerce-Address-title title">
-                <h3 class="title address-title"><?php echo esc_html( $address_title ); ?></h3>
-            </header>
-            <address>
-               <div class="account-address-small">Ad soyad:</div>
-               <div class="account-address-content"><?php echo $firstname.' '.$lastname; ?></div>
-               <div class="account-address-small">Adres:</div>
-               <div class="account-address-content"><?php echo $addressAddress; ?></div>
-            </address>
-            <a href="<?php echo esc_url( wc_get_endpoint_url( 'edit-address', $name ) ); ?>" class="edit">
-                <?php echo $address ? esc_html__( 'Edit', 'woocommerce' ) : esc_html__( 'Add', 'woocommerce' ); ?>
-            </a>
-        </div>
-	</div>
-
-<?php endforeach; ?>
-</div>
-<?php if ( ! wc_ship_to_billing_address_only() && wc_shipping_enabled() ) : ?>
-	</div>
-	<?php
-endif;
+		endif;
+		echo '</div>';

@@ -14,12 +14,11 @@ class Section
             //"theme" => "light", // Default is light
             //"size" => "medium" // Default is medium
         );
-        return (
-            '<div class="w-full flex flex-row items-center justify-between">
-                <h2 class="section-title">' . $title . '</h2>
-                ' . get_button($buttonArgs) . '
-             </div>'
-        );
+
+        $return = '<div class="w-full flex flex-row items-center justify-between"><h2 class="section-title">' . $title . '</h2>';
+        $url === null ? $return .= "" : $return .= get_button($buttonArgs);
+        $return .= '</div>';
+        return $return;
     }
 
     public function getSection($title, $url, $order, $contentFunction): string

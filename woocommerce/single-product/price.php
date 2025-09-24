@@ -10,7 +10,7 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see     https://docs.woocommerce.com/document/template-structure/
+ * @see     https://woocommerce.com/document/template-structure/
  * @package WooCommerce\Templates
  * @version 3.0.0
  */
@@ -21,21 +21,5 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 global $product;
 
-if ($product->is_type( 'variable' )) :
-
-    ?>
-    <p class="<?php echo esc_attr( apply_filters( 'woocommerce_product_price_class', 'price' ) ); ?> ebaskicim-variable-price" data-default-price="<?php echo rct_get_variable_price($product->get_price_html(), $product, false); ?>"><?php echo $product->get_price_html(); ?>
-    </p>
-    <?php
-    
-else :
-    
-    ?>
-    <p class="<?php echo esc_attr( apply_filters( 'woocommerce_product_price_class', 'price' ) ); ?> ebaskicim-simple-price">
-        <?php echo $product->get_price_html(); ?>
-    </p>
-    <?php
-
-endif;
-    
 ?>
+<p class="<?php echo esc_attr( apply_filters( 'woocommerce_product_price_class', 'price' ) ); ?>"><?php echo $product->get_price_html(); ?></p>

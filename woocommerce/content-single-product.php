@@ -1,138 +1,134 @@
 <?php
-/**
- * The template for displaying product content in the single-product.php template
- *
- * This template can be overridden by copying it to yourtheme/woocommerce/content-single-product.php.
- *
- * HOWEVER, on occasion WooCommerce will need to update template files and you
- * (the theme developer) will need to copy the new files to your theme to
- * maintain compatibility. We try to do this as little as possible, but it does
- * happen. When this occurs the version of the template file will be bumped and
- * the readme will list any important changes.
- *
- * @see     https://docs.woocommerce.com/document/template-structure/
- * @package WooCommerce\Templates
- * @version 3.6.0
- */
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 global $product;
+$button = new Button;
 
-$attachment_id = $product->get_image_id();
-$attachment_ids = $product->get_gallery_image_ids();
-$gallery_thumbnail = wc_get_image_size('gallery_thumbnail');
-$alt_text = trim(wp_strip_all_tags(get_post_meta($attachment_id, '_wp_attachment_image_alt', true)));
+/**
+ * Hook: woocommerce_before_single_product.
+ *
+ * @hooked woocommerce_output_all_notices - 10
+ */
+do_action('woocommerce_before_single_product');
 
-
-$producttype = $product->get_type();
-echo $attributes;
-
-echo woocommerce_output_all_notices();
-
-//print_r( json_decode($variations_json));
-
+if (post_password_required()) {
+	echo get_the_password_form(); // WPCS: XSS ok.
+	return;
+}
 ?>
-<div class="row product-row">
-    <div class="col-lg-6">
-        <figure class="product-image-slider-wrapper">
-            <div class="product-full-size-images-wrapper">
-                <?php 
-                
-                    woocommerce_show_product_sale_flash();
-                
-                    if ($attachment_id) {
 
-                        echo '<div class="product-image"><img src="'.wp_get_attachment_image_src( $attachment_id, '500x500' )[0].'" alt="'.$alt_text.'" /></div>';
+<section id="product-<?php the_ID(); ?>" <?php wc_product_class('w-full max-w-[1350px] flex flex-row gap-72 px-20 py-60 gap-30', $product); ?>>
 
-                        if ($attachment_ids && $product->get_image_id()) {
+	<?php
+	/**
+	 * Hook: woocommerce_before_single_product_summary.
+	 *
+	 * @hooked woocommerce_show_product_sale_flash - 10
+	 * @hooked woocommerce_show_product_images - 20
+	 */
+	do_action('woocommerce_before_single_product_summary');
+	?>
 
-                            foreach ($attachment_ids as $atid) {
+	<div class="flex flex-col gap-38 flex-1">
+		<h1 class="display-sm text-gray-900"><?php the_title(); ?></h1>
+		<?php woocommerce_template_single_excerpt(); ?>
+		<div class="flex flex-col gap-18">
+			<?php woocommerce_template_single_price(); ?>
+			<?php woocommerce_template_single_add_to_cart(); ?>
+		</div>
+		<?php
+		$attributes = $product->get_attributes();
+		?>
+		<?php if ($attributes || get_the_content()) : ?>
+			<div class="accordions">
+				<?php
+				if ($attributes) : ?>
+					<div class="accordion" onclick="toggleAccordion(this)">
+						<div class="accordion-title">
+							<?php _e('Features', 'junobjects') ?>
+							<div class="icon icon-chevron-down"></div>
+						</div>
+						<ul class="accordion-list" onclick="preventAccordionToggle(event)">
+							<?php foreach ($attributes as $attribute) : ?>
+								<li class="accordion-list-item">
+									<?php
+									switch ($attribute->get_name()) {
+										case 'Color':
+											echo '<div class="icon icon-palette"></div>';
+											break;
+										case 'pa_size':
+											echo '<div class="icon icon-ruler-combined"></div>';
+											break;
+										case 'Material':
+											echo '<div class="icon icon-scissors"></div>';
+											break;
+										default:
+											echo '<div class="icon icon-layers"></div>';
+											break;
+									}
+									?>
+									<strong><?php _e(wc_attribute_label($attribute->get_name()), 'junobjects'); ?>:</strong>
+									<?php
+									$options = $attribute->get_options();
+									$terms = array_map(function ($option) use ($attribute) {
+										$term = get_term_by('id', $option, $attribute->get_name());
+										return $term ? $term->name : $option;
+									}, $options);
+									echo implode(', ', $terms);
+									?>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endif; ?>
+				<?php if (get_the_content()) : ?>
+					<div class="accordion" onclick="toggleAccordion(this)">
+						<div class="accordion-title">
+							<?php _e('Details', 'junobjects') ?>
+							<div class="icon icon-chevron-down"></div>
+						</div>
+						<div class="accordion-content">
+							<?php the_content(); ?>
+						</div>
+					</div>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
+	</div>
 
-                                echo '<div class="product-image"><img src="'.wp_get_attachment_image_src( $atid, '500x500' )[0].'" alt="'.$alt_text.'" /></div>';
+	<?php
+	/**
+	 * Hook: woocommerce_single_product_summary.
+	 *
+	 * @hooked woocommerce_template_single_title - 5
+	 * @hooked woocommerce_template_single_rating - 10
+	 * @hooked woocommerce_template_single_price - 10
+	 * @hooked woocommerce_template_single_excerpt - 20
+	 * @hooked woocommerce_template_single_add_to_cart - 30
+	 * @hooked woocommerce_template_single_meta - 40
+	 * @hooked woocommerce_template_single_sharing - 50
+	 * @hooked WC_Structured_Data::generate_product_data() - 60
+	 */
+	//do_action( 'woocommerce_single_product_summary' );
+	?>
 
-                            }
 
-                        }
+</section>
+<?php echo get_section('Bunlar da ilginizi çekebilir', null, 1, function () {
+	$id = get_the_ID();
+	$related_products = wc_get_related_products($id, 4);
+	$return = "";
+	$return .= '<div class="swiper w-full"><div class="swiper-wrapper w-full relative box-content flex flex-row justify-start items-center">';
+	foreach ($related_products as $related_product) {
+		$product = wc_get_product($related_product);
+		ob_start();
+		wc_get_template_part('content', 'product');
+		$return .= ob_get_clean();
+	}
+	$return .= '</div></div>';
+	wp_reset_postdata();
 
-                    } else {
-
-                        echo '<div class="product-image"><img src"'.get_template_directory_uri().'/images/placeholders/product-placeholder.jpg"></div>';
-                    }
-
-                ?>
-                <div class="clear"></div>
-            </div>
-            <div class="product-thumbnails">
-                <div class="thumbnail-arrows thumbnail-left-arrow">‹</div>
-                <?php 
-
-                    if ($attachment_id) {
-
-                        echo '<div class="product-thumbnail"><img src="'.wp_get_attachment_image_src( $attachment_id, $gallery_thumbnail )[0].'" alt="'.$alt_text.'" /></div>';
-
-                        if ($attachment_ids && $product->get_image_id()) {
-
-                            foreach ($attachment_ids as $atid) {
-
-                                echo '<div class="product-thumbnail"><img src="'.wp_get_attachment_image_src( $atid, $gallery_thumbnail )[0].'" alt="'.$alt_text.'" /></div>';
-
-                            }
-
-                        }
-
-                    } else {
-
-                        echo '<div class="product-thumbnail"><img src"'.get_template_directory_uri().'/images/placeholders/product-placeholder.jpg"></div>';
-                    }
-
-                ?>
-                <div class="thumbnail-arrows thumbnail-right-arrow">›</div>
-            </div>
-        </figure>
-    </div>
-    <div class="col-lg-6">
-        <h1 class="title product-title"><?php echo get_the_title(); ?></h1>
-        <div class="product-price-wrapper">
-            <span class="price product-price">
-                <?php echo woocommerce_template_single_price(); ?>
-            </span>
-        </div>
-        <?php
-
-            $scructed = new WC_Structured_Data;
-
-            //echo woocommerce_template_single_excerpt();
-            
-            //echo woocommerce_template_single_sharing();
-            //echo $scructed->generate_product_data();
-            // woocommerce_show_product_sale_flash
-        
-            if (get_field('ozel_tasarim')[0] == 'evet') {
-                
-                $accordions = array(
-
-                    'Kendi tasarımını yükle (İsteğe bağlı)' => ozel_tasarim_yukleme_formu()
-
-                );
-
-                echo get_the_input('accordion', $accordions);
-                
-            }
-
-        ?>
-        <div class="add-to-cart-form-wrapper">
-            <?php woocommerce_template_single_add_to_cart (); ?>
-        </div>
-        <div class="tab-menu-wrapper">
-            <?php   
-
-                woocommerce_output_product_data_tabs();
-
-            ?>
-
-        </div>
-        <?php echo woocommerce_template_single_meta(); ?>
-    </div>
-</div>
-<?php echo woocommerce_output_related_products(); wp_nonce_field('ajax_file_nonce', 'security', true, false);?>
+	return $return;
+}); ?>
+<?php do_action('woocommerce_after_single_product'); ?>

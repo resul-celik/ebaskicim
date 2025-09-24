@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Proceed to checkout button
  *
@@ -12,17 +13,19 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see     https://docs.woocommerce.com/document/template-structure/
+ * @see     https://woocommerce.com/document/template-structure/
  * @package WooCommerce\Templates
- * @version 2.4.0
+ * @version 7.0.1
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
+
+$button = new Button();
 ?>
 
-<a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="button primary-button">
-    Ödemeye geç
-    <i class="icon arrow-right-16"></i>
+
+<a href="<?php echo esc_url(wc_get_checkout_url()); ?>">
+	<?php echo $button->get_button(esc_html('Proceed to checkout', 'woocommerce'), "primary-button blue-button button-sm checkout-button button alt wc-forward" . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '')) ?>
 </a>

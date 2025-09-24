@@ -298,7 +298,8 @@ body {
   }
 }
 
-.main-slider-item {
+.main-slider-item,
+.product-thumbnail {
   figure,
   img {
     width: 100%;
@@ -318,5 +319,35 @@ body {
         text-decoration: underline;
       }
     }
+  }
+}
+
+.price {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+
+  del {
+    text-decoration: none;
+    position: relative;
+    color: var(--color-gray-500);
+    @include typography.display-md;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--color-primary-400);
+      transform: rotate(-5deg);
+    }
+  }
+
+  ins {
+    text-decoration: none;
+    color: var(--color-gray-900);
+    @include typography.display-md;
   }
 }

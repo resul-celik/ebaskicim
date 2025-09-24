@@ -291,6 +291,9 @@
   .h-40 {
     height: calc(var(--spacing) * 40);
   }
+  .h-46 {
+    height: calc(var(--spacing) * 46);
+  }
   .h-\[20px\] {
     height: 20px;
   }
@@ -300,14 +303,14 @@
   .h-full {
     height: 100%;
   }
-  .w-1 {
-    width: calc(var(--spacing) * 1);
-  }
-  .w-1\/6 {
-    width: calc(1/6 * 100%);
-  }
   .w-40 {
     width: calc(var(--spacing) * 40);
+  }
+  .w-150 {
+    width: calc(var(--spacing) * 150);
+  }
+  .w-700 {
+    width: calc(var(--spacing) * 700);
   }
   .w-\[45px\] {
     width: 45px;
@@ -317,6 +320,9 @@
   }
   .w-full {
     width: 100%;
+  }
+  .max-w-\[1350px\] {
+    max-width: 1350px;
   }
   .max-w-\[1920px\] {
     max-width: 1920px;
@@ -339,6 +345,9 @@
   .flex-grow {
     flex-grow: 1;
   }
+  .grow-0 {
+    flex-grow: 0;
+  }
   .grow-1 {
     flex-grow: 1;
   }
@@ -350,15 +359,6 @@
   }
   .resize {
     resize: both;
-  }
-  .grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-  .grid-cols-5 {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-  .grid-cols-6 {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
   .grid-cols-10 {
     grid-template-columns: repeat(10, minmax(0, 1fr));
@@ -387,23 +387,32 @@
   .justify-center {
     justify-content: center;
   }
-  .justify-end {
-    justify-content: flex-end;
-  }
   .justify-start {
     justify-content: flex-start;
   }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
   }
+  .gap-6 {
+    gap: calc(var(--spacing) * 6);
+  }
   .gap-10 {
     gap: calc(var(--spacing) * 10);
+  }
+  .gap-18 {
+    gap: calc(var(--spacing) * 18);
   }
   .gap-20 {
     gap: calc(var(--spacing) * 20);
   }
   .gap-30 {
     gap: calc(var(--spacing) * 30);
+  }
+  .gap-38 {
+    gap: calc(var(--spacing) * 38);
+  }
+  .gap-72 {
+    gap: calc(var(--spacing) * 72);
   }
   .gap-\[3px\] {
     gap: 3px;
@@ -453,6 +462,9 @@
   .border-gray-200 {
     border-color: var(--color-gray-200);
   }
+  .border-gray-400 {
+    border-color: var(--color-gray-400);
+  }
   .bg-black {
     background-color: var(--color-black);
   }
@@ -494,6 +506,9 @@
   }
   .py-36 {
     padding-block: calc(var(--spacing) * 36);
+  }
+  .py-60 {
+    padding-block: calc(var(--spacing) * 60);
   }
   .py-80 {
     padding-block: calc(var(--spacing) * 80);
@@ -556,10 +571,6 @@
   }
   .blur {
     --tw-blur: blur(8px);
-    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
-  }
-  .grayscale-1 {
-    --tw-grayscale: grayscale(1%);
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .filter {
