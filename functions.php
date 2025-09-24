@@ -19,6 +19,19 @@ function product_status_tag($text, $class)
     return $return;
 }
 
+function site_feature_box($args)
+{
+?>
+    <div class="flex flex-col flex-1 items-start justify-start p-30 gap-30 bg-gray-50 rounded-[15px]">
+        <div class="w-full aspect-4/3 flex items-center justify-center"></div>
+        <div class="w-full flex flex-col gap-10 items-start justify-start">
+            <h2 class="display-sm text-gray-900"><?php echo $args['title']; ?></h2>
+            <p class="paragraph-lg text-gray-600"><?php echo $args['description']; ?></p>
+        </div>
+    </div>
+<?php
+}
+
 // REGISTER CUSTOM CSS & JS
 function ebaskicim_custom_css()
 {
@@ -34,10 +47,11 @@ add_action('wp_enqueue_scripts', 'ebaskicim_custom_css', 20);
 
 include get_template_directory() . '/components/button.php';
 include get_template_directory() . '/components/accordion.php';
+include get_template_directory() . '/components/icons.php';
 include get_template_directory() . '/components/quantity-input.php';
 include get_template_directory() . '/components/select-input.php';
 include get_template_directory() . '/components/text-input.php';
-include get_template_directory() . '/includes/products.php';
+include get_template_directory() . '/components/products.php';
 include get_template_directory() . '/components/section.php';
 
 
@@ -54,3 +68,30 @@ if (function_exists('register_sidebar')) {
         )
     );
 }
+if (function_exists('register_sidebar')) {
+
+    register_sidebar(
+        array(
+            'name' => 'Footer Menus',
+            'id' => 'footer-menus',
+            'description' => '+ butonuyla yeni footer menüsü ekleyin',
+            'before_widget' => '<div class="footer-menu col-span-2 flex-1 flex flex-col gap-4">',
+            'after_widget' => '</div>',
+            'before_title' => '<h2 class="paragraph-md paragraph-bold text-gray-900">',
+            'after_title' => '</h2>',
+        )
+    );
+}
+// Register Menus
+/* function register_my_menus()
+{
+    register_nav_menus(
+        array(
+            'header' => __('Header Menu'),
+            'footer' => __('Footer Menu'),
+            'footer2' => __('Footer Menu 2'),
+            'footer3' => __('Footer Menu 3'),
+        )
+    );
+}
+add_action('init', 'register_my_menus'); */

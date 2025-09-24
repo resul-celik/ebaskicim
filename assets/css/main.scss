@@ -306,3 +306,17 @@ body {
     object-fit: cover;
   }
 }
+
+.footer-menu {
+  .menu-item {
+    a {
+      @include typography.text-md;
+      color: var(--color-gray-600);
+
+      &:hover {
+        color: var(--color-gray-600);
+        text-decoration: underline;
+      }
+    }
+  }
+}
