@@ -41,34 +41,38 @@ if (post_password_required()) {
 		$attributes = $product->get_attributes();
 		?>
 		<?php if ($attributes || get_the_content()) : ?>
-			<div class="accordions">
+			<div class="w-full h-[1px] bg-gray-200"></div>
+			<div class="w-full flex flex-col gap-4">
 				<?php
 				if ($attributes) : ?>
-					<div class="accordion" onclick="toggleAccordion(this)">
-						<div class="accordion-title">
-							<?php _e('Features', 'junobjects') ?>
-							<div class="icon icon-chevron-down"></div>
-						</div>
-						<ul class="accordion-list" onclick="preventAccordionToggle(event)">
+					<details class="accordion w-full bg-gray-100 rounded-[25px] gap-10">
+						<summary class="w-full h-50 flex flex-row justify-between items-center px-24 cursor-pointer select-none">
+							<div class="paragraph-mg text-gray-900">Özellikler</div>
+							<i class="icon icon-plus"></i>
+							<i class="icon icon-minus"></i>
+						</summary>
+						<ul class="w-full flex flex-col px-24 pb-15 m-0 p-0">
 							<?php foreach ($attributes as $attribute) : ?>
-								<li class="accordion-list-item">
-									<?php
-									switch ($attribute->get_name()) {
-										case 'Color':
-											echo '<div class="icon icon-palette"></div>';
-											break;
-										case 'pa_size':
-											echo '<div class="icon icon-ruler-combined"></div>';
-											break;
-										case 'Material':
-											echo '<div class="icon icon-scissors"></div>';
-											break;
-										default:
-											echo '<div class="icon icon-layers"></div>';
-											break;
-									}
-									?>
-									<strong><?php _e(wc_attribute_label($attribute->get_name()), 'junobjects'); ?>:</strong>
+								<li class="w-full flex flex-row justify-start items-center m-0 p-0 py-9 gap-10 border-b border-gray-300 last:border-0 paragraph-sm">
+									<div class="feature-icon w-20 h-20 flex flex-row justify-center items-center text-primary-500">
+										<?php
+										switch ($attribute->get_name()) {
+											case 'Color':
+												echo '<div class="icon icon-colors"></div>';
+												break;
+											case 'pa_olcu':
+												echo '<div class="icon icon-ruler-triangle"></div>';
+												break;
+											case 'Material':
+												echo '<div class="icon icon-scissors"></div>';
+												break;
+											default:
+												echo '<div class="icon icon-layers"></div>';
+												break;
+										}
+										?>
+									</div>
+									<span><?php echo wc_attribute_label($attribute->get_name()); ?>:</span>
 									<?php
 									$options = $attribute->get_options();
 									$terms = array_map(function ($option) use ($attribute) {
@@ -80,18 +84,19 @@ if (post_password_required()) {
 								</li>
 							<?php endforeach; ?>
 						</ul>
-					</div>
+					</details>
 				<?php endif; ?>
 				<?php if (get_the_content()) : ?>
-					<div class="accordion" onclick="toggleAccordion(this)">
-						<div class="accordion-title">
-							<?php _e('Details', 'junobjects') ?>
-							<div class="icon icon-chevron-down"></div>
-						</div>
-						<div class="accordion-content">
+					<details class="accordion w-full bg-gray-100 rounded-[25px] gap-10">
+						<summary class="w-full h-50 flex flex-row justify-between items-center px-24 cursor-pointer select-none">
+							<div class="paragraph-mg text-gray-900">Detaylar</div>
+							<i class="icon icon-plus"></i>
+							<i class="icon icon-minus"></i>
+						</summary>
+						<div class="w-full flex flex-col px-24 pb-15 m-0 p-0 paragraph-sm text-gray-900">
 							<?php the_content(); ?>
 						</div>
-					</div>
+					</details>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>

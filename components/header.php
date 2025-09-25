@@ -20,19 +20,21 @@ if (! defined('ABSPATH')) {
                 </form>
             </div>
             <div class="flex flex-row gap-[7px]">
-                <div class="relative">
-                    <div class="w-auto h-[20px] min-w-[20px] flex items-center justify-center absolute z-10 top-0 right-0 bg-primary-400 rounded-full text-xs font-bold"><?php echo count(WC()->cart->get_cart()); ?></div>
-                    <a href="<?php echo wc_get_cart_url(); ?>" class="header-button"><i class="icon icon-cart"></i></a>
+                <div class="cart-button relative">
+                    <div class="absolute z-10 top-0 right-0">
+                        <?php echo ebs_get_badge(WC()->cart->get_cart_contents_count()); ?>
+                    </div>
+                    <div class="header-button cursor-pointer"><i class="icon icon-cart"></i></div>
                 </div>
                 <?php if (is_user_logged_in()) : ?>
-                    <a href="<?php echo get_permalink(get_option("woocommerce_myaccount_page_id")); ?>" class="w-[45px] h-[45px] flex items-center justify-center bg-primary-400 text-xl rounded-full">
+                    <div class="account-button w-[45px] h-[45px] flex items-center justify-center bg-primary-400 text-xl rounded-full select-none cursor-pointer">
                         <?php
                         $user = wp_get_current_user();
                         $display_name = $user->display_name;
 
                         echo mb_substr($display_name, 0, 1);
                         ?>
-                    </a>
+                    </div>
                 <?php else : ?>
                     <a href="<?php echo get_permalink(get_option("woocommerce_myaccount_page_id")); ?>" class="header-button"><span class="header-button-text">Giriş yap / Kaydol</span><i class="icon icon-person"></i></a>
                 <?php endif; ?>
@@ -42,46 +44,18 @@ if (! defined('ABSPATH')) {
         <?php get_template_part('components/main-menu'); ?>
     </div>
 </header>
-<div class="hidden-side-menu-container hidden-right-side-menu account-side-menu hide-right-side-menu">
-    <div class="hidden-side-menu-close-button">
-        <i class="icon close-24"></i>
-    </div>
-    <div class="hidden-side-menu-wrapper">
-        <a href="<?php echo get_permalink(get_option("woocommerce_myaccount_page_id")); ?>" class="go-to-profile-wrapper">
-            <div class="account-username">
-                <span class="au-username-span"><?php echo wp_get_current_user()->display_name; ?></span>
-                <?php if (current_user_can('kurumsal_uye')) : ?>
-                    <span class="ebaskicim-corporating-badge">
-                        <div class="tooltip">
-                            <div class="tooltiptext">Kurumsal üye</div>
-                            <img src="<?php echo get_template_directory_uri(); ?>/images/ebaskicim-badge.png" />
-                        </div>
-                    </span>
-                <?php endif; ?>
-            </div>
-            <div class="got-to-profile">Profile git</div>
-        </a>
-        <nav class="side-menu-profile-navigation" role="navigation">
-            <?php foreach (wc_get_account_menu_items() as $endpoint => $label) : ?>
-                <?php if ($endpoint != 'downloads' && $endpoint != 'orders') : ?>
-                    <li class="side-menu-profile-navigation-item <?php echo wc_get_account_menu_item_classes($endpoint); ?>">
-                        <a href="<?php echo esc_url(wc_get_account_endpoint_url($endpoint)); ?>">
-                            <?php
-
-                            if ($endpoint == 'dashboard') {
-
-                                echo "Siparişlerim";
-                            } else {
-
-                                echo esc_html($label);
-                            }
-
-                            ?>
-                        </a>
-                    </li>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        </nav>
-    </div>
-    <div class="hidden-side-menu-shadow"></div>
+<?php
+$cartArgs = array(
+    'customClass' => 'cart-drawer-menu',
+    'width' => 'w-3/10',
+    'title' => 'Sepetim',
+    'icon' => 'icon-cart',
+    'badgeCount' =>  WC()->cart->get_cart_contents_count()
+)
+?>
+<?php echo get_drawer_menu(array('customClass' => 'account-drawer-menu', 'width' => 'w-2/10', 'title' => 'Hesabım', 'icon' => 'icon-person'), "account_drawer_menu_content"); ?>
+<?php echo get_drawer_menu($cartArgs, "account_drawer_menu_content"); ?>
+<div class="dimness w-full h-screen inset-0 absolute bg-black/20 z-998">
 </div>
+<?php // echo get_permalink(get_option("woocommerce_myaccount_page_id")); 
+?>

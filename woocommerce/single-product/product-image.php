@@ -26,52 +26,6 @@ global $product;
 $product_video = get_post_meta($product->get_id(), 'jun_product_video', true);
 $attachment_ids = $product->get_gallery_image_ids();
 
-/* <?php if ($product->is_in_stock()) : ?>
-	<?php
-	$post_date = get_the_date('U', $product->get_id());
-	$current_date = current_time('timestamp');
-	$date_diff = $current_date - $post_date;
-
-	if ($date_diff < DAY_IN_SECONDS) {
-	?>
-		<div class="product-tag new-tag">
-			<div class="icon icon-fire"></div>
-			<?php _e('New', 'junobjects'); ?>
-		</div>
-	<?php
-	}
-	?>
-
-	<?php
-	$sale_price = $product->get_sale_price();
-	$regular_price = $product->get_regular_price();
-
-	if ($sale_price && $regular_price) {
-		echo '<div class="product-tag discount-tag">';
-		$discount_percentage = round((($regular_price - $sale_price) / $regular_price) * 100);
-		echo '<div class="icon icon-smile"></div>' . sprintf(__('%d%% off', 'junobjects'), $discount_percentage);
-		echo '</div>';
-	}
-	?>
-	<?php if ($product->is_featured()) : ?>
-		<div class="product-tag best-tag">
-			<div class="icon icon-diamond"></div>
-			<?php _e('Best seller', 'junobjects'); ?>
-		</div>
-	<?php endif; ?>
-	<?php $stock = $product->get_stock_quantity(); ?>
-	<?php if ($stock > 0) : ?>
-		<div class="product-tag stock-tag">
-			<?php echo sprintf(__('%d in stock', 'junobjects'), $stock); ?>
-		</div>
-	<?php endif; ?>
-<?php else : ?>
-	<div class="product-tag sold-out-tag">
-		<div class="icon icon-sad"></div>
-		<?php _e('Sold out', 'junobjects'); ?>
-	</div>
-<?php endif; ?> */
-
 function ebs_project_tags()
 {
 	global $product;
@@ -109,23 +63,40 @@ function ebs_project_tags()
 }
 ?>
 
-<div class="w-700 grow-0 shrink-0">
-	<?php
-
-	// Display product thumbnail
-	echo '<figure class="product-thumbnail w-full aspect-4/3 flex items-center justify-center relative overflow-hidden rounded-[15px]">';
-	echo ebs_project_tags();
-	echo woocommerce_get_product_thumbnail('woocommerce_single');
-	echo '</figure>';
-
-	if ($attachment_ids && is_array($attachment_ids)) {
-		foreach ($attachment_ids as $attachment_id) {
-			$image_url = wp_get_attachment_url($attachment_id);
-			echo '<figure class="product-image">';
-			echo '<img src="' . esc_url($image_url) . '" alt="">';
+<div class="w-700 flex flex-col grow-0 shrink-0 gap-12">
+	<div class="photo-swiper w-full aspect-4/3 overflow-hidden rounded-[15px] relative">
+		<?php echo ebs_project_tags(); ?>
+		<div class="photo-swiper-wrapper w-full aspect-4/3 relative box-content flex flex-row justify-start items-center">
+			<?php
+			// Display product thumbnail
+			echo '<figure class="photo-swiper-item product-thumbnail shrink-0">';
+			echo woocommerce_get_product_thumbnail('woocommerce_single');
 			echo '</figure>';
-		}
-	}
 
-	?>
+			if ($attachment_ids && is_array($attachment_ids)) {
+				foreach ($attachment_ids as $attachment_id) {
+					$image_url = wp_get_attachment_url($attachment_id);
+					echo '<figure class="photo-swiper-item product-image shrink-0">';
+					echo '<img src="' . esc_url($image_url) . '" alt="">';
+					echo '</figure>';
+				}
+			}
+
+			?>
+		</div>
+	</div>
+	<div thumbsSlider="" class="swiper-thumbs w-full h-60">
+		<div class="thumb-wrapper w-full flex flex-row justify-start items-center">
+			<?php
+			if ($attachment_ids && is_array($attachment_ids)) {
+				foreach ($attachment_ids as $attachment_id) {
+					$image_url = wp_get_attachment_url($attachment_id);
+					echo '<div class="photo-swiper-thumb-item !w-60 !h-60 shrink-0 grow-0 rounded-[15px] overflow-hidden">';
+					echo '<img src="' . esc_url($image_url) . '" alt="" class="w-full h-full object-cover">';
+					echo '</div>';
+				}
+			}
+			?>
+		</div>
+	</div>
 </div>

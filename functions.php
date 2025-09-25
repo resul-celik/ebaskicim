@@ -32,6 +32,11 @@ function site_feature_box($args)
 <?php
 }
 
+function ebs_get_badge($text)
+{
+    return '<div class="w-auto h-[20px] min-w-[20px] flex items-center justify-center bg-primary-400 rounded-full text-xs font-bold">' . $text . '</div>';
+}
+
 // REGISTER CUSTOM CSS & JS
 function ebaskicim_custom_css()
 {
@@ -51,8 +56,10 @@ include get_template_directory() . '/components/icons.php';
 include get_template_directory() . '/components/quantity-input.php';
 include get_template_directory() . '/components/select-input.php';
 include get_template_directory() . '/components/text-input.php';
+include get_template_directory() . '/components/drawer-menu.php';
 include get_template_directory() . '/components/products.php';
 include get_template_directory() . '/components/section.php';
+include get_template_directory() . '/components/account-drawer.php';
 
 
 // Register sidebar

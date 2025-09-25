@@ -5,6 +5,20 @@ class Button
     public function render($args): string
     {
 
+        $args["text"] = $args["text"] ?? '';
+        $args["url"] = $args["url"] ?? '';
+        $args["classes"] = $args["classes"] ?? '';
+        $args["hierarchy"] = $args["hierarchy"] ?? 'primary';
+        $args["size"] = $args["size"] ?? 'medium';
+        $args["leadingIcon"] = $args["leadingIcon"] ?? '';
+        $args["trailingIcon"] = $args["trailingIcon"] ?? '';
+        $args["icon"] = $args["icon"] ?? '';
+        $args["type"] = $args["type"] ?? '';
+        $args["value"] = $args["value"] ?? '';
+        $args["name"] = $args["name"] ?? '';
+        $args["target"] = $args["target"] ?? '';
+        $args["theme"] = $args["theme"] ?? 'light';
+
         if ($args["url"]) {
             $button = '<a href="' .  $args["url"] . '" class="button';
             if ($args["classes"]) {
@@ -17,7 +31,7 @@ class Button
             }
         }
 
-        if ($args["theme" == "dark"]) {
+        if ($args["theme"] == 'dark') {
             if ($args["hierarchy"] == 'secondary') {
                 $button .= ' secondary-button-dark';
             } else if ($args["hierarchy"] == 'tertiary') {

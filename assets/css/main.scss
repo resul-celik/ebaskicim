@@ -41,6 +41,10 @@ body {
   -moz-osx-font-smoothing: antialiased;
 }
 
+.wp-admin-bar-padding {
+  padding-top: 32px;
+}
+
 .paragraph-regular {
   font-weight: 400;
 }
@@ -349,5 +353,94 @@ body {
     text-decoration: none;
     color: var(--color-gray-900);
     @include typography.display-md;
+  }
+}
+
+.accordion {
+  summary {
+    .icon-minus {
+      display: none !important;
+    }
+
+    .icon-plus {
+      display: block !important;
+    }
+  }
+
+  .feature-icon {
+    .icon {
+      width: 20px;
+      height: 20px;
+
+      &:before {
+        font-size: 20px;
+      }
+    }
+  }
+
+  &[open] {
+    summary {
+      .icon-minus {
+        display: block !important;
+      }
+
+      .icon-plus {
+        display: none !important;
+      }
+    }
+  }
+}
+
+.swiper-thumbs {
+  .photo-swiper-thumb-item {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+
+  .swiper-slide-thumb-active {
+    opacity: 1;
+    outline: 2px solid var(--color-primary-400);
+  }
+}
+
+.drawer-menu {
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(100%);
+}
+
+.drawer--active {
+  transition: transform 0.3s ease-in-out;
+  transform: translateX(0);
+}
+
+.dimness {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dimness--active {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.corporation-badge {
+  .corporation-badge-wrapper {
+    .badge-text {
+      display: none;
+    }
+  }
+
+  &:hover {
+    .corporation-badge-wrapper {
+      width: auto;
+      flex-shrink: 0;
+      padding-right: 6px;
+
+      .badge-text {
+        display: block;
+      }
+    }
   }
 }
