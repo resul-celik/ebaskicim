@@ -22,10 +22,14 @@ if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
-$button = new Button();
+$additionalclasses = esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '');
+
+$buttonArgs = array(
+	"text" => "Ödeme yap",
+	"classes" => "alt wc-forward" . $additionalclasses
+);
 ?>
 
-
 <a href="<?php echo esc_url(wc_get_checkout_url()); ?>">
-	<?php echo $button->get_button(esc_html('Proceed to checkout', 'woocommerce'), "primary-button blue-button button-sm checkout-button button alt wc-forward" . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '')) ?>
+	<?php echo get_button($buttonArgs); ?>
 </a>

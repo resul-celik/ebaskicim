@@ -47,15 +47,15 @@ if (! defined('ABSPATH')) {
 <?php
 $cartArgs = array(
     'customClass' => 'cart-drawer-menu',
-    'width' => 'w-3/10',
+    'width' => 'w-1/4',
     'title' => 'Sepetim',
     'icon' => 'icon-cart',
     'badgeCount' =>  WC()->cart->get_cart_contents_count()
 )
 ?>
 <?php echo get_drawer_menu(array('customClass' => 'account-drawer-menu', 'width' => 'w-2/10', 'title' => 'Hesabım', 'icon' => 'icon-person'), "account_drawer_menu_content"); ?>
-<?php echo get_drawer_menu($cartArgs, "account_drawer_menu_content"); ?>
-<div class="dimness w-full h-screen inset-0 absolute bg-black/20 z-998">
+<?php echo get_drawer_menu($cartArgs, "woocommerce_mini_cart"); ?>
+<div class="dimness w-full h-screen inset-0 fixed bg-black/20 z-998">
 </div>
 <?php // echo get_permalink(get_option("woocommerce_myaccount_page_id")); 
 ?>

@@ -18,14 +18,12 @@
 
 defined('ABSPATH') || exit;
 
-$button = new Button();
-
 ?>
-<div class="cart-wrapper">
+<div class="w-full flex flex-col">
     <?php //do_action('woocommerce_before_cart'); 
     ?>
     <?php if (WC()->cart->get_cart()) : ?>
-        <form class="woocommerce-cart-form shop_table shop_table_responsive cart woocommerce-cart-form__contents" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post">
+        <form class="woocommerce-cart-form shop_table shop_table_responsive cart w-full flex flex-col px-10 grow-1" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post">
             <?php do_action('woocommerce_before_cart_table'); ?>
             <?php do_action('woocommerce_before_cart_contents'); ?>
             <?php foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) :
@@ -39,8 +37,8 @@ $button = new Button();
 
             ?>
 
-                    <div class="cart-item woocommerce-cart-form__cart-item <?php echo esc_attr(apply_filters('woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key)); ?>">
-                        <div class="cart-item-thumbnail product-thumbnail">
+                    <div class="w-full flex flex-row p-10 gap-20 items-center justify-start woocommerce-cart-form__cart-item <?php echo esc_attr(apply_filters('woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key)); ?>">
+                        <div class="w-90 h-90">
                             <?php
                             $thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image('custom-thumbnail'), $cart_item, $cart_item_key);
 
@@ -51,11 +49,11 @@ $button = new Button();
                             }
                             ?>
                         </div>
-                        <div class="cart-product-info">
-                            <div class="cart-product-qty">
+                        <div class="flex flex-col grow-1">
+                            <div class="mb-6 paragraph-xs text-gray-600 uppercase">
                                 <?php echo sprintf(__('%d pieces', 'junobjects'), $cart_item['quantity']); ?>
                             </div>
-                            <div class="product-name" data-title="<?php esc_attr_e('Product', 'woocommerce'); ?>">
+                            <div class="paragraph-sm text-gray-900" data-title="<?php esc_attr_e('Product', 'woocommerce'); ?>">
                                 <?php
                                 if (! $product_permalink) {
                                     echo wp_kses_post($product_name . '&nbsp;');
@@ -137,10 +135,10 @@ $button = new Button();
         </div>
 
     <?php else:  ?>
-        <div class="jun-empty-cart">
+        <div class="w-full flex flex-col items-center justify-center gap-20">
             <img src="<?php echo get_template_directory_uri(); ?>/assets/juno-empty-cart.svg" alt="">
-            <div><?php _e('Your cart is currently empty.', 'junobjects'); ?></div>
-            <?php echo $button->get_button(__('Continue Shopping', 'junobjects'), 'primary-button button-sm blue-button', '', '', '', '', '', '', get_home_url()); ?>
+            <div>Sepetiniz boş</div>
+            <?php echo get_button(array("text" => "Alışverişe devam et", "url" => get_home_url())); ?>
         </div>
     <?php endif; ?>
 </div>
