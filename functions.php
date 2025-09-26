@@ -21,9 +21,20 @@ function product_status_tag($text, $class)
 
 function site_feature_box($args)
 {
+    $args["title"] = $args["title"] ?? '';
+    $args["description"] = $args["description"] ?? '';
+    $args["image"] = $args["image"] ?? '';
+
+    if (!$args["title"] || !$args["description"]) {
+        return;
+    }
 ?>
-    <div class="flex flex-col flex-1 items-start justify-start p-30 gap-30 bg-gray-50 rounded-[15px]">
-        <div class="w-full aspect-4/3 flex items-center justify-center"></div>
+    <div class="flex flex-col items-start justify-start p-30 gap-30 bg-gray-50 shrink-0 rounded-[15px] features-slider-item">
+        <?php if ($args["image"]) : ?>
+            <div class="w-full aspect-4/3 flex items-center justify-center">
+                <img src="<?php echo $args["image"]; ?>" alt="" class="w-full h-full object-contain">
+            </div>
+        <?php endif; ?>
         <div class="w-full flex flex-col gap-10 items-start justify-start">
             <h2 class="display-sm text-gray-900"><?php echo $args['title']; ?></h2>
             <p class="paragraph-lg text-gray-600"><?php echo $args['description']; ?></p>

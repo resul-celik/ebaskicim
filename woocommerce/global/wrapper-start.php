@@ -20,4 +20,4 @@ if (! defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
 
-echo '<main class="w-full flex flex-col items-center justify-start overflow-hidden">';
+echo '<main class="w-full flex flex-col items-center justify-start overflow-hidden grow-1">';

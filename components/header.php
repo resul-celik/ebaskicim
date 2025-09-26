@@ -3,9 +3,9 @@ if (! defined('ABSPATH')) {
     exit;
 }
 ?>
-<header class="w-full flex items-center justify-center" role="heading">
-    <div class="w-full max-w-[1920px] flex flex-col">
-        <div class="w-full flex flex-row items-center justify-between px-[20px] py-[15px] border-b border-gray-200">
+<header class="w-full flex flex-col" role="heading">
+    <div class="w-full flex flex-row items-center justify-center py-[15px] border-b border-gray-200">
+        <div class="w-full max-w-[1920px] flex flex-row items-center justify-between px-[20px]">
             <div class="flex flex-row gap-[20px]">
                 <a href="<?php echo site_url(); ?>" role="logo">
                     <?php get_template_part('components/logo'); ?>
@@ -42,8 +42,8 @@ if (! defined('ABSPATH')) {
 
             </div>
         </div>
-        <?php get_template_part('components/main-menu'); ?>
     </div>
+    <?php get_template_part('components/main-menu'); ?>
 </header>
 <?php
 $cartArgs = array(

@@ -1,5 +1,7 @@
 @use "icons";
 @use "typography";
+@use "button";
+@use "inputs";
 
 * {
   box-sizing: border-box;
@@ -33,70 +35,16 @@ figure {
 }
 
 body {
-  font-family: "Manrope", sans-serif;
+  @include typography.base-font;
+  @include typography.text-md;
   font-optical-sizing: auto;
   font-style: normal;
-  @include typography.text-md;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: antialiased;
 }
 
-@mixin base-font {
-  font-family: "Manrope", sans-serif;
-}
-
 .wp-admin-bar-padding {
   padding-top: 32px;
-}
-
-.paragraph-regular {
-  font-weight: 400;
-}
-.paragraph-medium {
-  font-weight: 600;
-}
-.paragraph-bold {
-  font-weight: 800;
-}
-
-.paragraph-xs {
-  @include typography.text-xs;
-}
-
-.paragraph-sm {
-  @include typography.text-sm;
-}
-
-.paragraph-md {
-  @include typography.text-md;
-}
-
-.paragraph-lg {
-  @include typography.text-lg;
-}
-
-.paragraph-xl {
-  @include typography.text-xl;
-}
-
-.paragraph-2xl {
-  @include typography.text-2xl;
-}
-
-.display-sm {
-  @include typography.display-sm;
-}
-
-.display-md {
-  @include typography.display-md;
-}
-
-.display-lg {
-  @include typography.display-lg;
-}
-
-.display-xl {
-  @include typography.display-xl;
 }
 
 .woocommerce {
@@ -118,587 +66,6 @@ body {
   justify-content: flex-start;
   overflow: hidden;
 }
-
-/* BUTTON (Start) */
-
-.button,
-.wpcf7-submit {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  border-radius: 30px;
-  @include typography.text-md;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: none;
-  user-select: none;
-
-  &:hover {
-    text-decoration: none;
-  }
-}
-
-.medium-button {
-  height: 40px;
-  padding: 0 25px;
-}
-
-.large-button {
-  height: 46px;
-  padding: 0 30px;
-}
-
-.trailing-icon {
-  .icon {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
-
-    &:before {
-      width: 16px;
-      height: 16px;
-      font-size: 16px;
-      margin-right: -3px;
-    }
-  }
-}
-
-.leading-icon {
-  .icon {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
-
-    &:before {
-      width: 16px;
-      height: 16px;
-      font-size: 16px;
-      margin-left: -3px;
-    }
-  }
-}
-
-.icon-only {
-  padding: 0;
-  aspect-ratio: 1/1;
-
-  .icon {
-    width: 24px;
-    height: 24px;
-    font-size: 24px;
-
-    &:before {
-      width: 24px;
-      height: 24px;
-      font-size: 24px;
-    }
-  }
-}
-
-.primary-button,
-.wpcf7-submit {
-  background: var(--color-primary-400);
-  color: var(--color-gray-900);
-
-  &:hover {
-    background: var(--color-primary-200);
-  }
-}
-
-.primary-button-dark {
-  background: var(--color-white);
-  color: var(--color-gray-900);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.6);
-  }
-}
-
-.secondary-button {
-  background: var(--color-gray-200);
-  color: var(--color-gray-900);
-
-  &:hover {
-    background-color: var(--color-gray-400);
-  }
-}
-
-.secondary-button-dark {
-  background: rgba(255, 255, 255, 0.6);
-  color: var(--color-gray-900);
-
-  &:hover {
-    background-color: var(--color-white);
-  }
-}
-
-.tertiary-button {
-  background: transparent;
-  color: var(--color-gray-900);
-
-  &:hover {
-    background-color: var(--color-gray-200);
-  }
-}
-
-.tertiary-button-dark {
-  background: transparent;
-  color: var(--color-white);
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.6);
-  }
-}
-
-.link-button {
-  background: transparent;
-  color: var(--color-primary-600);
-
-  &:hover {
-    color: var(--color-gray-900);
-  }
-}
-
-.link-button-dark {
-  background: transparent;
-  color: var(--color-white);
-
-  &:hover {
-    color: var(--color-primary-400);
-  }
-}
-
-// Destructive
-
-.primary-button-destructive {
-  background: var(--color-error-500);
-  color: var(--color-white);
-
-  &:hover {
-    background: var(--color-error-300);
-  }
-}
-
-.primary-button-dark-destructive {
-  background: var(--color-error-300);
-  color: var(--color-black);
-
-  &:hover {
-    background: var(--color-error-200);
-  }
-}
-
-.secondary-button-destructive {
-  background: var(--color-error-100);
-  color: var(--color-error-800);
-
-  &:hover {
-    background: var(--color-error-200);
-  }
-}
-
-.secondary-button-dark-destructive {
-  background: var(--color-error-800);
-  color: var(--color-error-100);
-
-  &:hover {
-    background: var(--color-error-900);
-  }
-}
-
-.tertiary-button-destructive {
-  background: transparent;
-  color: var(--color-error-500);
-
-  &:hover {
-    background: var(--color-error-100);
-  }
-}
-
-.tertiary-button-dark-destructive {
-  background: transparent;
-  color: var(--color-error-100);
-
-  &:hover {
-    background: var(--color-error-800);
-  }
-}
-
-.link-button-destructive {
-  background: transparent;
-  color: var(--color-primary-500);
-
-  &:hover {
-    color: var(--color-gray-900);
-  }
-}
-
-.link-button-dark-destructive {
-  background: transparent;
-  color: var(--color-primary-300);
-
-  &:hover {
-    color: var(--color-white);
-  }
-}
-
-/* BUTTON (End) */
-
-/* 14.0.0 INPUTS (Start) */
-
-// 14.1.0 input radius
-
-$input-radius: 7px;
-
-// 14.2.0 input field wrapper
-
-.input-field-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0px;
-  gap: 21px;
-  width: 100%;
-  flex: none;
-  flex-grow: 0;
-
-  .input-field {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
-    gap: 6px;
-    width: 100%;
-    flex: none;
-    flex-grow: 0;
-    margin: 0;
-
-    .password-input {
-      position: relative;
-
-      .show-password-input {
-        width: 24px;
-        background-color: transparent;
-        border: none;
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        right: 0;
-        top: 0;
-        padding: 0 12px;
-        box-sizing: border-box;
-        cursor: pointer;
-        margin: 0;
-        color: var(--color-gray-400);
-        font-size: 16px;
-        line-height: 16px;
-        @extend .icon;
-
-        &:before {
-          @extend .icon-eye;
-        }
-      }
-
-      .display-password {
-        @extend .icon;
-
-        &:before {
-          @extend .icon-eye-off;
-        }
-      }
-    }
-
-    label {
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-      color: var(--color-gray-900);
-      flex: none;
-      flex-grow: 0;
-    }
-
-    .input-wrapper,
-    .woocommerce-input-wrapper,
-    .password-input {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 0px;
-      gap: 6px;
-      width: 100%;
-    }
-
-    .supporting-text {
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-      color: var(--color-gray-500);
-      flex: none;
-      align-self: stretch;
-      flex-grow: 0;
-    }
-
-    .woocommerce-password-strength,
-    .woocommerce-password-hint {
-      @extend .supporting-text;
-    }
-
-    .short,
-    .bad {
-      color: var(--color-error-500);
-    }
-
-    .strong {
-      color: var(--color-success-500);
-    }
-
-    .checkout-inline-error-message {
-      @include base-font;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-      color: var(--color-error-500);
-      flex: none;
-      align-self: stretch;
-      flex-grow: 0;
-      margin: 0;
-      padding: 0;
-    }
-  }
-
-  wc-order-attribution-inputs {
-    display: none;
-  }
-
-  .woocommerce-privacy-policy-text {
-    @include base-font;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-
-    a {
-      color: var(--color-gray-900);
-      text-decoration: underline;
-
-      &:hover {
-        color: var(--color-gray-600);
-        text-decoration: underline;
-      }
-    }
-
-    p {
-      padding: 0;
-      margin: 0;
-    }
-  }
-
-  .login-remember {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    label {
-      font-size: 16px;
-    }
-
-    a {
-      color: var(--color-gray-900);
-      text-decoration: none;
-
-      &:hover {
-        color: var(--color-gray-600);
-        text-decoration: underline;
-      }
-    }
-  }
-}
-
-// 14.3.0 input text field
-
-.input-text {
-  box-sizing: border-box;
-  padding: 0 20px;
-  width: 100%;
-  height: 40px;
-  background: var(--color-gray-100);
-  border-radius: 50px;
-  flex-grow: 0;
-  @include typography.text-md;
-  color: var(--color-gray-900);
-
-  &:focus {
-    background: var(--color-primary-50);
-    outline: 1px solid var(--color-primary-400) !important;
-  }
-
-  &::placeholder {
-    color: var(--color-primary-400);
-  }
-}
-
-// 14.4.0 checkbox
-
-input[type="checkbox"] {
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  background-color: var(--color-white);
-  border: 1px solid var(--color-gray-200);
-  border-radius: 8px;
-  cursor: pointer;
-  position: relative;
-  margin: 0 5px;
-
-  &:checked {
-    background-color: var(--color-primary-400);
-    border-color: var(--color-primary-400);
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 2px;
-      left: 7px;
-      width: 3px;
-      height: 9px;
-      border: solid var(--color-white);
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
-    }
-  }
-}
-
-// 14.5.0 others
-
-.woocommerce-form__label {
-  @include base-font;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--color-gray-900);
-  flex: none;
-  flex-grow: 0;
-
-  input {
-    margin-bottom: -3px;
-  }
-}
-
-.select2-container {
-  display: block;
-  width: 100%;
-
-  .selection {
-    .select2-selection--single {
-      background-color: var(--color-white);
-      border: 1px solid var(--color-gray-200);
-      border-radius: $input-radius;
-      height: auto;
-
-      .select2-selection__rendered {
-        @include base-font;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 24px;
-        color: var(--color-gray-900);
-        padding: 8px 20px 8px 12px;
-      }
-
-      .select2-selection__arrow {
-        width: 30px;
-        height: 100%;
-      }
-    }
-  }
-
-  .select2-dropdown {
-    border: 1px solid var(--color-gray-200);
-    border-radius: 0 0 $input-radius $input-radius;
-
-    .select2-search {
-      padding: 4px 6px;
-
-      .select2-search__field {
-        @extend .input-text;
-      }
-    }
-
-    .select2-results {
-      .select2-results__options {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 4px 6px;
-        box-sizing: border-box;
-
-        .select2-results__option {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          padding: 10px;
-          gap: 8px;
-          width: 100%;
-          border-radius: $input-radius;
-          flex: none;
-          flex-grow: 1;
-          color: var(--color-gray-900);
-          box-sizing: border-box;
-
-          &:hover {
-            color: var(--color-gray-900);
-            background-color: var(--color-gray-100);
-          }
-        }
-
-        .select2-results__option--highlighted[data-selected] {
-          color: var(--color-white);
-          background-color: var(--color-primary-400);
-        }
-
-        .select2-results__option[data-selected="true"] {
-          color: var(--color-white);
-          background-color: var(--color-primary-400);
-        }
-      }
-    }
-  }
-}
-
-// 14.6.0 quantity
-
-.qty {
-  @include base-font;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0 16px;
-  gap: 8px;
-  width: 130px;
-  height: 48px;
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-200);
-  border-radius: $input-radius;
-  flex-grow: 0;
-  font-size: 18px;
-  color: var(--color-gray-900);
-  outline: none;
-
-  &:focus {
-    outline: 2px solid var(--color-primary-400);
-  }
-}
-
-/* INPUTS (End) */
 
 /* NOTIFICATION (Start) */
 
@@ -1036,6 +403,97 @@ input[type="checkbox"] {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+  }
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 25px;
+  gap: 30px;
+  border-radius: 20px;
+  flex: none;
+  flex-grow: 0;
+
+  .card-title {
+    @include typography.text-lg;
+    @extend .paragraph-medium;
+  }
+}
+
+.card-container-primary {
+  background: var(--color-primary-100);
+}
+
+.card-container-secondary {
+  background: var(--color-gray-100);
+}
+
+.card-container-tertiary {
+  background: var(--color-white);
+  box-shadow: var(--shadow-xs);
+}
+
+.main-menu-item {
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: -5px;
+    width: 100%;
+    height: 5px;
+    transform: translateX(-50%);
+  }
+
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    width: 0%;
+    height: 4px;
+    background-color: var(--color-primary-400);
+    transform: translateX(-50%);
+    border-radius: 5px;
+    transition: width 0.3s ease-in-out;
+  }
+}
+
+.main-menu-item--active {
+  &:before {
+    width: 50%;
+  }
+}
+
+.menu-content {
+  .product-item {
+    flex: 0 1 25%;
+  }
+}
+
+.results-page {
+  .product-item {
+    flex: 0 1 25%;
+  }
+  .orderby {
+    position: relative;
+
+    &:after {
+      content: "keyboard_arrow_down";
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      @include icons.icon-font;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      color: var(--color-gray-500);
+      z-index: 1;
     }
   }
 }

@@ -1,3 +1,7 @@
+@mixin base-font {
+  font-family: "Manrope", sans-serif;
+}
+
 @mixin text-xs {
   font-size: var(--text-xs);
   line-height: 140%;
@@ -60,4 +64,54 @@
   line-height: 100%;
   letter-spacing: -0.04em;
   font-weight: 800;
+}
+
+.paragraph-regular {
+  font-weight: 400;
+}
+.paragraph-medium {
+  font-weight: 600;
+}
+.paragraph-bold {
+  font-weight: 800;
+}
+
+.paragraph-xs {
+  @include text-xs;
+}
+
+.paragraph-sm {
+  @include text-sm;
+}
+
+.paragraph-md {
+  @include text-md;
+}
+
+.paragraph-lg {
+  @include text-lg;
+}
+
+.paragraph-xl {
+  @include text-xl;
+}
+
+.paragraph-2xl {
+  @include text-2xl;
+}
+
+.display-sm {
+  @include display-sm;
+}
+
+.display-md {
+  @include display-md;
+}
+
+.display-lg {
+  @include display-lg;
+}
+
+.display-xl {
+  @include display-xl;
 }

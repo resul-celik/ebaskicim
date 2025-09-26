@@ -21,18 +21,18 @@ class Section
         return $return;
     }
 
-    public function getSection($title, $url, $order, $contentFunction): string
+    public function getSection($title, $url, $order, $contentFunction, $category): string
     {
         $sectionHead = $this->sectionHead($title, $url);
         $order = $order ? $order : 1;
         $content = '';
-        $content .= '<section class="w-full max-w-[1920px] flex flex-col px-[20px] pb-[100px] gap-[30px]" style="order: ' . $order . ';">' . $sectionHead . $contentFunction() . '</section>';
+        $content .= '<section class="w-full max-w-[1920px] flex flex-col px-[20px] pb-[100px] gap-[30px]" style="order: ' . $order . ';">' . $sectionHead . $contentFunction($category) . '</section>';
         return $content;
     }
 }
 
-function get_section($title, $url, $order, $contentFunction): string
+function get_section($title, $url, $order, $contentFunction, $category = ""): string
 {
     $section = new Section();
-    return $section->getSection($title, $url, $order, $contentFunction);
+    return $section->getSection($title, $url, $order, $contentFunction, $category);
 }

@@ -21,29 +21,70 @@ if (! defined('ABSPATH')) {
 }
 
 get_header('shop');
+get_template_part('components/header');
 
 $category = get_queried_object();
 //$category_slug = $category->slug;
 
 // category url
 $category_url = get_term_link($category);
-
 $filterSize = isset($_GET['size']) ? $_GET['size'] : '';
+$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : '';
+
+$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+$args = array(
+	'post_type' => 'product',
+	'product_cat' => $category->slug,
+	'orderby' => array(
+		'menu_order' => 'ASC',
+		'meta_value' => 'ASC', // Order by stock status first
+		'date' => 'DESC' // Then order by date
+	),
+	'order' => 'DESC',
+	'paged' => $paged,
+	'meta_query' => array(
+		'relation' => 'OR',
+		array(
+			'key' => '_stock_status',
+			'value' => 'instock',
+			'compare' => '='
+		),
+		array(
+			'key' => '_stock_status',
+			'value' => 'outofstock',
+			'compare' => '='
+		)
+	),
+	/* 'tax_query' => array(
+				array(
+					'taxonomy' => 'pa_olcu',
+					'field' => 'slug',
+					'terms' => $filterSize,
+					'operator' => $filterSize ? 'IN' : 'NOT IN',
+				),
+			), */
+);
+
+$products = new WP_Query($args);
+
 
 do_action('woocommerce_before_main_content'); ?>
-<div class="juno-page category">
+<div class="results-page w-full max-w-[1920px] flex flex-col items-center justify-start px-20 pt-30 pb-100 gap-30 grow-1">
 	<?php if (apply_filters('woocommerce_show_page_title', true)) : ?>
-		<div class="page-head">
-			<h1 class="page-title"><?php woocommerce_page_title(); ?></h1>
-			<img src="<?php echo esc_url(get_term_meta($category->term_id, 'product_cat_icon', true)); ?>" alt="<?php echo esc_attr($category->name); ?> icon">
+		<div class="w-full flex flex-row items-center justify-between">
+			<div class="w-full flex flex-col gap-15">
+				<h1 class="display-lg text-gray-900"><?php woocommerce_page_title(); ?></h1>
+				<div class="w-full flex flex-row items-center justify-between"><? do_action('woocommerce_before_shop_loop'); ?></div>
+			</div>
 		</div>
 	<?php endif; ?>
 
 	<?php
 
 	// all product size attribute values
-	$size_terms = get_terms(array(
-		'taxonomy' => 'pa_size',
+	/* $size_terms = get_terms(array(
+		'taxonomy' => 'pa_olcu',
 		'hide_empty' => false,
 	));
 
@@ -83,60 +124,15 @@ do_action('woocommerce_before_main_content'); ?>
 	if (isset($filters_output)) {
 		$allPosts = "<a href='" . $category_url . "' class='tag " . ($filterSize === '' ? 'tag-active' : '') . "'>" . __('All', 'junobjects') . "</a>";
 		echo '<div class="product-filters">' . $allPosts . $filters_output . '</div>';
-	}
+	} */
 
 
 	?>
-	<div class="page-content">
+	<div class="w-full flex flex-row gap-30">
 		<?php
-		/**
-		 * Hook: woocommerce_archive_description.
-		 *
-		 * @hooked woocommerce_taxonomy_archive_description - 10
-		 * @hooked woocommerce_product_archive_description - 10
-		 */
-
-
-
-		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-
-		$args = array(
-			'post_type' => 'product',
-			'product_cat' => $category->slug,
-			'orderby' => array(
-				'menu_order' => 'ASC',
-				'meta_value' => 'ASC', // Order by stock status first
-				'date' => 'DESC' // Then order by date
-			),
-			'order' => 'DESC',
-			'paged' => $paged,
-			'meta_query' => array(
-				'relation' => 'OR',
-				array(
-					'key' => '_stock_status',
-					'value' => 'instock',
-					'compare' => '='
-				),
-				array(
-					'key' => '_stock_status',
-					'value' => 'outofstock',
-					'compare' => '='
-				)
-			),
-			'tax_query' => array(
-				array(
-					'taxonomy' => 'pa_size',
-					'field' => 'slug',
-					'terms' => $filterSize,
-					'operator' => $filterSize ? 'IN' : 'NOT IN',
-				),
-			),
-		);
-
-		$products = new WP_Query($args);
 
 		if ($products->have_posts()) :
-			//do_action('woocommerce_before_shop_loop');
+
 			if (wc_get_loop_prop('total')) :
 				while ($products->have_posts()) : $products->the_post();
 
@@ -158,4 +154,5 @@ do_action('woocommerce_before_main_content'); ?>
 		?>
 	</div>
 </div>
-<?php get_footer('shop');
+<?php get_template_part('components/footer');
+get_footer('shop');

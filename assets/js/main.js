@@ -1,3 +1,4 @@
+/* SLIDERS (Start) */
 var swiper = new Swiper(".swiper", {
   slidesPerView: 4,
   spaceBetween: 20,
@@ -8,6 +9,13 @@ var mainSlider = new Swiper(".main-slider", {
   spaceBetween: 0,
   wrapperClass: "main-slider-wrapper",
   slideClass: "main-slider-item",
+  grabCursor: true,
+  loop: true,
+  speed: 1000,
+  autoplay: {
+    delay: 5000,
+    disableOnInteraction: false,
+  },
 });
 
 var orderSlider = new Swiper(".order-images", {
@@ -38,6 +46,17 @@ var photoSwiper = new Swiper(".photo-swiper", {
   },
 });
 
+// Features Swiper
+
+var featuresSlider = new Swiper(".features-slider", {
+  slidesPerView: 4,
+  spaceBetween: 20,
+  wrapperClass: "features-slider-wrapper",
+  slideClass: "features-slider-item",
+});
+
+/* SLIDERS (End) */
+
 var drawers = document.querySelectorAll(".drawer-menu");
 var dimness = document.querySelector(".dimness");
 var accountButton = document.querySelector(".account-button");
@@ -67,4 +86,40 @@ accountButton.addEventListener("click", () => {
 cartButton.addEventListener("click", () => {
   document.querySelector(".cart-drawer-menu").classList.add("drawer--active");
   dimness.classList.add("dimness--active");
+});
+
+// Menu
+
+var maniMenuItems = document.querySelectorAll(".main-menu-item");
+
+maniMenuItems.forEach((item) => {
+  item.addEventListener("mouseover", () => {
+    var dataItemId = item.getAttribute("data-item-id");
+    var menuContent = document.querySelector(".menu-content-" + dataItemId);
+
+    if (menuContent) {
+      menuContent.addEventListener("mouseover", () => {
+        menuContent.style.display = "flex";
+        item.classList.add("main-menu-item--active");
+      });
+      menuContent.style.display = "flex";
+    }
+
+    item.classList.add("main-menu-item--active");
+  });
+
+  item.addEventListener("mouseout", () => {
+    var dataItemId = item.getAttribute("data-item-id");
+    var menuContent = document.querySelector(".menu-content-" + dataItemId);
+
+    if (menuContent) {
+      menuContent.addEventListener("mouseout", () => {
+        menuContent.style.display = "none";
+        item.classList.remove("main-menu-item--active");
+      });
+      menuContent.style.display = "none";
+    }
+
+    item.classList.remove("main-menu-item--active");
+  });
 });

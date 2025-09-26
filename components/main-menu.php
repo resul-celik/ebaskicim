@@ -1,79 +1,61 @@
 <?php $menu_items = wp_get_nav_menu_items('header'); ?>
 
-<nav class="w-full flex fle-row justify-start border-b border-gray-200 px-[20px]" role="menu">
-    <ul class="w-full flex fle-row justify-start">
+<nav class="w-full flex fle-row justify-center items-center border-b border-gray-200 px-[20px] relative" role="menu">
+    <ul class="w-full max-w-[1920px] flex flex-row justify-start relative z-100 bg-white gap-4">
         <?php if ($menu_items) : ?>
             <?php foreach ($menu_items as $menu_item) : ?>
-                <li class="flex flex-row px-[20px] py-[15px] gap-[6px] text-lg">
+                <?php if ($menu_item->menu_item_parent) continue; ?>
+                <li data-item-id="<?php echo $menu_item->ID; ?>" class="main-menu-item flex flex-row px-[20px] py-[15px] gap-[6px] text-lg select-none cursor-pointer relative">
                     <?php echo esc_html($menu_item->title); ?>
                 </li>
             <?php endforeach; ?>
         <?php endif; ?>
-        <?php
-
-        /* if ($all_categories) {
-
-                foreach ($all_categories as $category) {
-
-                    if ($category->category_parent == 0 && $category->slug != 'genel') {
-
-                        $category_id = $category->term_id;
-
-                        echo '<li class="menu-item main-menu-item" role="menuitem">';
-                        echo '<a href="' . get_term_link($category->slug, 'product_cat') . '" class="main-menu-parent-category cat-' . $category->slug . '">' . $category->name . '</a>';
-                        echo '<div class="main-menu-sub-categories-wrapper">';
-                        echo '<div class="hidden-filling"></div>';
-                        echo '<div class="sub-categories-container">';
-                        echo '<div class="title parent-category-title">' . $category->name . '</div>';
-                        echo '<div class="sub-category-items-wrapper">';
-
-                        $args2 = array(
-
-                            'taxonomy'     => $taxonomy,
-                            'child_of'     => 0,
-                            'parent'       => $category_id,
-                            'orderby'      => $orderby,
-                            'show_count'   => $show_count,
-                            'pad_counts'   => $pad_counts,
-                            'hierarchical' => $hierarchical,
-                            'title_li'     => $title,
-                            'hide_empty'   => $empty
-
-                        );
-
-                        $sub_cats = get_categories($args2);
-
-                        if ($sub_cats) {
-
-                            foreach ($sub_cats as $sub_cat) {
-
-                                $thumbnail_id = get_term_meta($sub_cat->term_id, 'thumbnail_id', true);
-                                $image = wp_get_attachment_url($thumbnail_id);
-
-                                if (!$image) {
-
-                                    $image = get_template_directory_uri() . '/images/placeholders/no-image-placeholder.jpg';
-                                }
-
-                                echo '<a href="' . get_term_link($sub_cat->slug, 'product_cat') . '" class="sub-category-item sub-cat-' . $sub_cat->slug . '">';
-                                echo ' <div class="sub-category-item-thumbnail">';
-                                echo '<img src="' . $image . '" alt="' . $sub_cat->slug . '" />';
-                                echo '</div>';
-                                echo '<div class="sub-category-title">' . $sub_cat->name . '</div>';
-                                echo '</a>';
-                            }
-                        }
-
-                        echo '</div>';
-                        echo '</div>'; // sub-categories-wrapper END
-                        echo '</div>'; // main-menu-sub-categories-wrapper END
-                        echo '</li>';
-                    }
-                }
-
-                echo '<div class="menu-shadow"></div>';
-            } */
-
-        ?>
     </ul>
+    <?
+
+    function get_child_menus($menu_items, $parent_id = 0)
+    {
+        $child_menus = array();
+        foreach ($menu_items as $menu_item) {
+            if ($menu_item->menu_item_parent == $parent_id) {
+                $child_menus[] = $menu_item;
+                $child_menus = array_merge($child_menus, get_child_menus($menu_items, $menu_item->ID));
+            }
+        }
+        return $child_menus;
+    }
+    ?>
+    <?php if ($menu_items) : ?>
+        <?php foreach ($menu_items as $menu) : ?>
+            <?php if (!empty($child_menus = get_child_menus($menu_items, $menu->ID))) : ?>
+                <div class="w-full max-w-[1920px] menu-content menu-content-<?php echo $menu->ID; ?> flex flex-col hidden p-40 gap-40 bg-white rounded-[15px] items-start justify-start shadow-xl absolute -bottom-5 z-99 translate-y-[100%]">
+                    <h2 class="display-md text-gray-900"><?php echo esc_html($menu->title); ?></h2>
+                    <div class="w-full flex flex-row gap-20">
+                        <?php
+                        $args = array(
+                            'post_type' => 'product',
+                            'posts_per_page' => 4,
+                            'post__in' => array_column($child_menus, 'object_id')
+                        );
+                        $products = new WP_Query($args);
+                        if ($products->have_posts()) :
+                            while ($products->have_posts()) : $products->the_post();
+                                wc_get_template_part('content', 'product');
+                            endwhile;
+                        endif;
+                        wp_reset_postdata();
+                        ?>
+                    </div>
+                    <?
+                    $buttonArgs = array(
+                        "text" => "Tümünü Gör",
+                        "url" => esc_url($menu->url),
+                        "trailingIcon" => "arrow-right"
+                    );
+                    echo get_button($buttonArgs);
+                    ?>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </nav>

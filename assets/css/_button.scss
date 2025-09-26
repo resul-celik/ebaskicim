@@ -1,0 +1,225 @@
+@use "icons";
+@use "typography";
+
+.button,
+.wpcf7-submit {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  border-radius: 30px;
+  @include typography.text-md;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.medium-button {
+  height: 40px;
+  padding: 0 25px;
+}
+
+.large-button {
+  height: 46px;
+  padding: 0 30px;
+}
+
+.trailing-icon {
+  .icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+
+    &:before {
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+      margin-right: -3px;
+    }
+  }
+}
+
+.leading-icon {
+  .icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+
+    &:before {
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+      margin-left: -3px;
+    }
+  }
+}
+
+.icon-only {
+  padding: 0;
+  aspect-ratio: 1/1;
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+
+    &:before {
+      width: 24px;
+      height: 24px;
+      font-size: 24px;
+    }
+  }
+}
+
+.primary-button,
+.wpcf7-submit {
+  background: var(--color-primary-400);
+  color: var(--color-gray-900);
+
+  &:hover {
+    background: var(--color-primary-200);
+  }
+}
+
+.primary-button-dark {
+  background: var(--color-white);
+  color: var(--color-gray-900);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.secondary-button {
+  background: var(--color-gray-200);
+  color: var(--color-gray-900);
+
+  &:hover {
+    background-color: var(--color-gray-400);
+  }
+}
+
+.secondary-button-dark {
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--color-gray-900);
+
+  &:hover {
+    background-color: var(--color-white);
+  }
+}
+
+.tertiary-button {
+  background: transparent;
+  color: var(--color-gray-900);
+
+  &:hover {
+    background-color: var(--color-gray-200);
+  }
+}
+
+.tertiary-button-dark {
+  background: transparent;
+  color: var(--color-white);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.link-button {
+  background: transparent;
+  color: var(--color-primary-600);
+
+  &:hover {
+    color: var(--color-gray-900);
+  }
+}
+
+.link-button-dark {
+  background: transparent;
+  color: var(--color-white);
+
+  &:hover {
+    color: var(--color-primary-400);
+  }
+}
+
+// Destructive
+
+.primary-button-destructive {
+  background: var(--color-error-500);
+  color: var(--color-white);
+
+  &:hover {
+    background: var(--color-error-300);
+  }
+}
+
+.primary-button-dark-destructive {
+  background: var(--color-error-300);
+  color: var(--color-black);
+
+  &:hover {
+    background: var(--color-error-200);
+  }
+}
+
+.secondary-button-destructive {
+  background: var(--color-error-100);
+  color: var(--color-error-800);
+
+  &:hover {
+    background: var(--color-error-200);
+  }
+}
+
+.secondary-button-dark-destructive {
+  background: var(--color-error-800);
+  color: var(--color-error-100);
+
+  &:hover {
+    background: var(--color-error-900);
+  }
+}
+
+.tertiary-button-destructive {
+  background: transparent;
+  color: var(--color-error-500);
+
+  &:hover {
+    background: var(--color-error-100);
+  }
+}
+
+.tertiary-button-dark-destructive {
+  background: transparent;
+  color: var(--color-error-100);
+
+  &:hover {
+    background: var(--color-error-800);
+  }
+}
+
+.link-button-destructive {
+  background: transparent;
+  color: var(--color-primary-500);
+
+  &:hover {
+    color: var(--color-gray-900);
+  }
+}
+
+.link-button-dark-destructive {
+  background: transparent;
+  color: var(--color-primary-300);
+
+  &:hover {
+    color: var(--color-white);
+  }
+}

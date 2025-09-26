@@ -1,11 +1,12 @@
 <?php
 
-function get_products()
+function get_products($categorySlug = '')
 {
     $return = '';
     $args = array(
         'post_type' => 'product',
-        'posts_per_page' => 10
+        'posts_per_page' => 10,
+        'product_cat' => $categorySlug
     );
 
     $loop = new WP_Query($args);
