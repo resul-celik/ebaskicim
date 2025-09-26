@@ -18,6 +18,7 @@ class Button
         $args["name"] = $args["name"] ?? '';
         $args["target"] = $args["target"] ?? '';
         $args["theme"] = $args["theme"] ?? 'light';
+        $args["destructive"] = $args["destructive"] ?? false;
 
         if ($args["url"]) {
             $button = '<a href="' .  $args["url"] . '" class="button';
@@ -33,26 +34,32 @@ class Button
 
         if ($args["theme"] == 'dark') {
             if ($args["hierarchy"] == 'secondary') {
-                $button .= ' secondary-button-dark';
+                $button .= $args["destructive"] ? ' secondary-button-dark-destructive' : ' secondary-button-dark';
             } else if ($args["hierarchy"] == 'tertiary') {
-                $button .= ' tertiary-button-dark';
+                $button .= $args["destructive"] ? ' tertiary-button-dark-destructive' : ' tertiary-button-dark';
+            } else if ($args["hierarchy"] == 'link') {
+                $button .= ' link-button-dark';
             } else {
-                $button .= ' primary-button-dark';
+                $button .= $args["destructive"] ? ' primary-button-dark-destructive' : ' primary-button-dark';
             }
         } else {
             if ($args["hierarchy"] == 'secondary') {
-                $button .= ' secondary-button';
+                $button .= $args["destructive"] ? ' secondary-button-destructive' : ' secondary-button';
             } else if ($args["hierarchy"] == 'tertiary') {
-                $button .= ' tertiary-button';
+                $button .= $args["destructive"] ? ' tertiary-button-destructive' : ' tertiary-button';
+            } else if ($args["hierarchy"] == 'link') {
+                $button .= $args["destructive"] ? ' link-button-destructive' : ' link-button';
             } else {
-                $button .= ' primary-button';
+                $button .= $args["destructive"] ? ' primary-button-destructive' : ' primary-button';
             }
         }
 
-        if ($args["size"] == 'large') {
-            $button .= ' large-button';
-        } else {
-            $button .= ' medium-button';
+        if ($args["hierarchy"] !== 'link') {
+            if ($args["size"] == 'large') {
+                $button .= ' large-button';
+            } else {
+                $button .= ' medium-button';
+            }
         }
 
         if ($args["leadingIcon"]) {

@@ -19,24 +19,19 @@
 defined('ABSPATH') || exit;
 
 ?>
-<div class="cart_totals <?php echo (WC()->customer->has_calculated_shipping()) ? 'calculated_shipping' : ''; ?>">
-
+<div class="cart_totals w-full flex flex-col gap-23 p-20 bg-gray-100 <?php echo (WC()->customer->has_calculated_shipping()) ? 'calculated_shipping' : ''; ?>">
 	<?php do_action('woocommerce_before_cart_totals'); ?>
-
-	<div cellspacing="0" class="shop_table shop_table_responsive">
-
-		<div class="cart-totals-item cart-subtotal">
-			<div class="cart-total-title"><?php esc_html_e('Subtotal', 'woocommerce'); ?></div>
-			<td data-title="<?php esc_attr_e('Subtotal', 'woocommerce'); ?>"><?php wc_cart_totals_subtotal_html(); ?></td>
+	<div class="shop_table shop_table_responsive w-full flex flex-col gap-23">
+		<div class="cart-subtotal w-full flex flex-row items-center justify-between">
+			<div class="paragraph-md paragraph-regular text-gray-900"><?php esc_html_e('Subtotal', 'woocommerce'); ?></div>
+			<div data-title="<?php esc_attr_e('Subtotal', 'woocommerce'); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_subtotal_html(); ?></div>
 		</div>
-
 		<?php foreach (WC()->cart->get_coupons() as $code => $coupon) : ?>
 			<div class="cart-totals-item cart-discount coupon-<?php echo esc_attr(sanitize_title($code)); ?>">
 				<div class="cart-total-title"><?php wc_cart_totals_coupon_label($coupon); ?></div>
 				<td data-title="<?php echo esc_attr(wc_cart_totals_coupon_label($coupon, false)); ?>"><?php wc_cart_totals_coupon_html($coupon); ?></td>
 			</div>
 		<?php endforeach; ?>
-
 		<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()) : ?>
 
 			<?php do_action('woocommerce_cart_totals_before_shipping'); ?>
@@ -52,9 +47,7 @@ defined('ABSPATH') || exit;
 				<td data-title="<?php esc_attr_e('Shipping', 'woocommerce'); ?>"><?php woocommerce_shipping_calculator(); ?></td>
 			</div> */
 		?>
-
 		<?php endif; ?>
-
 		<?php foreach (WC()->cart->get_fees() as $fee) : ?>
 			<div class="cart-totals-item fee">
 				<div class="cart-total-title"><?php echo esc_html($fee->name); ?></div>
@@ -97,17 +90,17 @@ defined('ABSPATH') || exit;
 		?>
 
 		<?php do_action('woocommerce_cart_totals_before_order_total'); ?>
-		<div class="cart-totals-divider"></div>
-		<div class="cart-totals-item order-total">
-			<div class="cart-total-title"><?php esc_html_e('Total', 'woocommerce'); ?></div>
-			<td data-title="<?php esc_attr_e('Total', 'woocommerce'); ?>"><?php wc_cart_totals_order_total_html(); ?></td>
+		<div class="w-full border-b border-dashed border-gray-900"></div>
+		<div class="order-total w-full flex flex-row items-center justify-between">
+			<div class="paragraph-md paragraph-regular text-gray-900"><?php esc_html_e('Total', 'woocommerce'); ?></div>
+			<div data-title="<?php esc_attr_e('Total', 'woocommerce'); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_order_total_html(); ?></div>
 		</div>
 
 		<?php do_action('woocommerce_cart_totals_after_order_total'); ?>
 
 	</div>
 
-	<div class="wc-proceed-to-checkout">
+	<div class="wc-proceed-to-checkout w-full">
 		<?php do_action('woocommerce_proceed_to_checkout'); ?>
 	</div>
 

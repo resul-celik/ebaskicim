@@ -22,7 +22,8 @@ if (! defined('ABSPATH')) {
             <div class="flex flex-row gap-[7px]">
                 <div class="cart-button relative">
                     <div class="absolute z-10 top-0 right-0">
-                        <?php echo ebs_get_badge(WC()->cart->get_cart_contents_count()); ?>
+                        <? $badgeText = WC()->cart->get_cart_contents_count() > 99 ? '99+' : WC()->cart->get_cart_contents_count(); ?>
+                        <?php echo ebs_get_badge($badgeText); ?>
                     </div>
                     <div class="header-button cursor-pointer"><i class="icon icon-cart"></i></div>
                 </div>

@@ -20,46 +20,64 @@ if (! defined('ABSPATH')) {
 	exit;
 }
 
-$button = new Button();
-
 do_action('woocommerce_before_account_navigation');
 ?>
 
-<nav class="woocommerce-MyAccount-navigation account-nav" aria-label="<?php esc_html_e('Account pages', 'woocommerce'); ?>">
-	<div class="account-short-info">
-		<div class="user-avatar-letters">
-		<?php
-                        $user = wp_get_current_user();
-                        $display_name = $user->display_name;
-
-                        echo mb_substr($display_name, 0, 1);
-                        ?>
-		</div>
-		<div class="account-name">
+<nav class="woocommerce-MyAccount-navigation account-nav w-full max-w-350 flex flex-col p-25 bg-gray-100 gap-20 rounded-[15px] items-center" aria-label="<?php esc_html_e('Account pages', 'woocommerce'); ?>">
+	<div class="w-full flex flex-col items-center gap-24">
+		<div class="w-80 h-80 flex items-center justify-center bg-primary-400 text-[30px] rounded-full">
 			<?php
-			$current_user = wp_get_current_user();
-			if ($current_user->display_name) {
-				echo esc_html($current_user->display_name);
-			} else {
-				echo esc_html($current_user->user_login);
-			}
+			$user = wp_get_current_user();
+			$display_name = $user->display_name;
+
+			echo mb_substr($display_name, 0, 1);
 			?>
 		</div>
-		<a href="<?php echo esc_url(wc_get_account_endpoint_url('customer-logout')); ?>" class="<?php echo wc_get_account_menu_item_classes('customer-logout'); ?>" <?php echo is_wc_endpoint_url('customer-logout') ? 'aria-current="page"' : ''; ?>>
-			<?php echo $button->get_button(__('Log Out', 'junobjects'), 'primary-button button-sm secondary-black-button '); ?>
-		</a>
+		<div class="flex flex-col gap-4 items-center">
+			<div class="paragraph-2xl paragraph-medium text-gray-900">
+				<?php
+				$current_user = wp_get_current_user();
+				if ($current_user->display_name) {
+					echo esc_html($current_user->display_name);
+				} else {
+					echo esc_html($current_user->user_login);
+				}
+				?>
+			</div>
+			<div class="paragraph-md paragraph-regular text-gray-700">
+				<?php
+				if ($current_user->user_email) {
+					echo esc_html($current_user->user_email);
+				}
+				?>
+			</div>
+		</div>
 	</div>
-	<ul class="account-nav__list">
+	<ul class="w-full flex flex-col">
 		<?php foreach (wc_get_account_menu_items() as $endpoint => $label) : ?>
 			<?php if ($endpoint !== 'customer-logout' && $endpoint !== 'orders' && $endpoint !== 'downloads') : ?>
-				<li class="<?php echo wc_get_account_menu_item_classes($endpoint); ?>">
-					<a href="<?php echo esc_url(wc_get_account_endpoint_url($endpoint)); ?>" class="tag" <?php echo is_wc_endpoint_url($endpoint) ? 'aria-current="page"' : ''; ?>>
+				<li class="w-full flex border-b border-gray-400 last:border-0 hover:border-primary-500 <?php echo wc_get_account_menu_item_classes($endpoint); ?>">
+					<a href="<?php echo esc_url(wc_get_account_endpoint_url($endpoint)); ?>" class="w-full flex flex-row py-12 justify-between items-center paragraph-lg paragraph-medium text-gray-900 hover:text-primary-500 " <?php echo is_wc_endpoint_url($endpoint) ? 'aria-current="page"' : ''; ?>>
 						<?php _e(esc_html($label), 'junobjects'); ?>
+						<i class="icon icon-arrow-right"></i>
 					</a>
 				</li>
 			<?php endif; ?>
 		<?php endforeach; ?>
 	</ul>
+	<a href="<?php echo esc_url(wc_get_account_endpoint_url('customer-logout')); ?>" class="<?php echo wc_get_account_menu_item_classes('customer-logout'); ?>" <?php echo is_wc_endpoint_url('customer-logout') ? 'aria-current="page"' : ''; ?>>
+		<?
+		$buttonArgs = array(
+			"text" => "Çıkış Yap",
+			"type" => "submit",
+			"name" => "customer-logout",
+			"value" => "Çıkış Yap",
+			"hierarchy" => "link",
+			"leadingIcon" => "logout"
+		);
+		?>
+		<?php echo get_button($buttonArgs); ?>
+	</a>
 </nav>
 
 <?php do_action('woocommerce_after_account_navigation'); ?>

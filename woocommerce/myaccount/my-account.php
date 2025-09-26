@@ -22,19 +22,25 @@ defined('ABSPATH') || exit;
  *
  * @since 2.6.0
  */
+
+get_template_part("components/header");
 ?>
 
-<div class="account-container">
-	<?php do_action('woocommerce_account_navigation'); ?>
+<main class="w-full h-full grow-1 flex flex-col items-center justify-start overflow-hidden">
+	<div class="w-full max-w-1440 flex flex-row gap-30 px-20 py-60 items-start justify-start">
+		<?php do_action('woocommerce_account_navigation'); ?>
 
-	<div class="woocommerce-MyAccount-content">
-		<?php
-		/**
-		 * My Account content.
-		 *
-		 * @since 2.6.0
-		 */
-		do_action('woocommerce_account_content');
-		?>
+		<div class="flex flex-col p-25 gap-30 grow-1 shadow-xs rounded-[15px]">
+			<?php
+			/**
+			 * My Account content.
+			 *
+			 * @since 2.6.0
+			 */
+			do_action('woocommerce_account_content');
+			?>
+		</div>
 	</div>
-</div>
+</main>
+
+<?php get_template_part("components/footer");

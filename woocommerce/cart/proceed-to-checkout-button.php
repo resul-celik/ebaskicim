@@ -26,10 +26,9 @@ $additionalclasses = esc_attr(wc_wp_theme_get_element_class_name('button') ? ' '
 
 $buttonArgs = array(
 	"text" => "Ödeme yap",
-	"classes" => "alt wc-forward" . $additionalclasses
+	"classes" => "alt wc-forward" . $additionalclasses,
+	"trailingIcon" => "arrow-right",
+	"url" => wc_get_checkout_url()
 );
 ?>
-
-<a href="<?php echo esc_url(wc_get_checkout_url()); ?>">
-	<?php echo get_button($buttonArgs); ?>
-</a>
+<?php echo get_button($buttonArgs); ?>

@@ -20,6 +20,8 @@ if (! defined('ABSPATH')) {
 	exit;
 }
 
+get_template_part("components/header");
+
 //do_action('woocommerce_before_checkout_form', $checkout);
 
 // If checkout registration is disabled and not logged in, the user cannot checkout.
@@ -30,7 +32,7 @@ if (! $checkout->is_registration_enabled() && $checkout->is_registration_require
 
 ?>
 
-<form name="checkout" method="post" class="checkout woocommerce-checkout" action="<?php echo esc_url(wc_get_checkout_url()); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__('Checkout', 'woocommerce'); ?>">
+<form name="checkout" method="post" class="checkout woocommerce-checkout w-full max-w-1920" action="<?php echo esc_url(wc_get_checkout_url()); ?>" enctype="multipart/form-data" aria-label="<?php echo esc_attr__('Checkout', 'woocommerce'); ?>">
 
 	<?php if ($checkout->get_checkout_fields()) : ?>
 
@@ -83,3 +85,5 @@ if (! $checkout->is_registration_enabled() && $checkout->is_registration_require
 </form>
 
 <?php do_action('woocommerce_after_checkout_form', $checkout); ?>
+
+<?php get_template_part("components/footer");

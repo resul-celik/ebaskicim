@@ -34,9 +34,8 @@ function site_feature_box($args)
 
 function ebs_get_badge($text)
 {
-    return '<div class="w-auto h-[20px] min-w-[20px] flex items-center justify-center bg-primary-400 rounded-full text-xs font-bold">' . $text . '</div>';
+    return '<div class="w-auto h-[20px] min-w-[20px] px-5 flex items-center justify-center bg-primary-400 rounded-full text-xs font-bold">' . $text . '</div>';
 }
-
 // REGISTER CUSTOM CSS & JS
 function ebaskicim_custom_css()
 {

@@ -10,6 +10,13 @@ var mainSlider = new Swiper(".main-slider", {
   slideClass: "main-slider-item",
 });
 
+var orderSlider = new Swiper(".order-images", {
+  slidesPerView: 1,
+  spaceBetween: 0,
+  wrapperClass: "order-images-wrapper",
+  slideClass: "order-image",
+});
+
 // Photo Swiper
 
 var swiperThumbs = new Swiper(".swiper-thumbs", {

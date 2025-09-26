@@ -23,7 +23,6 @@ if (! defined('ABSPATH')) {
 if (is_user_logged_in()) {
 	return;
 }
-echo '<p>Debug: form-login.php is loaded</p>';
 ?>
 
 <form class="woocommerce-form woocommerce-form-login login" method="post" <?php echo ($hidden) ? 'style="display:none;"' : ''; ?>>
@@ -51,12 +50,12 @@ echo '<p>Debug: form-login.php is loaded</p>';
 		</label>
 		<?php wp_nonce_field('woocommerce-login', 'woocommerce-login-nonce'); ?>
 		<input type="hidden" name="redirect" value="<?php echo esc_url($redirect); ?>" />
+
 		<button type="submit" class="woocommerce-button button primary-button button-sm blue-button woocommerce-form-login__submit<?php echo esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''); ?>" name="login" value="<?php esc_attr_e('Login', 'woocommerce'); ?>"><?php esc_html_e('Login', 'woocommerce'); ?></button>
 	</p>
 	<p class="lost_password">
 		<a href="<?php echo esc_url(wp_lostpassword_url()); ?>"><?php esc_html_e('Lost your password?', 'woocommerce'); ?></a>
 	</p>
-	TEST
 	<div class="clear"></div>
 	<?php do_action('woocommerce_login_form_end'); ?>
 
