@@ -121,3 +121,13 @@ function ebs_custom_image_sizes()
 add_action('after_setup_theme', 'ebs_custom_image_sizes');
 
 /* IMAGE SIZES (End) */
+
+add_action('template_redirect', 'misha_redirect_to_orders_from_dashboard');
+function misha_redirect_to_orders_from_dashboard()
+{
+
+    if (is_account_page() && empty(WC()->query->get_current_endpoint())) {
+        wp_safe_redirect(wc_get_account_endpoint_url('orders'));
+        exit;
+    }
+}

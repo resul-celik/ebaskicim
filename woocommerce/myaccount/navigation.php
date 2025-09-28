@@ -55,10 +55,10 @@ do_action('woocommerce_before_account_navigation');
 	</div>
 	<ul class="w-full flex flex-col">
 		<?php foreach (wc_get_account_menu_items() as $endpoint => $label) : ?>
-			<?php if ($endpoint !== 'customer-logout' && $endpoint !== 'orders' && $endpoint !== 'downloads') : ?>
+			<?php if ($endpoint !== 'customer-logout' && $endpoint !== 'dashboard' && $endpoint !== 'downloads') : ?>
 				<li class="w-full flex border-b border-gray-400 last:border-0 hover:border-primary-500 <?php echo wc_get_account_menu_item_classes($endpoint); ?>">
 					<a href="<?php echo esc_url(wc_get_account_endpoint_url($endpoint)); ?>" class="w-full flex flex-row py-12 justify-between items-center paragraph-lg paragraph-medium text-gray-900 hover:text-primary-500 " <?php echo is_wc_endpoint_url($endpoint) ? 'aria-current="page"' : ''; ?>>
-						<?php _e(esc_html($label), 'junobjects'); ?>
+						<?php echo esc_html($label); ?>
 						<i class="icon icon-arrow-right"></i>
 					</a>
 				</li>

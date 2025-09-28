@@ -572,6 +572,12 @@
   .gap-y-20 {
     row-gap: calc(var(--spacing) * 20);
   }
+  .self-end {
+    align-self: flex-end;
+  }
+  .self-start {
+    align-self: flex-start;
+  }
   .overflow-hidden {
     overflow: hidden;
   }
@@ -689,6 +695,9 @@
   }
   .px-24 {
     padding-inline: calc(var(--spacing) * 24);
+  }
+  .px-25 {
+    padding-inline: calc(var(--spacing) * 25);
   }
   .px-\[8px\] {
     padding-inline: 8px;
