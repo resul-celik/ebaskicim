@@ -129,9 +129,11 @@ defined('ABSPATH') || exit;
     </div>
 
 <?php else:  ?>
-    <div class="w-full flex flex-col items-center justify-center gap-20">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/juno-empty-cart.svg" alt="">
-        <div>Sepetiniz boş</div>
-        <?php echo get_button(array("text" => "Alışverişe devam et", "url" => get_home_url())); ?>
+    <div class="w-full flex flex-col items-center justify-center gap-45 py-55">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/images/empty-cart.svg" alt="">
+        <div class="flex flex-col gap-15 items-center">
+            <div class="paragraph-md text-gray-900">Sepetiniz boş</div>
+            <?php echo get_button(array("text" => "Alışverişe devam et", "url" => get_home_url())); ?>
+        </div>
     </div>
 <?php endif; ?>

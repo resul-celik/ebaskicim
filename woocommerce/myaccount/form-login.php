@@ -30,11 +30,11 @@ $page = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'l
 ?>
 
 
-<main class="w-full flex flex-col items-center justify-start overflow-hidden">
-	<div class="w-full max-w-[400px] flex flex-col" id="customer_login">
+<main class="w-full flex flex-col items-center justify-start overflow-hidden grow-1">
+	<div class="w-full flex flex-col px-20 py-60 justify-center items-center" id="customer_login">
 		<?php if ($page === 'login') : ?>
-			<div class="flex flex-col gap-40">
-				<h2 class="display-sm text-gray-900"><?php esc_html_e('Login', 'woocommerce'); ?></h2>
+			<div class="w-full max-w-[400px] flex flex-col gap-40">
+				<h1 class="display-sm text-gray-900"><?php esc_html_e('Login', 'woocommerce'); ?></h1>
 				<form class="woocommerce-form woocommerce-form-login login input-field-wrapper" method="post">
 					<?php do_action('woocommerce_login_form_start'); ?>
 					<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide input-field">
@@ -78,8 +78,8 @@ $page = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'l
 			</div>
 		<?php endif; ?>
 		<?php if ($page === 'register') : ?>
-			<div class="u-column2 col-2<?php echo $page === 'register' ? ' col--active' : '' ?>">
-				<h2><?php esc_html_e('Register', 'woocommerce'); ?></h2>
+			<div class="w-full max-w-[400px] flex flex-col gap-40">
+				<h1 class="display-sm text-gray-900"><?php esc_html_e('Register', 'woocommerce'); ?></h1>
 				<form method="post" class="woocommerce-form woocommerce-form-register register input-field-wrapper" <?php do_action('woocommerce_register_form_tag'); ?>>
 
 					<?php do_action('woocommerce_register_form_start'); ?>
@@ -116,14 +116,20 @@ $page = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'l
 
 					<?php do_action('woocommerce_register_form'); ?>
 
-					<p class="woocommerce-form-row form-row input-field">
+					<p class="w-full flex flex-col gap-4">
 						<?php wp_nonce_field('woocommerce-register', 'woocommerce-register-nonce'); ?>
-						<button type="submit" class="woocommerce-Button woocommerce-button primary-button button-sm blue-button button<?php echo esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''); ?> woocommerce-form-register__submit" name="register" value="<?php esc_attr_e('Register', 'woocommerce'); ?>"><?php esc_html_e('Register', 'woocommerce'); ?></button>
-					</p>
-					<p class="chaptcha-text">Secured by Google reCaptcha</p>
+						<?
+						$buttonArgs = array(
+							"text" => "Kaydol",
+							"type" => "submit",
+							"name" => "register",
+							"value" => "Register"
+						)
+						?>
+						<? echo get_button($buttonArgs); ?></p>
 					<p class="login-suggestions">
-						<?php esc_html_e('Do you have an account?', 'woocommerce'); ?>
-						<a href="?tab=login"><?php esc_html_e('Login', 'woocommerce'); ?></a>
+						Hesabın var mı?
+						<a href="?tab=login" class="text-primary-600 paragraph-md hover:text-gray-900"><?php esc_html_e('Login', 'woocommerce'); ?></a>
 					</p>
 					<?php do_action('woocommerce_register_form_end'); ?>
 

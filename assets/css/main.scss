@@ -2,6 +2,7 @@
 @use "typography";
 @use "button";
 @use "inputs";
+@use "breakpoints";
 
 * {
   box-sizing: border-box;
@@ -187,9 +188,9 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 0px 19px;
-  gap: 10px;
-  height: 45px;
+  padding: 0px calc(var(--spacing) * 20);
+  gap: calc(var(--spacing) * 10);
+  height: calc(var(--spacing) * 45);
   background: var(--color-gray-100);
   border-radius: 45px;
   flex: none;
@@ -213,12 +214,9 @@ body {
 }
 
 .product-item {
-  transition: box-shadow 0.2s ease-in-out 0s, transform 0.2s ease-in-out 0s,
-    outline 0.2s ease-in-out 0s, border-radius 0.2s ease-in-out 0s;
-  outline: 0px solid white;
-
   .product-image {
     img {
+      transition: transform 0.2s ease-in-out 0s;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -230,11 +228,11 @@ body {
   }
 
   &:hover {
-    box-shadow: var(--shadow-xl);
-    transform: scale(1.02);
-    outline: 20px solid white;
-    border-radius: 10px;
-    z-index: 1;
+    .product-image {
+      img {
+        transform: scale(1.05);
+      }
+    }
   }
 }
 .old-price {
@@ -478,6 +476,7 @@ body {
 .results-page {
   .product-item {
     flex: 0 1 25%;
+    padding-right: calc(var(--spacing) * 20);
   }
   .orderby {
     position: relative;
@@ -497,3 +496,40 @@ body {
     }
   }
 }
+
+.product-slider-pagination {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--spacing) * 10);
+
+  .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-gray-300);
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: var(--color-primary-400);
+  }
+}
+
+.sold-out {
+  .product-image {
+    img {
+      opacity: 0.5;
+      filter: grayscale(100%);
+    }
+  }
+  .product-info {
+    opacity: 0.5;
+  }
+}
+
+@include breakpoints.breakpoint-1440;
+@include breakpoints.breakpoint-1024;
+@include breakpoints.breakpoint-768;
+@include breakpoints.breakpoint-580;

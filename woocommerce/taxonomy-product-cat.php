@@ -128,7 +128,7 @@ do_action('woocommerce_before_main_content'); ?>
 
 
 	?>
-	<div class="w-full flex flex-row gap-30">
+	<div class="w-full flex flex-row gap-y-20 flex-wrap">
 		<?php
 
 		if ($products->have_posts()) :

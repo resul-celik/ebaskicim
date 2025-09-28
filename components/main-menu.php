@@ -1,11 +1,11 @@
 <?php $menu_items = wp_get_nav_menu_items('header'); ?>
 
-<nav class="w-full flex fle-row justify-center items-center border-b border-gray-200 px-[20px] relative" role="menu">
+<nav class="w-full hidden md:flex fle-row justify-center items-center border-b border-gray-200 px-20 relative" role="menu">
     <ul class="w-full max-w-[1920px] flex flex-row justify-start relative z-100 bg-white gap-4">
         <?php if ($menu_items) : ?>
             <?php foreach ($menu_items as $menu_item) : ?>
                 <?php if ($menu_item->menu_item_parent) continue; ?>
-                <li data-item-id="<?php echo $menu_item->ID; ?>" class="main-menu-item flex flex-row px-[20px] py-[15px] gap-[6px] text-lg select-none cursor-pointer relative">
+                <li data-item-id="<?php echo $menu_item->ID; ?>" class="main-menu-item flex flex-row px-20 py-15 gap-6 text-lg select-none cursor-pointer relative">
                     <?php echo esc_html($menu_item->title); ?>
                 </li>
             <?php endforeach; ?>

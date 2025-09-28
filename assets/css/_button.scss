@@ -7,7 +7,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: calc(var(--spacing) * 6);
   border-radius: 30px;
   @include typography.text-md;
   text-align: center;
@@ -21,25 +21,25 @@
 }
 
 .medium-button {
-  height: 40px;
-  padding: 0 25px;
+  height: calc(var(--spacing) * 40);
+  padding: 0 calc(var(--spacing) * 25);
 }
 
 .large-button {
-  height: 46px;
-  padding: 0 30px;
+  height: calc(var(--spacing) * 46);
+  padding: 0 calc(var(--spacing) * 30);
 }
 
 .trailing-icon {
   .icon {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 1.6rem;
 
     &:before {
-      width: 16px;
-      height: 16px;
-      font-size: 16px;
+      width: 1.6rem;
+      height: 1.6rem;
+      font-size: 1.6rem;
       margin-right: -3px;
     }
   }
@@ -47,14 +47,14 @@
 
 .leading-icon {
   .icon {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 1.6rem;
 
     &:before {
-      width: 16px;
-      height: 16px;
-      font-size: 16px;
+      width: 1.6rem;
+      height: 1.6rem;
+      font-size: 1.6rem;
       margin-left: -3px;
     }
   }
@@ -65,14 +65,14 @@
   aspect-ratio: 1/1;
 
   .icon {
-    width: 24px;
-    height: 24px;
-    font-size: 24px;
+    width: 2.4rem;
+    height: 2.4rem;
+    font-size: 2.4rem;
 
     &:before {
-      width: 24px;
-      height: 24px;
-      font-size: 24px;
+      width: 2.4rem;
+      height: 2.4rem;
+      font-size: 2.4rem;
     }
   }
 }

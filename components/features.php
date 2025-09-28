@@ -25,7 +25,7 @@ $specialDesign = array(
 );
 
 ?>
-<section class="w-full max-w-[1920px] flex items-center justify-center px-20 py-80">
+<section class="w-full max-w-[1920px] flex items-center justify-center px-20 py-20 md:py-80">
     <div class="features-slider w-full flex flex-row justify-start items-center">
         <div class="features-slider-wrapper w-full relative flex flex-row justify-start">
             <?php site_feature_box($args); ?>

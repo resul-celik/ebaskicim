@@ -1,0 +1,61 @@
+@mixin breakpoint-1440 {
+  @media (max-width: 1440px) {
+    @content;
+
+    :root {
+      --spacing: 0.9px;
+    }
+
+    html {
+      font-size: 9px;
+    }
+  }
+}
+
+@mixin breakpoint-1024 {
+  @media (max-width: 1024px) {
+    @content;
+
+    :root {
+      --spacing: 0.8px;
+    }
+
+    html {
+      font-size: 8px;
+    }
+  }
+}
+
+@mixin breakpoint-768 {
+  @media (max-width: 768px) {
+    @content;
+
+    :root {
+      --spacing: 0.8px;
+    }
+
+    html {
+      font-size: 8px;
+    }
+  }
+}
+
+@mixin breakpoint-580 {
+  @media (max-width: 580px) {
+    @content;
+
+    :root {
+      --spacing: 0.7px;
+    }
+
+    html {
+      font-size: 7px;
+    }
+
+    .results-page {
+      .product-item {
+        flex: 0 1 50%;
+      }
+    }
+  }
+}

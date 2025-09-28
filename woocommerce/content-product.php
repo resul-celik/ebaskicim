@@ -63,12 +63,14 @@ if (empty($product) || ! $product->is_visible()) {
                 if ($product->is_featured()) {
                     echo product_status_tag("Çok Satan", "bg-gray-700 text-white");
                 }
+            } else if ($product->is_on_backorder()) {
+                echo product_status_tag("Stokta Yok", "bg-gray-500 text-white");
             } else {
                 echo product_status_tag("Tükendi", "bg-red-500 text-white");
             } ?>
         </div>
     </figure>
-    <div class="flex flex-col gap-[5px] pt-[20px]">
+    <div class="product-info flex flex-col gap-[5px] pt-[20px]">
         <div class="paragraph-lg text-gray-600">
             <?php echo get_the_title($product->get_id()); ?>
         </div>

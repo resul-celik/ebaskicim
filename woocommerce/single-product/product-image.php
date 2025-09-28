@@ -63,7 +63,7 @@ function ebs_project_tags()
 }
 ?>
 
-<div class="w-700 flex flex-col grow-0 shrink-0 gap-12">
+<div class="w-full md:w-700 flex flex-col grow-0 shrink-0 gap-12">
 	<div class="photo-swiper w-full aspect-4/3 overflow-hidden rounded-[15px] relative">
 		<?php echo ebs_project_tags(); ?>
 		<div class="photo-swiper-wrapper w-full aspect-4/3 relative box-content flex flex-row justify-start items-center">

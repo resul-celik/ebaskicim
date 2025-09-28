@@ -29,7 +29,7 @@ function site_feature_box($args)
         return;
     }
 ?>
-    <div class="flex flex-col items-start justify-start p-30 gap-30 bg-gray-50 shrink-0 rounded-[15px] features-slider-item">
+    <div class="flex flex-row md:flex-col items-center md:items-start justify-start p-15 md:p-30 gap-30 bg-gray-50 shrink-0 rounded-[15px] features-slider-item">
         <?php if ($args["image"]) : ?>
             <div class="w-full aspect-4/3 flex items-center justify-center">
                 <img src="<?php echo $args["image"]; ?>" alt="" class="w-full h-full object-contain">
@@ -45,7 +45,7 @@ function site_feature_box($args)
 
 function ebs_get_badge($text)
 {
-    return '<div class="w-auto h-[20px] min-w-[20px] px-5 flex items-center justify-center bg-primary-400 rounded-full text-xs font-bold">' . $text . '</div>';
+    return '<div class="w-auto h-20 min-w-20 px-5 flex items-center justify-center bg-primary-400 rounded-full text-xs font-bold">' . $text . '</div>';
 }
 // REGISTER CUSTOM CSS & JS
 function ebaskicim_custom_css()

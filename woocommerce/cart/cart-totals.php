@@ -40,13 +40,13 @@ defined('ABSPATH') || exit;
 
 			<?php do_action('woocommerce_cart_totals_after_shipping'); ?>
 
-		<?php elseif (WC()->cart->needs_shipping() && 'yes' === get_option('woocommerce_enable_shipping_calc')) :
+		<?php elseif (WC()->cart->needs_shipping() && 'yes' === get_option('woocommerce_enable_shipping_calc')) : ?>
 
-			/* <div class="cart-totals-item shipping">
+			<div class="cart-totals-item shipping">
 				<div class="cart-total-title"><?php esc_html_e('Shipping', 'woocommerce'); ?></div>
 				<td data-title="<?php esc_attr_e('Shipping', 'woocommerce'); ?>"><?php woocommerce_shipping_calculator(); ?></td>
-			</div> */
-		?>
+			</div>
+
 		<?php endif; ?>
 		<?php foreach (WC()->cart->get_fees() as $fee) : ?>
 			<div class="cart-totals-item fee">
@@ -68,10 +68,12 @@ defined('ABSPATH') || exit;
 			if ('itemized' === get_option('woocommerce_tax_total_display')) {
 				foreach (WC()->cart->get_tax_totals() as $code => $tax) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		?>
-					<div class="cart-totals-item tax-rate tax-rate-<?php echo esc_attr(sanitize_title($code)); ?>">
-						<div class="cart-total-title"><?php echo esc_html($tax->label) . $estimated_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-														?></div>
-						<td data-title="<?php echo esc_attr($tax->label); ?>"><?php echo wp_kses_post($tax->formatted_amount); ?></td>
+					<div class="cart-totals-item tax-rate cart-subtotal w-full flex flex-row items-center justify-between tax-rate-<?php echo esc_attr(sanitize_title($code)); ?>">
+						<div class="cart-total-title paragraph-md paragraph-regular text-gray-900">
+							<?php echo esc_html($tax->label) . $estimated_text; ?>
+
+						</div>
+						<div data-title="<?php echo esc_attr($tax->label); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php echo wp_kses_post($tax->formatted_amount); ?></div>
 					</div>
 				<?php
 				}

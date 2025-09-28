@@ -1,7 +1,29 @@
 /* SLIDERS (Start) */
 var swiper = new Swiper(".swiper", {
   slidesPerView: 4,
-  spaceBetween: 20,
+  spaceBetween: 0,
+  pagination: {
+    el: ".product-slider-pagination",
+    clickable: true,
+  },
+  breakpoints: {
+    1440: {
+      slidesPerView: 4,
+      spaceBetween: 20,
+    },
+    1024: {
+      slidesPerView: 4,
+      spaceBetween: 15,
+    },
+    768: {
+      slidesPerView: 3,
+      spaceBetween: 10,
+    },
+    320: {
+      slidesPerView: 1,
+      spaceBetween: 5,
+    },
+  },
 });
 
 var mainSlider = new Swiper(".main-slider", {
@@ -53,6 +75,24 @@ var featuresSlider = new Swiper(".features-slider", {
   spaceBetween: 20,
   wrapperClass: "features-slider-wrapper",
   slideClass: "features-slider-item",
+  breakpoints: {
+    1440: {
+      slidesPerView: 4,
+      spaceBetween: 20,
+    },
+    1024: {
+      slidesPerView: 3,
+      spaceBetween: 15,
+    },
+    768: {
+      slidesPerView: 1,
+      spaceBetween: 10,
+    },
+    320: {
+      slidesPerView: 1,
+      spaceBetween: 5,
+    },
+  },
 });
 
 /* SLIDERS (End) */

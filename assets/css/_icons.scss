@@ -30,14 +30,14 @@
   flex: none;
   flex-grow: 0;
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: 2.4rem;
+  height: 2.4rem;
 
   &:before {
     flex: none;
     flex-grow: 0;
     flex-shrink: 0;
-    font-size: 24px;
+    font-size: 2.4rem;
     @include icon-font();
   }
 }

@@ -58,7 +58,7 @@ if ($has_orders) { ?>
 				}
 			}
 			if ($show_order) : ?>
-				<div class="w-1/3 flex flex-col gap-20 grow-0 shrink-0 pr-15">
+				<div class="w-1/2 md:w-1/3 flex flex-col gap-20 grow-0 shrink-0 pr-15">
 					<div class="w-full relative">
 						<div class="order-images w-full aspect-4/3 overflow-hidden rounded-[10px]">
 							<div class="order-images-wrapper w-full aspect-4/3 relative box-content flex flex-row justify-start items-center">

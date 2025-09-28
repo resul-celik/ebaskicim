@@ -11,7 +11,8 @@ function get_products($categorySlug = '')
 
     $loop = new WP_Query($args);
 
-    $return .= '<div class="swiper w-full"><div class="swiper-wrapper w-full relative box-content flex flex-row justify-start items-center">';
+    $return .= '<div class="swiper w-full relative flex flex-col gap-30 items-start">';
+    $return .= '<div class="swiper-wrapper w-full relative box-content flex flex-row justify-start items-center">';
 
     if ($loop->have_posts()) {
         while ($loop->have_posts()) {
@@ -23,7 +24,9 @@ function get_products($categorySlug = '')
         }
     }
 
-    $return .= '</div></div>';
+    $return .= '</div>';
+    $return .= '<div class="product-slider-pagination"></div>';
+    $return .= '</div>';
 
     wp_reset_postdata();
 

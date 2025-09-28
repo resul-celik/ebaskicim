@@ -26,7 +26,7 @@ class Section
         $sectionHead = $this->sectionHead($title, $url);
         $order = $order ? $order : 1;
         $content = '';
-        $content .= '<section class="w-full max-w-[1920px] flex flex-col px-[20px] pb-[100px] gap-[30px]" style="order: ' . $order . ';">' . $sectionHead . $contentFunction($category) . '</section>';
+        $content .= '<section class="w-full max-w-[1920px] flex flex-col px-20 pb-100 gap-30" style="order: ' . $order . ';">' . $sectionHead . $contentFunction($category) . '</section>';
         return $content;
     }
 }

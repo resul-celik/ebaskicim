@@ -18,7 +18,7 @@ if (post_password_required()) {
 }
 ?>
 
-<section id="product-<?php the_ID(); ?>" <?php wc_product_class('w-full max-w-[1350px] flex flex-row gap-72 px-20 py-60 gap-30', $product); ?>>
+<section id="product-<?php the_ID(); ?>" <?php wc_product_class('w-full max-w-[1350px] flex flex-col md:flex-row gap-72 px-20 py-60 gap-30', $product); ?>>
 
 	<?php
 	/**
@@ -32,6 +32,7 @@ if (post_password_required()) {
 
 	<div class="flex flex-col gap-38 flex-1">
 		<h1 class="display-sm text-gray-900"><?php the_title(); ?></h1>
+		<? do_action('woocommerce_template_single_rating'); ?>
 		<?php woocommerce_template_single_excerpt(); ?>
 		<div class="flex flex-col gap-18">
 			<?php woocommerce_template_single_price(); ?>
