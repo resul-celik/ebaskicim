@@ -24,14 +24,18 @@ if (! apply_filters('woocommerce_order_item_visible', true, $item)) {
 	return;
 }
 ?>
-<div class="jun-overview-item <?php echo esc_attr(apply_filters('woocommerce_order_item_class', 'woocommerce-table__line-item order_item', $item, $order)); ?>">
+<div class="w-full flex flex-row items-center justify-between py-5 border-b border-gray-200 last:border-b-0 <?php echo esc_attr(apply_filters('woocommerce_order_item_class', 'woocommerce-table__line-item order_item', $item, $order)); ?>">
 
-	<div class="woocommerce-table__product-name product-name">
+	<div class="woocommerce-table__product-name product-name flex items-center justify-start gap-10">
 		<?php
 		$is_visible        = $product && $product->is_visible();
 		$product_permalink = apply_filters('woocommerce_order_item_permalink', $is_visible ? $product->get_permalink($item) : '', $item, $order);
 
-		echo wp_kses_post(apply_filters('woocommerce_order_item_name', $product_permalink ? sprintf('<a href="%s">%s</a>', $product_permalink, $item->get_name()) : $item->get_name(), $item, $is_visible));
+		echo '<a href="' . esc_url($product_permalink) . '" class="w-50 h-50 rounded-[10px] overflow-hidden">';
+		echo apply_filters('woocommerce_order_item_thumbnail', $product ? $product->get_image('thumbnail', array('title' => '', "class" => "w-full h-full object-cover")) : '', $item_id, $item);
+		echo '</a>';
+
+		echo wp_kses_post(apply_filters('woocommerce_order_item_name', $product_permalink ? sprintf('<a href="%s" class="paragraph-md paragraph-regular text-gray-900">%s</a>', $product_permalink, $item->get_name()) : $item->get_name(), $item, $is_visible));
 
 		$qty          = $item->get_quantity();
 		$refunded_qty = $order->get_qty_refunded_for_item($item_id);
@@ -42,7 +46,7 @@ if (! apply_filters('woocommerce_order_item_visible', true, $item)) {
 			$qty_display = esc_html($qty);
 		}
 
-		echo apply_filters('woocommerce_order_item_quantity_html', ' <strong class="product-quantity badge badge-blue">' . sprintf('&times;&nbsp;%s', $qty_display) . '</strong>', $item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo apply_filters('woocommerce_order_item_quantity_html', ' <div class="paragraph-md paragraph-regular text-gray-500">' . sprintf('(%s adet)', $qty_display) . '</div>', $item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		do_action('woocommerce_order_item_meta_start', $item_id, $item, $order, false);
 
@@ -61,10 +65,10 @@ if (! apply_filters('woocommerce_order_item_visible', true, $item)) {
 
 <?php if ($show_purchase_note && $purchase_note) : ?>
 
-	<div class="woocommerce-table__product-purchase-note product-purchase-note jun-overview">
+	<div class="woocommerce-table__product-purchase-note product-purchase-note">
 
-		<div colspan="2" class="jun-overview-item"><?php echo wpautop(do_shortcode(wp_kses_post($purchase_note))); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-													?></div>
+		<div colspan="2"><?php echo wpautop(do_shortcode(wp_kses_post($purchase_note))); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+							?></div>
 
 	</div>
 

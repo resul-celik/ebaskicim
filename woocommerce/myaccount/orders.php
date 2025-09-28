@@ -72,8 +72,8 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 								$i++;
 
 								if ($product && $i <= 5) {
-									echo '<figure class="order-image w-40 h-40 grow-0 shrink-0 rounded-[5px] overflow-hidden">';
-									echo $product->get_image('product_small');
+									echo '<figure class="w-40 h-40 grow-0 shrink-0 rounded-[5px] overflow-hidden">';
+									echo $product->get_image('product_small', array('class' => 'w-full h-full object-cover'));
 									echo '</figure>';
 								}
 							}
@@ -110,7 +110,7 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 										<span class="flex flex-row text-success-600">Teslim Edildi</span>
 									<?php endif; ?>
 									<?php if ($order->has_status('processing')) : ?>
-										<span class="flex flex-row text-primary-600">İşleniyor...</span>
+										<span class="flex flex-row text-gray-600">İşleniyor...</span>
 									<?php endif; ?>
 								</p>
 							</div>

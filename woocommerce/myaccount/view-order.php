@@ -22,39 +22,58 @@ defined('ABSPATH') || exit;
 
 $notes = $order->get_customer_order_notes();
 ?>
-<div class="jun-order-details">
-	<p class="order-info">
-		<?php
-		printf(
-			/* translators: 1: order number 2: order date 3: order status */
-			esc_html__('Order #%1$s was placed on %2$s and is currently %3$s.', 'woocommerce'),
-			'<mark class="order-number">' . $order->get_order_number() . '</mark>', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			'<mark class="order-date">' . wc_format_datetime($order->get_date_created()) . '</mark>', // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			'<mark class="order-status">' . wc_get_order_status_name($order->get_status()) . '</mark>' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		);
-		?>
-	</p>
-
-	<?php if ($notes) : ?>
-		<h2><?php esc_html_e('Order updates', 'woocommerce'); ?></h2>
-		<ol class="woocommerce-OrderUpdates commentlist notes">
+<div class="order-info w-full flex flex-row items-start justify-between pt-25 px-25">
+	<div class="w-full flex flex-col gap-8">
+		<h1 class="paragraph-2xl paragraph-medium text-gray-900 order-number">
+			<?
+			$ordersPageUrl = get_page_link(get_option('woocommerce_myaccount_orders_url'));
+			?>
+			<a href="<?php echo $ordersPageUrl; ?>" class="hover:underline"><?php esc_html_e('Orders', 'woocommerce'); ?></a>
+			<span class="text-gray-500">></span> #<?php echo $order->get_order_number(); ?>
+		</h1>
+		<div class="pragraph-md paragraph-regular text-gray-600 order-date">Sipariş tarihi: <? echo wc_format_datetime($order->get_date_created()); ?></div>
+	</div>
+	<div class="order-status flex flex-row gap-10 shrink-0">
+		<?php if ($order->has_status('on-hold')) : ?>
+			<span class="flex flex-row text-gray-600">Beklemede</span>
+		<?php endif; ?>
+		<?php if ($order->has_status('pending')) : ?>
+			<span class="flex flex-row text-gray-600">Ödeme Bekleniyor</span>
+		<?php endif; ?>
+		<?php if ($order->has_status('failed')) : ?>
+			<span class="flex flex-row text-error-500">Başarısız</span>
+		<?php endif; ?>
+		<?php if ($order->has_status('refunded')) : ?>
+			<span class="flex flex-row text-primary-600">İade Edildi</span>
+		<?php endif; ?>
+		<?php if ($order->has_status('cancelled')) : ?>
+			<span class="flex flex-row text-error-500">İptal Edildi</span>
+		<?php endif; ?>
+		<?php if ($order->has_status('completed')) : ?>
+			<span class="flex flex-row text-success-600">Teslim Edildi</span>
+		<?php endif; ?>
+		<?php if ($order->has_status('processing')) : ?>
+			<span class="flex flex-row text-gray-600">İşleniyor...</span>
+		<?php endif; ?>
+	</div>
+</div>
+<?php if ($notes) : ?>
+	<div class="w-full flex flex-col gap-8 px-25">
+		<h2 class="paragraph-md paragraph-medium text-primary-600">Ebaskıcım bir not ekledi</h2>
+		<ol class="woocommerce-OrderUpdates commentlist notes w-full flex flex-col gap-4 items-start">
 			<?php foreach ($notes as $note) : ?>
-				<li class="woocommerce-OrderUpdate comment note">
-					<div class="woocommerce-OrderUpdate-inner comment_container">
-						<div class="woocommerce-OrderUpdate-text comment-text">
-							<p class="woocommerce-OrderUpdate-meta meta"><?php echo date_i18n(esc_html__('l jS \o\f F Y, h:ia', 'woocommerce'), strtotime($note->comment_date)); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-																			?></p>
-							<div class="woocommerce-OrderUpdate-description description">
-								<?php echo wpautop(wptexturize($note->comment_content)); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-								?>
-							</div>
-							<div class="clear"></div>
-						</div>
-						<div class="clear"></div>
+				<li class="woocommerce-OrderUpdate comment note flex flex-col gap-4 px-15 py-10 bg-primary-100 rounded-tl-[5px] rounded-tr-[15px] rounded-br-[15px] rounded-bl-[15px]">
+					<div class="woocommerce-OrderUpdate-description description paragraph-sm paragraph-regular text-gray-900">
+						<?php echo wpautop(wptexturize($note->comment_content)); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+						?>
 					</div>
+					<p class="woocommerce-OrderUpdate-meta meta paragraph-xs paragraph-regular text-primary-700">
+						<?php echo date_i18n(esc_html__('j F Y, H:i', 'woocommerce'), strtotime($note->comment_date)); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+						?>
+					</p>
 				</li>
 			<?php endforeach; ?>
 		</ol>
-	<?php endif; ?>
-	<?php do_action('woocommerce_view_order', $order_id); ?>
-</div>
+	</div>
+<?php endif; ?>
+<?php do_action('woocommerce_view_order', $order_id); ?>
