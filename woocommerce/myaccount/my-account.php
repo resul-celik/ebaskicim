@@ -27,10 +27,10 @@ get_template_part("components/header");
 ?>
 
 <main class="w-full h-full grow-1 flex flex-col items-center justify-start overflow-hidden">
-	<div class="w-full max-w-1440 flex flex-col md:flex-row gap-30 px-20 py-60 items-start justify-start">
+	<div class="w-full max-w-1440 flex flex-col md:flex-row gap-30 md:px-20 py-60 items-start justify-start">
 		<?php do_action('woocommerce_account_navigation'); ?>
 
-		<div class="w-full flex flex-col p-25 gap-30 grow-1 shadow-xs rounded-[15px]">
+		<div class="w-full flex flex-col gap-30 grow-1 md:shadow-xs md:rounded-[15px]">
 			<?php
 			/**
 			 * My Account content.

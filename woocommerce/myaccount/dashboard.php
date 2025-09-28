@@ -32,10 +32,12 @@ $allowed_html = array(
 $customer_orders = wc_get_orders(
 	apply_filters(
 		'woocommerce_my_account_my_orders_query',
+
 		array(
 			'customer' => get_current_user_id(),
 			'page'     => 1,
 			'paginate' => true,
+			'limit'    => 10,
 		)
 	)
 );
@@ -43,8 +45,8 @@ $customer_orders = wc_get_orders(
 $has_orders = 0 < $customer_orders->total;
 
 if ($has_orders) { ?>
-	<h1 class="paragraph-2xl paragraph-medium text-gray-900">Siparişler</h1>
-	<div class="w-full flex flex-row flex-wrap gap-y-30 -mr-15">
+	<h1 class="paragraph-2xl paragraph-medium text-gray-900 pt-25 pl-25">Siparişler</h1>
+	<div class="w-full flex flex-row flex-wrap md:gap-y-10 md:pl-25 md:pr-15 pb-25">
 		<?php foreach ($customer_orders->orders as $customer_order) : ?>
 			<?php
 			$order = wc_get_order($customer_order);
@@ -58,72 +60,83 @@ if ($has_orders) { ?>
 				}
 			}
 			if ($show_order) : ?>
-				<div class="w-1/2 md:w-1/3 flex flex-col gap-20 grow-0 shrink-0 pr-15">
-					<div class="w-full relative">
-						<div class="order-images w-full aspect-4/3 overflow-hidden rounded-[10px]">
-							<div class="order-images-wrapper w-full aspect-4/3 relative box-content flex flex-row justify-start items-center">
-								<?php
-								foreach ($items as $item) {
-									$product = $item->get_product();
-									if ($product) {
-										echo '<figure class="order-image shrink-0">';
-										echo $product->get_image('medium_large');
-										echo '</figure>';
-									}
+				<div class="account-order-container w-full md:w-1/2 pr-10 flex flex-col grow-0 shrink-1 md:shrink-0">
+					<div class="account-order w-full flex flex-col items-start justify-start gap-15 p-15 rounded-0 md:rounded-[15px]">
+						<div class="w-full flex flex-row items-center justify-between">
+							<div class="flex flex-col gap-1">
+								<div class="flex flex-row gap-2">
+									<p class="paragraph-md paragraph-regular text-gray-900">Sipariş</p>
+									<p class="paragraph-md paragraph-bold text-gray-900">#<?php echo $order->get_order_number(); ?></p>
+								</div>
+								<div class="flex flex-row gap-2">
+									<p class="paragraph-sm paragraph-regular text-gray-600"><?php echo wc_format_datetime($order->get_date_created()); ?></p>
+									<p class="paragraph-sm paragraph-regular text-gray-600">—</p>
+									<p class="paragraph-sm paragraph-regular text-gray-600"><?php echo sprintf(__('%d ürün'), count($items)); ?></p>
+								</div>
+							</div>
+							<?
+							$buttonArgs = array(
+								"text" => "Detayları Gör",
+								"url" => esc_url($order->get_view_order_url()),
+								"hierarchy" => "link",
+								"trailingIcon" => "arrow-right",
+							);
+							echo get_button($buttonArgs);
+							?>
+						</div>
+						<div class="w-full h-[1px] border-b border-gray-300 border-dashed"></div>
+						<a href="<?php echo esc_url($order->get_view_order_url()); ?>" class="flex flex-row justify-start gap-3 items-center">
+							<?php
+							$i = 0;
+							foreach ($items as $item) {
+								$product = $item->get_product();
+								$i++;
+
+								if ($product && $i <= 5) {
+									echo '<figure class="order-image w-40 h-40 grow-0 shrink-0 rounded-[5px] overflow-hidden">';
+									echo $product->get_image('product_small');
+									echo '</figure>';
 								}
-								?>
+							}
+
+							if (count($items) > 5) {
+								echo '<div class="w-40 h-40 flex flex-row items-center justify-center grow-0 shrink-0 rounded-[5px] bg-gray-100 paragraph-sm paragraph-regular text-gray-600">+ ' . (count($items) - 5) . '</div>';
+							}
+							?>
+						</a>
+						<div class="w-full flex flex-row gap-10">
+							<div class="w-full flex flex-col">
+								<p class="paragraph-sm paragraph-regular text-gray-600">Fiyat:</p>
+								<p class="paragraph-md paragraph-bold text-gray-900"><?php echo $order->get_formatted_order_total(); ?></p>
+							</div>
+							<div class="w-full flex flex-col">
+								<p class="paragraph-sm paragraph-regular text-gray-600">Sipariş Durumu:</p>
+								<p class="paragraph-md paragraph-medium text-gray-900">
+									<?php if ($order->has_status('on-hold')) : ?>
+										<span class="flex flex-row text-gray-600">Beklemede</span>
+									<?php endif; ?>
+									<?php if ($order->has_status('pending')) : ?>
+										<span class="flex flex-row text-gray-600">Ödeme Bekleniyor</span>
+									<?php endif; ?>
+									<?php if ($order->has_status('failed')) : ?>
+										<span class="flex flex-row text-error-500">Başarısız</span>
+									<?php endif; ?>
+									<?php if ($order->has_status('refunded')) : ?>
+										<span class="flex flex-row text-primary-600">İade Edildi</span>
+									<?php endif; ?>
+									<?php if ($order->has_status('cancelled')) : ?>
+										<span class="flex flex-row text-error-500">İptal Edildi</span>
+									<?php endif; ?>
+									<?php if ($order->has_status('completed')) : ?>
+										<span class="flex flex-row text-success-600">Teslim Edildi</span>
+									<?php endif; ?>
+									<?php if ($order->has_status('processing')) : ?>
+										<span class="flex flex-row text-primary-600">İşleniyor...</span>
+									<?php endif; ?>
+								</p>
 							</div>
 						</div>
-						<div class="absolute top-10 left-10 z-10 paragraph-xs paragraph-medium text-gray-900">
-							<!-- order status -->
-							<?php if ($order->has_status('on-hold')) : ?>
-								<span class="flex flex-row gap-5 px-13 bg-gray-100 rounded-[10px]"><?php echo sprintf(__('%d items'), count($items)); ?> <?php _e('On Hold', 'junobjects') ?></span>
-							<?php endif; ?>
-							<?php if ($order->has_status('pending')) : ?>
-								<span class="flex flex-row gap-5 px-13 bg-gray-100 rounded-[10px]"><?php echo sprintf(__('%d items'), count($items)); ?> <?php _e('Pending', 'junobjects') ?></span>
-							<?php endif; ?>
-							<?php if ($order->has_status('failed')) : ?>
-								<span class="flex flex-row gap-5 px-13 bg-error-500 rounded-[10px] text-white"><?php echo sprintf(__('%d items'), count($items)); ?> <?php _e('Failed', 'junobjects') ?></span>
-							<?php endif; ?>
-							<?php if ($order->has_status('refunded')) : ?>
-								<span class="flex flex-row gap-5 px-13 bg-success-700 rounded-[10px] text-white"><?php echo sprintf(__('%d items'), count($items)); ?> <?php _e('Refunded', 'junobjects') ?></span>
-							<?php endif; ?>
-							<?php if ($order->has_status('cancelled')) : ?>
-								<span class="flex flex-row gap-5 px-13 bg-error-500 rounded-[10px] text-white"><?php echo sprintf(__('%d items'), count($items)); ?> <?php _e('Cancelled', 'junobjects') ?></span>
-							<?php endif; ?>
-							<?php if ($order->has_status('completed')) : ?>
-								<span class="flex flex-row gap-5 px-13 bg-success-700 rounded-[10px] text-white"><?php echo sprintf(__('%d items'), count($items)); ?> <?php _e('Completed', 'junobjects') ?></span>
-							<?php endif; ?>
-							<?php if ($order->has_status('processing')) : ?>
-								<span class="product-tag sold-out-tag"><?php echo sprintf(__('%d items'), count($items)); ?> <?php _e('Processing', 'junobjects') ?></span>
-							<?php endif; ?>
-						</div>
 					</div>
-					<div class="flex flex-col">
-						<div class="paragraph-md paragraph-medium text-gray-900">
-							<?php echo $product->get_name(); ?>
-						</div>
-						<div class="paragraph-sm paragraph-regular text-gray-600">
-							<?php echo wc_format_datetime($order->get_date_created()); ?>
-						</div>
-					</div>
-					<div class="w-full flex flex-col gap-10">
-						<div class="w-full flex flex-col">
-							<p class="paragraph-xs paragraph-regular text-gray-900">Fiyat:</p>
-							<p class="paragraph-2xl paragraph-bold text-gray-900"><?php echo $order->get_formatted_order_total(); ?></p>
-						</div>
-						<div class="w-full flex flex-col">
-							<p class="paragraph-xs paragraph-regular text-gray-900">Sipariş numarası:</p>
-							<div class="flex flex-row paragraph-2xl paragraph-bold text-gray-900">#<?php echo $order->get_order_number(); ?></div>
-						</div>
-					</div>
-					<?
-					$buttonArgs = array(
-						"text" => "Detayları Gör",
-						"url" => esc_url($order->get_view_order_url())
-					);
-					echo get_button($buttonArgs);
-					?>
 				</div>
 			<?php endif; ?>
 		<?php endforeach; ?>

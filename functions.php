@@ -112,3 +112,12 @@ if (function_exists('register_sidebar')) {
     );
 }
 add_action('init', 'register_my_menus'); */
+/* IMAGE SIZES (Start) */
+
+function ebs_custom_image_sizes()
+{
+    add_image_size('product_small', 40, 40, true);
+}
+add_action('after_setup_theme', 'ebs_custom_image_sizes');
+
+/* IMAGE SIZES (End) */

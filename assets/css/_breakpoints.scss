@@ -23,6 +23,20 @@
     html {
       font-size: 8px;
     }
+
+    .account-order-container {
+      &:nth-child(odd) {
+        .account-order {
+          background: var(--white);
+        }
+      }
+
+      &:nth-child(even) {
+        .account-order {
+          background: var(--color-gray-50);
+        }
+      }
+    }
   }
 }
 
