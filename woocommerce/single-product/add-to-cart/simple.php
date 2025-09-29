@@ -23,7 +23,6 @@ global $product;
 if (! $product->is_purchasable()) {
 	return;
 }
-$button = new Button();
 
 echo wc_get_stock_html($product); // WPCS: XSS ok.
 

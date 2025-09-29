@@ -3,7 +3,6 @@
 defined('ABSPATH') || exit;
 
 global $product;
-$button = new Button;
 
 /**
  * Hook: woocommerce_before_single_product.

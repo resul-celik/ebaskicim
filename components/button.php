@@ -18,6 +18,7 @@ function get_button($args)
         'name' => '',
         'target' => '_self',
         'theme' => 'light',
+        'attributes' => [],
         'destructive' => false
     ];
 
@@ -36,7 +37,8 @@ function get_button($args)
         $size,
         $args["leadingIcon"] ? "leading-icon" : "",
         $args["trailingIcon"] ? "trailing-icon" : "",
-        $args["icon"] ? "icon-only" : ""
+        $args["icon"] ? "icon-only" : "",
+        $args["classes"]
     ];
 
     // Set content of the button
@@ -56,23 +58,32 @@ function get_button($args)
         }
     }
 
+    // Attributes
+
+    $attr_str = '';
+    foreach ($args['attributes'] as $key => $value) {
+        $attr_str .= sprintf(' %s="%s"', htmlspecialchars($key), htmlspecialchars($value));
+    }
+
     // returns
 
     if (!empty($args['url'])) {
         return sprintf(
-            '<a href="%s" class="%s" target="%s">%s</a>',
+            '<a href="%s" class="%s" target="%s"%s>%s</a>',
             esc_url($args['url']),
             esc_attr(implode(' ', $classes)),
             esc_attr($args["target"]),
+            $attr_str,
             $content
         );
     } else {
         return sprintf(
-            '<button type="%s" class="%s" value="%s" name="%s">%s</button>',
+            '<button type="%s" class="%s" value="%s" name="%s"%s>%s</button>',
             esc_attr($args['type']),
             esc_attr(implode(' ', $classes)),
             esc_attr($args["value"]),
             esc_attr($args["name"]),
+            $attr_str,
             $content
         );
     }
