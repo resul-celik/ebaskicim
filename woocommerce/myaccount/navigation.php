@@ -23,7 +23,7 @@ if (! defined('ABSPATH')) {
 do_action('woocommerce_before_account_navigation');
 ?>
 
-<nav class="woocommerce-MyAccount-navigation account-nav w-full max-w-350 flex flex-col p-25 bg-gray-100 gap-20 rounded-[15px] items-center" aria-label="<?php esc_html_e('Account pages', 'woocommerce'); ?>">
+<nav class="woocommerce-MyAccount-navigation account-nav w-full md:max-w-350 flex flex-col p-25 bg-gray-100 gap-20 rounded-[15px] items-center" aria-label="<?php esc_html_e('Account pages', 'woocommerce'); ?>">
 	<div class="w-full flex flex-col items-center gap-24">
 		<div class="w-80 h-80 flex items-center justify-center bg-primary-400 text-[30px] rounded-full">
 			<?php
