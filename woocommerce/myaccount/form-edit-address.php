@@ -25,13 +25,18 @@ do_action('woocommerce_before_edit_account_address_form'); ?>
 <?php if (! $load_address) : ?>
 	<?php wc_get_template('myaccount/my-address.php'); ?>
 <?php else : ?>
+	<div class="paragraph-2xl paragraph-medium text-gray-900 order-number flex flex-row gap-5 pt-25 px-25">
+		<?
+		$addressPageUrl = wc_get_account_endpoint_url('edit-address');
+		?>
+		<a href="<?php echo $addressPageUrl; ?>" class="paragraph-2xl paragraph-medium text-gray-900 hover:underline">Adresler</a>
+		<span class="paragraph-2xl paragraph-medium text-gray-500">></span>
+		<h1 class="paragraph-2xl paragraph-medium text-gray-900"><?php echo apply_filters('woocommerce_my_account_edit_address_title', $page_title, $load_address); ?></h1>
+	</div>
+	<form method="post" class="edit-address w-full flex flex-col gap-30 px-25 pb-25">
 
-	<form method="post" class="edit-address">
 
-		<h2><?php echo apply_filters('woocommerce_my_account_edit_address_title', $page_title, $load_address); ?></h2><?php // @codingStandardsIgnoreLine 
-																														?>
-
-		<div class="woocommerce-address-fields">
+		<div class="woocommerce-address-fields w-full flex flex-col gap-30">
 			<?php do_action("woocommerce_before_edit_address_form_{$load_address}"); ?>
 
 			<div class="woocommerce-address-fields__field-wrapper input-field-wrapper">
@@ -46,7 +51,16 @@ do_action('woocommerce_before_edit_account_address_form'); ?>
 			<?php do_action("woocommerce_after_edit_address_form_{$load_address}"); ?>
 
 			<p>
-				<button type="submit" class="button primary-button button-sm blue-button<?php echo esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''); ?>" name="save_address" value="<?php esc_attr_e('Save address', 'woocommerce'); ?>"><?php esc_html_e('Save address', 'woocommerce'); ?></button>
+				<?
+				$buttonArgs = array(
+					"text" =>  esc_html__('Save address', 'woocommerce'),
+					"value" =>  esc_html__('Save address', 'woocommerce'),
+					"name" =>  "save_address",
+					"classes" => esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''),
+					"type" => "submit"
+				);
+				echo get_button($buttonArgs);
+				?>
 				<?php wp_nonce_field('woocommerce-edit_address', 'woocommerce-edit-address-nonce'); ?>
 				<input type="hidden" name="action" value="edit_address" />
 			</p>

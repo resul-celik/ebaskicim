@@ -24,13 +24,14 @@ $notes = $order->get_customer_order_notes();
 ?>
 <div class="order-info w-full flex flex-row items-start justify-between pt-25 px-25">
 	<div class="w-full flex flex-col gap-8">
-		<h1 class="paragraph-2xl paragraph-medium text-gray-900 order-number">
+		<div class="paragraph-2xl paragraph-medium text-gray-900 order-number flex flex-row gap-5">
 			<?
-			$ordersPageUrl = get_page_link(get_option('woocommerce_myaccount_orders_url'));
+			$ordersPageUrl = wc_get_account_endpoint_url('orders');
 			?>
-			<a href="<?php echo $ordersPageUrl; ?>" class="hover:underline"><?php esc_html_e('Orders', 'woocommerce'); ?></a>
-			<span class="text-gray-500">></span> #<?php echo $order->get_order_number(); ?>
-		</h1>
+			<a href="<?php echo $ordersPageUrl; ?>" class="paragraph-2xl paragraph-medium text-gray-900 hover:underline"><?php esc_html_e('Orders', 'woocommerce'); ?></a>
+			<span class="paragraph-2xl paragraph-medium text-gray-500">></span>
+			<h1 class="paragraph-2xl paragraph-medium text-gray-900 order-number">#<?php echo $order->get_order_number(); ?></h1>
+		</div>
 		<div class="pragraph-md paragraph-regular text-gray-600 order-date">Sipariş tarihi: <? echo wc_format_datetime($order->get_date_created()); ?></div>
 	</div>
 	<div class="order-status flex flex-row gap-10 shrink-0">

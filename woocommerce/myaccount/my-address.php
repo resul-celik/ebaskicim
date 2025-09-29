@@ -43,14 +43,15 @@ $oldcol = 1;
 $col    = 1;
 ?>
 
-<div class="account-addresses-container">
-	<p>
+<h1 class="paragraph-2xl paragraph-medium text-gray-900 pt-25 pl-25">Adresler</h1>
+<div class="account-addresses-container w-full flex flex-col gap-30">
+	<p class="w-full paragraph-md paragraph-regular text-gray-900 px-25">
 		<?php echo apply_filters('woocommerce_my_account_my_address_description', esc_html__('The following addresses will be used on the checkout page by default.', 'woocommerce')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
 		?>
 	</p>
 
 	<?php if (! wc_ship_to_billing_address_only() && wc_shipping_enabled()) : ?>
-		<div class="u-columns woocommerce-Addresses col2-set addresses">
+		<div class="u-columns woocommerce-Addresses col2-set flex-col md:flex-row addresses w-full flex gap-20 px-25 pb-25">
 		<?php endif; ?>
 
 		<?php foreach ($get_addresses as $name => $address_title) : ?>
@@ -60,18 +61,9 @@ $col    = 1;
 			$oldcol  = $oldcol * -1;
 			?>
 
-			<div class="u-column<?php echo $col < 0 ? 1 : 2; ?> col-<?php echo $oldcol < 0 ? 1 : 2; ?> woocommerce-Address">
+			<div class="u-column<?php echo $col < 0 ? 1 : 2; ?> col-<?php echo $oldcol < 0 ? 1 : 2; ?> woocommerce-Address card-container card-container-secondary !grow-1">
 				<header class="woocommerce-Address-title title">
-					<h2><?php echo esc_html($address_title); ?></h2>
-					<a href="<?php echo esc_url(wc_get_endpoint_url('edit-address', $name)); ?>" class="edit">
-						<?php
-						printf(
-							/* translators: %s: Address title */
-							$address ? esc_html__('Edit %s', 'woocommerce') : esc_html__('Add %s', 'woocommerce'),
-							esc_html($address_title)
-						);
-						?>
-					</a>
+					<h2 class="card-title"><?php echo esc_html($address_title); ?></h2>
 				</header>
 				<address>
 					<?php
@@ -86,6 +78,18 @@ $col    = 1;
 					do_action('woocommerce_my_account_after_my_address', $name);
 					?>
 				</address>
+				<?
+
+				$buttonName = $address ? "Adresi düzenle" : "Adres ekle";
+
+				$buttonArgs = array(
+					"text" => $buttonName,
+					"classes" => "edit",
+					"url" => esc_url(wc_get_endpoint_url('edit-address', $name))
+				);
+
+				echo get_button($buttonArgs);
+				?>
 			</div>
 
 		<?php endforeach; ?>
