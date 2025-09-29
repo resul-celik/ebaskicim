@@ -47,6 +47,14 @@ function account_drawer_menu_content()
         <?php endforeach; ?>
     </nav>
     <div class="w-full p-20 flex items-center justify-start border-t border-gray-200 gap-10">
-        <a href="<?php echo wp_logout_url(home_url()); ?>" class="flex flex-row items-center justify-start paragraph-md paragraph-medium text-error-500 gap-10"><i class="icon icon-logout"></i>Çıkış yap</a>
+        <?
+        $buttonArgs = array(
+            "text" => "Çıkış yap",
+            "leadingIcon" => "logout",
+            "url" => wp_logout_url(home_url()),
+            "hierarchy" => "link",
+            "destructive" => true
+        );
+        echo get_button($buttonArgs); ?>
     </div>
 <?php } ?>

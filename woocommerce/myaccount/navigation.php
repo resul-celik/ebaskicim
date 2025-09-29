@@ -73,7 +73,8 @@ do_action('woocommerce_before_account_navigation');
 			"name" => "customer-logout",
 			"value" => "Çıkış Yap",
 			"hierarchy" => "link",
-			"leadingIcon" => "logout"
+			"leadingIcon" => "logout",
+			"destructive" => true
 		);
 		?>
 		<?php echo get_button($buttonArgs); ?>

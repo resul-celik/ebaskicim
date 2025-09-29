@@ -110,7 +110,7 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 										<span class="flex flex-row text-success-600">Teslim Edildi</span>
 									<?php endif; ?>
 									<?php if ($order->has_status('processing')) : ?>
-										<span class="flex flex-row text-gray-600">İşleniyor...</span>
+										<span class="flex flex-row text-gray-600">İşleniyor</span>
 									<?php endif; ?>
 								</p>
 							</div>

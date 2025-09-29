@@ -208,7 +208,7 @@
 
 .link-button-destructive {
   background: transparent;
-  color: var(--color-primary-500);
+  color: var(--color-error-500);
 
   &:hover {
     color: var(--color-gray-900);
@@ -217,7 +217,7 @@
 
 .link-button-dark-destructive {
   background: transparent;
-  color: var(--color-primary-300);
+  color: var(--color-error-300);
 
   &:hover {
     color: var(--color-white);

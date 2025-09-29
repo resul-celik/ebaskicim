@@ -19,8 +19,8 @@
 defined('ABSPATH') || exit;
 
 do_action('woocommerce_before_edit_account_form'); ?>
-
-<form class="woocommerce-EditAccountForm edit-account input-field-wrapper" action="" method="post" <?php do_action('woocommerce_edit_account_form_tag'); ?>>
+<h1 class="paragraph-2xl paragraph-medium text-gray-900 pt-25 pl-25">Hesap Detayları</h1>
+<form class="woocommerce-EditAccountForm edit-account input-field-wrapper !px-25 !pb-25" action="" method="post" <?php do_action('woocommerce_edit_account_form_tag'); ?>>
 
 	<?php do_action('woocommerce_edit_account_form_start'); ?>
 
@@ -54,7 +54,7 @@ do_action('woocommerce_before_edit_account_form'); ?>
 	?>
 
 	<fieldset class="fieldset-password input-field-wrapper">
-		<div><?php esc_html_e('Password change', 'woocommerce'); ?></div>
+		<div class="paragraph-lg paragraph-medium text-gray-900"><?php esc_html_e('Password change', 'woocommerce'); ?></div>
 
 		<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide input-field">
 			<label for="password_current"><?php esc_html_e('Current password (leave blank to leave unchanged)', 'woocommerce'); ?></label>
@@ -82,7 +82,16 @@ do_action('woocommerce_before_edit_account_form'); ?>
 
 	<p>
 		<?php wp_nonce_field('save_account_details', 'save-account-details-nonce'); ?>
-		<button type="submit" class="woocommerce-Button button primary-button blue-button button-sm<?php echo esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''); ?>" name="save_account_details" value="<?php esc_attr_e('Save changes', 'woocommerce'); ?>"><?php esc_html_e('Save changes', 'woocommerce'); ?></button>
+		<?
+		$buttonArgs = array(
+			"text" =>  esc_html__('Save changes', 'woocommerce'),
+			"value" =>  esc_html__('Save changes', 'woocommerce'),
+			"name" =>  "save_account_details",
+			"classes" => esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''),
+			"type" => "submit"
+		);
+		echo get_button($buttonArgs);
+		?>
 		<input type="hidden" name="action" value="save_account_details" />
 	</p>
 

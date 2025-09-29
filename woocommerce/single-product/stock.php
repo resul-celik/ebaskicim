@@ -21,4 +21,4 @@ if (! defined('ABSPATH')) {
 }
 
 ?>
-<p class="stock product-tag stock-tag <?php echo esc_attr($class); ?>"><?php echo wp_kses_post($availability); ?></p>
+<p class="stock product-tag stock-tag paragraph-sm paragraph-medium text-success-700 <?php echo esc_attr($class); ?>"><?php echo wp_kses_post($availability); ?></p>
