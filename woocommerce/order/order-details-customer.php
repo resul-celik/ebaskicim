@@ -20,7 +20,7 @@ defined('ABSPATH') || exit;
 
 $show_shipping = ! wc_ship_to_billing_address_only() && $order->needs_shipping_address();
 ?>
-<section class="woocommerce-customer-details flex flex-row gap-20 p-25">
+<section class="woocommerce-customer-details flex flex-col md:flex-row gap-10 md:gap-20 p-25">
 
 	<div class="card-container card-container-secondary !grow-1">
 		<h2 class="woocommerce-column__title card-title"><?php esc_html_e('Billing address', 'woocommerce'); ?></h2>

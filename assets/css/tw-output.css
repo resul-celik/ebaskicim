@@ -52,7 +52,6 @@
     --color-error-900: #560a1b;
     --color-success-500: #23e27d;
     --color-success-600: #1cc265;
-    --color-success-700: #179c50;
     --text-md: 1.6rem;
   }
 }
@@ -584,9 +583,6 @@
   .rounded-\[15px\] {
     border-radius: 15px;
   }
-  .rounded-\[20px\] {
-    border-radius: 20px;
-  }
   .rounded-\[25px\] {
     border-radius: 25px;
   }
@@ -808,9 +804,6 @@
   .text-error-500 {
     color: var(--color-error-500);
   }
-  .text-gray-400 {
-    color: var(--color-gray-400);
-  }
   .text-gray-500 {
     color: var(--color-gray-500);
   }
@@ -982,6 +975,11 @@
   .md\:items-start {
     @media (width >= 1024px) {
       align-items: flex-start;
+    }
+  }
+  .md\:gap-20 {
+    @media (width >= 1024px) {
+      gap: calc(var(--spacing) * 20);
     }
   }
   .md\:gap-y-10 {
