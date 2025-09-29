@@ -21,37 +21,31 @@ if (! defined('ABSPATH')) {
 }
 
 if ($related_products) :
-	echo get_section('Kanvas Tablo', "", 3, "get_products", "kanvas-tablo");
+
+	$relatedArgs = [
+		"title" => "İlgili Ürünler",
+	];
+
+	get_section($relatedArgs, function () use ($related_products) {
+
 ?>
 
-	<section class="related products">
+		<section class="related products swiper w-full relative flex flex-col gap-30 items-start">
+			<div class="swiper-wrapper w-full flex flex-row items-center justify-between">
+				<?php foreach ($related_products as $related_product) : ?>
+					<?php
+					$post_object = get_post($related_product->get_id());
 
-		<?php
-		$heading = apply_filters('woocommerce_product_related_products_heading', __('Related products', 'woocommerce'));
+					setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
 
-		if ($heading) :
-		?>
-			<h2><?php echo esc_html($heading); ?></h2>
-		<?php endif; ?>
+					wc_get_template_part('content', 'product');
+					?>
 
-		<?php woocommerce_product_loop_start(); ?>
-
-		<?php foreach ($related_products as $related_product) : ?>
-
-			<?php
-			$post_object = get_post($related_product->get_id());
-
-			setup_postdata($GLOBALS['post'] = &$post_object); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited, Squiz.PHP.DisallowMultipleAssignments.Found
-
-			wc_get_template_part('content', 'product');
-			?>
-
-		<?php endforeach; ?>
-
-		<?php woocommerce_product_loop_end(); ?>
-
-	</section>
+				<?php endforeach; ?>
+			</div>
+		</section>
 <?php
+	});
 endif;
 
 wp_reset_postdata();

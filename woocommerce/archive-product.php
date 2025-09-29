@@ -15,15 +15,28 @@ get_template_part('components/header');
     $neonLed = [
         "title" => "Neon Led",
         "url" => get_category_link($neonCat->term_id),
-        "order" => 2,
-        "function_args" => ["neon-led"]
+        "order" => 2
+    ];
+    $poster = [
+        "title" => "Poster",
+        "url" => get_category_link($posterCat->term_id),
+        "order" => 1
+    ];
+    $kanvas = [
+        "title" => "Kanvas Tablo",
+        "url" => get_category_link($kanvasCat->term_id),
+        "order" => 3
     ];
     ?>
-    <?php echo get_section($neonLed, "get_products"); ?>
-    <?php //echo get_section('Poster', get_category_link($posterCat->term_id), 1, "get_products", "poster"); 
-    ?>
-    <?php //echo get_section('Kanvas Tablo', get_category_link($kanvasCat->term_id), 3, "get_products", "kanvas-tablo"); 
-    ?>
+    <?php get_section($neonLed, function () {
+        echo get_products("neon-led");
+    }); ?>
+    <?php get_section($poster, function () {
+        echo get_products("poster");
+    }); ?>
+    <?php get_section($kanvas, function () {
+        echo get_products("kanvas-tablo");
+    }); ?>
 </main>
 <?php get_template_part('components/footer');
 get_footer('shop');
