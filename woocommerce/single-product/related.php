@@ -20,7 +20,9 @@ if (! defined('ABSPATH')) {
 	exit;
 }
 
-if ($related_products) : ?>
+if ($related_products) :
+	echo get_section('Kanvas Tablo', "", 3, "get_products", "kanvas-tablo");
+?>
 
 	<section class="related products">
 
