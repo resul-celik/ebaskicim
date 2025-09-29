@@ -121,7 +121,7 @@ if (post_password_required()) {
 
 
 </section>
-<?php echo get_section('Bunlar da ilginizi çekebilir', null, 1, function () {
+<?php /* echo get_section('Bunlar da ilginizi çekebilir', null, 1, function () {
 	$id = get_the_ID();
 	$related_products = wc_get_related_products($id, 4);
 	$return = "";
@@ -136,5 +136,15 @@ if (post_password_required()) {
 	wp_reset_postdata();
 
 	return $return;
-}); ?>
+}); */ ?>
+<?php
+/**
+ * Hook: woocommerce_after_single_product_summary.
+ *
+ * @hooked woocommerce_output_product_data_tabs - 10
+ * @hooked woocommerce_upsell_display - 15
+ * @hooked woocommerce_output_related_products - 20
+ */
+woocommerce_output_related_products();
+?>
 <?php do_action('woocommerce_after_single_product'); ?>
