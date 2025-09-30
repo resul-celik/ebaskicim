@@ -160,9 +160,20 @@ function ebs_custom_checkout_coupon_label($sprintf, $coupon)
 
 function ebs_custom_image_sizes()
 {
-    add_image_size('product_small', 40, 40, true);
+    add_theme_support('post-thumbnails');
+    add_image_size('product_thubmbnail_small', 40, 40, true);
+    add_image_size('product_thubmbnail_medium', 60, 60, true);
+    add_image_size('product_thubmbnail_large', 100, 100, true);
+    add_image_size('product_gallery_large', 1440, 1080, false);
 }
 add_action('after_setup_theme', 'ebs_custom_image_sizes');
+
+add_action('wp_footer', function () {
+    global $_wp_additional_image_sizes;
+    echo '<!-- product_small? ' . (isset($_wp_additional_image_sizes['product_small']) ? 'yes' : 'NO') . ' -->';
+});
+
+
 
 /* IMAGE SIZES (End) */
 

@@ -27,9 +27,9 @@ defined('ABSPATH') || exit;
 			<div data-title="<?php esc_attr_e('Subtotal', 'woocommerce'); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_subtotal_html(); ?></div>
 		</div>
 		<?php foreach (WC()->cart->get_coupons() as $code => $coupon) : ?>
-			<div class="cart-totals-item cart-discount coupon-<?php echo esc_attr(sanitize_title($code)); ?>">
-				<div class="cart-total-title"><?php wc_cart_totals_coupon_label($coupon); ?></div>
-				<td data-title="<?php echo esc_attr(wc_cart_totals_coupon_label($coupon, false)); ?>"><?php wc_cart_totals_coupon_html($coupon); ?></td>
+			<div class="cart-totals-item cart-discount w-full flex flex-row items-center justify-between px-15 py-10 bg-gray-50 rounded-[10px] border border-gray-900 border-dashed coupon-<?php echo esc_attr(sanitize_title($code)); ?>">
+				<div class="cart-total-title paragraph-md text-gray-900"><?php wc_cart_totals_coupon_label($coupon); ?></div>
+				<div class="flex flex-row gap-10 items-center justify-end" data-title="<?php echo esc_attr(wc_cart_totals_coupon_label($coupon, false)); ?>"><?php wc_cart_totals_coupon_html($coupon); ?></div>
 			</div>
 		<?php endforeach; ?>
 		<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()) : ?>
@@ -42,16 +42,16 @@ defined('ABSPATH') || exit;
 
 		<?php elseif (WC()->cart->needs_shipping() && 'yes' === get_option('woocommerce_enable_shipping_calc')) : ?>
 
-			<div class="cart-totals-item shipping">
-				<div class="cart-total-title"><?php esc_html_e('Shipping', 'woocommerce'); ?></div>
-				<td data-title="<?php esc_attr_e('Shipping', 'woocommerce'); ?>"><?php woocommerce_shipping_calculator(); ?></td>
+			<div class="cart-totals-item shipping w-full flex flex-row items-center justify-between">
+				<div class="cart-total-title paragraph-md paragraph-regular text-gray-900"><?php esc_html_e('Shipping', 'woocommerce'); ?></div>
+				<div data-title="<?php esc_attr_e('Shipping', 'woocommerce'); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php woocommerce_shipping_calculator(); ?></div>
 			</div>
 
 		<?php endif; ?>
 		<?php foreach (WC()->cart->get_fees() as $fee) : ?>
-			<div class="cart-totals-item fee">
-				<div class="cart-total-title"><?php echo esc_html($fee->name); ?></div>
-				<td data-title="<?php echo esc_attr($fee->name); ?>"><?php wc_cart_totals_fee_html($fee); ?></td>
+			<div class="cart-totals-item fee w-full flex flex-row items-center justify-between">
+				<div class="cart-total-title paragraph-md paragraph-regular text-gray-900"><?php echo esc_html($fee->name); ?></div>
+				<td data-title="<?php echo esc_attr($fee->name); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_fee_html($fee); ?></td>
 			</div>
 		<?php endforeach; ?>
 
@@ -79,12 +79,12 @@ defined('ABSPATH') || exit;
 				}
 			} else {
 				?>
-				<div class="cart-totals-item tax-total">
-					<div class="cart-total-title">
+				<div class="cart-totals-item tax-total w-full flex flex-row items-center justify-between">
+					<div class="cart-total-title paragraph-md paragraph-regular text-gray-900">
 						<?php echo esc_html(WC()->countries->tax_or_vat()) . $estimated_text; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
 						?>
 					</div>
-					<td data-title="<?php echo esc_attr(WC()->countries->tax_or_vat()); ?>"><?php wc_cart_totals_taxes_total_html(); ?></td>
+					<div data-title="<?php echo esc_attr(WC()->countries->tax_or_vat()); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_taxes_total_html(); ?></div>
 				</div>
 		<?php
 			}

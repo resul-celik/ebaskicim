@@ -39,7 +39,7 @@ defined('ABSPATH') || exit;
                 <div class="w-full flex flex-row p-10 gap-20 items-center justify-start rounded-[10px] hover:bg-gray-100 woocommerce-cart-form__cart-item <?php echo esc_attr(apply_filters('woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key)); ?>">
                     <div class="cart-item-thumbnail w-90 h-90 rounded-[10px] overflow-hidden">
                         <?php
-                        $thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image('custom-thumbnail'), $cart_item, $cart_item_key);
+                        $thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image('product_thubmbnail_large'), $cart_item, $cart_item_key);
 
                         if (! $product_permalink) {
                             echo $thumbnail; // PHPCS: XSS ok.
@@ -80,15 +80,6 @@ defined('ABSPATH') || exit;
                         </div>
                     </div>
                     <?php
-
-                    /* $args = array(
-                                "icon" => 'delete',
-                                "hierarchy" => "tertiary",
-                                "destructive" => true,
-                                "classes" => "remove",
-                            );
-
-                            echo get_button($args); */
                     echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         'woocommerce_cart_item_remove_link',
                         sprintf(
@@ -121,8 +112,6 @@ defined('ABSPATH') || exit;
          * @hooked woocommerce_cart_totals - 10
          */
         //do_action('woocommerce_cart_collaterals');
-        ?>
-        <?php //woocommerce_cross_sell_display(); 
         ?>
         <?php woocommerce_cart_totals();
         ?>
