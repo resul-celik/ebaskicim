@@ -32,7 +32,7 @@ if (! apply_filters('woocommerce_order_item_visible', true, $item)) {
 		$product_permalink = apply_filters('woocommerce_order_item_permalink', $is_visible ? $product->get_permalink($item) : '', $item, $order);
 
 		echo '<a href="' . esc_url($product_permalink) . '" class="w-50 h-50 shrink-0 grow-0 rounded-[10px] overflow-hidden">';
-		echo apply_filters('woocommerce_order_item_thumbnail', $product ? $product->get_image('thumbnail', array('title' => '', "class" => "w-full h-full object-cover")) : '', $item_id, $item);
+		echo apply_filters('woocommerce_order_item_thumbnail', $product ? $product->get_image('product_thubmbnail_medium', array('title' => '', "class" => "w-full h-full object-cover")) : '', $item_id, $item);
 		echo '</a>';
 		echo '<div class="w-full flex flex-col justify-start">';
 		echo '<div class="w-full flex flex-row gap-5">';

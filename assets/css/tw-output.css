@@ -916,6 +916,21 @@
       border-bottom-width: 0px;
     }
   }
+  .hover\:border-2 {
+    &:hover {
+      @media (hover: hover) {
+        border-style: var(--tw-border-style);
+        border-width: 2px;
+      }
+    }
+  }
+  .hover\:border-primary-400 {
+    &:hover {
+      @media (hover: hover) {
+        border-color: var(--color-primary-400);
+      }
+    }
+  }
   .hover\:border-primary-500 {
     &:hover {
       @media (hover: hover) {
@@ -962,6 +977,21 @@
     &:hover {
       @media (hover: hover) {
         text-decoration-line: underline;
+      }
+    }
+  }
+  .hover\:outline-2 {
+    &:hover {
+      @media (hover: hover) {
+        outline-style: var(--tw-outline-style);
+        outline-width: 2px;
+      }
+    }
+  }
+  .hover\:outline-primary-400 {
+    &:hover {
+      @media (hover: hover) {
+        outline-color: var(--color-primary-400);
       }
     }
   }

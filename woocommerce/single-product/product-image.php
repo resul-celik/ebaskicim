@@ -71,7 +71,7 @@ function ebs_project_tags()
 			// Display product thumbnail
 			echo '<figure class="photo-swiper-item h-full product-thumbnail shrink-0">';
 			echo '<div class="swiper-zoom-container w-full h-full">';
-			echo woocommerce_get_product_thumbnail('woocommerce_single', array('class' => 'w-full h-full object-cover'));
+			echo woocommerce_get_product_thumbnail('product_gallery_large', array('class' => 'w-full h-full object-cover'));
 			echo '</div>';
 			echo '</figure>';
 
@@ -80,7 +80,7 @@ function ebs_project_tags()
 					$image_url = wp_get_attachment_url($attachment_id);
 					echo '<figure class="photo-swiper-item h-full product-image shrink-0">';
 					echo '<div class="swiper-zoom-container w-full h-full">';
-					echo '<img src="' . esc_url($image_url) . '" alt="" class="w-full h-full object-cover">';
+					echo wp_get_attachment_image($attachment_id, "product_gallery_large", false, array('class' => 'w-full h-full object-cover'));
 					echo '</div>';
 					echo '</figure>';
 				}
@@ -94,13 +94,12 @@ function ebs_project_tags()
 			<?php
 			if ($attachment_ids && is_array($attachment_ids)) {
 				echo '<figure class="photo-swiper-thumb-item !w-60 !h-60 shrink-0 grow-0 rounded-[15px] overflow-hidden">';
-				echo woocommerce_get_product_thumbnail('woocommerce_single', array('class' => 'w-full h-full object-cover'));
+				echo woocommerce_get_product_thumbnail('product_thubmbnail_medium', array('class' => 'w-full h-full object-cover'));
 				echo '</figure>';
 
 				foreach ($attachment_ids as $attachment_id) {
-					$image_url = wp_get_attachment_url($attachment_id);
 					echo '<figure class="photo-swiper-thumb-item !w-60 !h-60 shrink-0 grow-0 rounded-[15px] overflow-hidden">';
-					echo '<img src="' . esc_url($image_url) . '" alt="" class="w-full h-full object-cover">';
+					echo wp_get_attachment_image($attachment_id, "product_thubmbnail_medium", false, array('class' => 'w-full h-full object-cover'));
 					echo '</figure>';
 				}
 			}

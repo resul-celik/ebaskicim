@@ -38,7 +38,7 @@ defined('ABSPATH') || exit;
 						<a href="<?php echo esc_url(get_permalink($_product->get_id())); ?>" class="relative">
 							<?php echo ebs_get_badge(sprintf('%sx', $cart_item['quantity']), ["classes" => "absolute -top-5 -right-5"]); ?>
 							<figure class="w-60 h-60 rounded-[10px] overflow-hidden grow-0 shrink-0 border border-gray-400">
-								<img src="<?php echo esc_url(wp_get_attachment_url($_product->get_image_id())); ?>" alt="" class="w-full h-full object-cover" />
+								<?php echo wp_get_attachment_image($_product->get_image_id(), "product_thubmbnail_medium", false, array('class' => 'w-full h-full object-cover')); ?>
 							</figure>
 						</a>
 						<div class="flex flex-col gap-5">

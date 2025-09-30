@@ -73,13 +73,13 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 
 								if ($product && $i <= 5) {
 									echo '<figure class="w-40 h-40 grow-0 shrink-0 rounded-[5px] overflow-hidden">';
-									echo $product->get_image('product_small', array('class' => 'w-full h-full object-cover'));
+									echo $product->get_image('product_thubmbnail_small', array('class' => 'w-full h-full object-cover'));
 									echo '</figure>';
 								}
 							}
 
 							if (count($items) > 5) {
-								echo '<div class="w-40 h-40 flex flex-row items-center justify-center grow-0 shrink-0 rounded-[5px] bg-gray-100 paragraph-sm paragraph-regular text-gray-600">+ ' . (count($items) - 5) . '</div>';
+								echo '<div class="w-40 h-40 flex flex-row items-center justify-center grow-0 shrink-0 rounded-[5px] bg-gray-100 paragraph-sm paragraph-regular text-gray-600 hover:bg-gray-200">+ ' . (count($items) - 5) . '</div>';
 							}
 							?>
 						</a>
