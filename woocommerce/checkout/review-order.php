@@ -20,34 +20,46 @@ defined('ABSPATH') || exit;
 ?>
 <div class="shop_table woocommerce-checkout-review-order-table w-full flex flex-col gap-10">
 	<div class="card-container card-container-secondary">
-		<h2 class="card-title">Sepetiniz</h2>
-		<?php
-		do_action('woocommerce_review_order_before_cart_contents');
+		<div class="flex flex-row items-center justify-start gap-5">
+			<h2 class="card-title">Sepetiniz</h2>
+			<?php echo ebs_get_badge(sprintf('%s', WC()->cart->get_cart_contents_count())); ?>
+		</div>
+		<div class="flex flex-col gap-15">
+			<?php
+			do_action('woocommerce_review_order_before_cart_contents');
 
-		foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
-			$_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+			foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+				$_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
 
-			if ($_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters('woocommerce_checkout_cart_item_visible', true, $cart_item, $cart_item_key)) {
-		?>
-				<div class="<?php echo esc_attr(apply_filters('woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key)); ?> w-full flex flex-row items-center justify-between">
-					<td class="product-name">
-						<?php echo wp_kses_post(apply_filters('woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key)) . '&nbsp;'; ?>
-						<?php echo apply_filters('woocommerce_checkout_cart_item_quantity', ' <strong class="product-quantity">' . sprintf('&nbsp;%s&nbsp;adet', $cart_item['quantity']) . '</strong>', $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-						?>
-						<?php echo wc_get_formatted_cart_item_data($cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-						?>
-					</td>
-					<td class="product-total">
-						<?php echo apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
-						?>
-					</td>
-				</div>
-		<?php
+				if ($_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters('woocommerce_checkout_cart_item_visible', true, $cart_item, $cart_item_key)) {
+					//var_dump($_product);	
+			?>
+					<div class="<?php echo esc_attr(apply_filters('woocommerce_cart_item_class', 'cart_item', $cart_item, $cart_item_key)); ?> w-full flex flex-row items-center justify-start gap-15">
+						<a href="<?php echo esc_url(get_permalink($_product->get_id())); ?>" class="relative">
+							<?php echo ebs_get_badge(sprintf('%sx', $cart_item['quantity']), ["classes" => "absolute -top-5 -right-5"]); ?>
+							<figure class="w-60 h-60 rounded-[10px] overflow-hidden grow-0 shrink-0 border border-gray-400">
+								<img src="<?php echo esc_url(wp_get_attachment_url($_product->get_image_id())); ?>" alt="" class="w-full h-full object-cover" />
+							</figure>
+						</a>
+						<div class="flex flex-col gap-5">
+							<a href="<?php echo esc_url(get_permalink($_product->get_id())); ?>" class="product-name paragraph-md paragraph-regular text-gray-900">
+								<?php echo wp_kses_post(apply_filters('woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key)); ?>
+								<?php echo wc_get_formatted_cart_item_data($cart_item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+								?>
+							</a>
+							<div class="product-total paragraph-md paragraph-bold text-gray-900">
+								<?php echo apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+								?>
+							</div>
+						</div>
+					</div>
+			<?php
+				}
 			}
-		}
 
-		do_action('woocommerce_review_order_after_cart_contents');
-		?>
+			do_action('woocommerce_review_order_after_cart_contents');
+			?>
+		</div>
 	</div>
 	<div class="card-container card-container-primary">
 		<h2 class="card-title">Özet</h2>
