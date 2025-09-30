@@ -53,58 +53,55 @@ defined('ABSPATH') || exit;
 		<h2 class="card-title">Özet</h2>
 		<div class="w-full flex flex-col gap-20">
 			<div class="cart-subtotal w-full flex flex-row items-center justify-between">
-				<th><?php esc_html_e('Subtotal', 'woocommerce'); ?></th>
-				<td><?php wc_cart_totals_subtotal_html(); ?></td>
+				<div class="paragraph-md paragraph-regular text-gray-900"><?php esc_html_e('Subtotal', 'woocommerce'); ?></div>
+				<div class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_subtotal_html(); ?></div>
 			</div>
 
-			<?php foreach (WC()->cart->get_coupons() as $code => $coupon) : ?>
-				<tr class="cart-discount w-full flex flex-row items-center justify-between coupon-<?php echo esc_attr(sanitize_title($code)); ?>">
-					<th><?php wc_cart_totals_coupon_label($coupon); ?></th>
-					<td><?php wc_cart_totals_coupon_html($coupon); ?></td>
-				</tr>
+			<?php
+			foreach (WC()->cart->get_coupons() as $code => $coupon) : ?>
+				<div class="cart-discount w-full flex flex-row items-center justify-between px-15 py-10 bg-primary-50 rounded-[10px] border border-primary-500 border-dashed coupon-<?php echo esc_attr(sanitize_title($code)); ?>">
+					<div class="paragraph-md text-gray-900"><?php wc_cart_totals_coupon_label($coupon); ?></div>
+					<div class="flex flex-row gap-10 items-center justify-end"><?php wc_cart_totals_coupon_html($coupon); ?></div>
+				</div>
 			<?php endforeach; ?>
 
 			<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()) : ?>
-
 				<?php do_action('woocommerce_review_order_before_shipping'); ?>
-
-				<div class="w-full flex flex-row items-center justify-between">
+				<div class="ebs-checkout-shipping w-full flex flex-col items-start justify-start">
 					<?php wc_cart_totals_shipping_html(); ?>
 				</div>
-
 				<?php do_action('woocommerce_review_order_after_shipping'); ?>
-
 			<?php endif; ?>
 
 			<?php foreach (WC()->cart->get_fees() as $fee) : ?>
-				<tr class="fee w-full flex flex-row items-center justify-between">
-					<th><?php echo esc_html($fee->name); ?></th>
-					<td><?php wc_cart_totals_fee_html($fee); ?></td>
-				</tr>
+				<div class="fee w-full flex flex-row items-center justify-between">
+					<div class="paragraph-md paragraph-regular text-gray-900"><?php echo esc_html($fee->name); ?></div>
+					<div class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_fee_html($fee); ?></div>
+				</div>
 			<?php endforeach; ?>
 
 			<?php if (wc_tax_enabled() && ! WC()->cart->display_prices_including_tax()) : ?>
 				<?php if ('itemized' === get_option('woocommerce_tax_total_display')) : ?>
 					<?php foreach (WC()->cart->get_tax_totals() as $code => $tax) : // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited 
 					?>
-						<tr class="tax-rate w-full flex flex-row items-center justify-between tax-rate-<?php echo esc_attr(sanitize_title($code)); ?>">
-							<th><?php echo esc_html($tax->label); ?></th>
-							<td><?php echo wp_kses_post($tax->formatted_amount); ?></td>
-						</tr>
+						<div class="tax-rate w-full flex flex-row items-center justify-between tax-rate-<?php echo esc_attr(sanitize_title($code)); ?>">
+							<div class="paragraph-md paragraph-regular text-gray-900"><?php echo esc_html($tax->label); ?></div class="paragraph-md paragraph-regular text-gray-900">
+							<div class="paragraph-md paragraph-bold text-gray-900"><?php echo wp_kses_post($tax->formatted_amount); ?></div class="paragraph-md paragraph-regular text-gray-900">
+						</div>
 					<?php endforeach; ?>
 				<?php else : ?>
-					<tr class="tax-total w-full flex flex-row items-center justify-between">
-						<th><?php echo esc_html(WC()->countries->tax_or_vat()); ?></th>
-						<td><?php wc_cart_totals_taxes_total_html(); ?></td>
-					</tr>
+					<div class="tax-total w-full flex flex-row items-center justify-between">
+						<div class="paragraph-md paragraph-regular text-gray-900"><?php echo esc_html(WC()->countries->tax_or_vat()); ?></div>
+						<div class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_taxes_total_html(); ?></div>
+					</div>
 				<?php endif; ?>
 			<?php endif; ?>
 
 			<?php do_action('woocommerce_review_order_before_order_total'); ?>
-			<div class="w-full border-b border-dashed border-gray-900"></div>
+			<div class="w-full border-b border-dashed border-primary-600"></div>
 			<div class="order-total w-full flex flex-row items-center justify-between">
-				<div><?php esc_html_e('Total', 'woocommerce'); ?></div>
-				<div><?php wc_cart_totals_order_total_html(); ?></div>
+				<div class="paragraph-md paragraph-regular text-gray-900"><?php esc_html_e('Total', 'woocommerce'); ?></div>
+				<div class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_order_total_html(); ?></div>
 			</div>
 
 			<?php do_action('woocommerce_review_order_after_order_total'); ?>

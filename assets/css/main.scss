@@ -535,6 +535,63 @@ body {
   }
 }
 
+/* CHECKOUT */
+
+.ebs-checkout-shipping {
+  flex-direction: column;
+  gap: calc(var(--spacing) * 10);
+
+  .woocommerce-shipping-methods {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: calc(var(--spacing) * 10);
+
+    li {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      border-radius: calc(var(--spacing) * 30);
+      background-color: var(--color-primary-200);
+      cursor: pointer;
+      gap: calc(var(--spacing) * 5);
+      @include typography.text-md;
+      @extend .paragraph-medium;
+
+      label {
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 calc(var(--spacing) * 20) 0 calc(var(--spacing) * 20);
+        cursor: pointer;
+      }
+
+      &:has(.shipping_method:checked) {
+        background-color: var(--color-primary-400);
+
+        label {
+          padding: 0 0 0 calc(var(--spacing) * 20);
+        }
+      }
+
+      &:has(.shipping_method:checked):after {
+        content: "check";
+        @include icons.icon-font;
+        padding-right: calc(var(--spacing) * 15);
+      }
+
+      .shipping_method {
+        display: none;
+      }
+    }
+  }
+}
+
 @include breakpoints.breakpoint-1440;
 @include breakpoints.breakpoint-1024;
 @include breakpoints.breakpoint-768;

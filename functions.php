@@ -112,6 +112,44 @@ if (function_exists('register_sidebar')) {
     );
 }
 add_action('init', 'register_my_menus'); */
+
+
+/* CUSTOM COUPON HTML FOR CHECKOUT (Start) */
+add_filter('woocommerce_cart_totals_coupon_html', 'ebs_custom_checkout_coupon', 10, 3);
+
+function ebs_custom_checkout_coupon($coupon_html, $coupon, $discount_amount_html)
+{
+    $remove_url = esc_url(add_query_arg(
+        'remove_coupon',
+        rawurlencode($coupon->get_code()),
+        is_checkout() ? wc_get_checkout_url() : wc_get_cart_url()
+    ));
+
+    $new_html  = '<div class="paragraph-md paragraph-bold text-gray-900">' . $discount_amount_html . '</div>';
+
+    return sprintf(
+        '%s<a role="button" aria-label="%s" href="%s" class="paragraph-md paragraph-bold text-error-500" data-coupon="%s">%s</a>',
+        $new_html,
+        esc_attr(sprintf(__('Remove %s coupon', 'woocommerce'), $coupon->get_code())),
+        $remove_url,
+        esc_attr($coupon->get_code()),
+        __('Remove', 'woocommerce')
+    );
+}
+add_filter('woocommerce_cart_totals_coupon_label', 'ebs_custom_checkout_coupon_label', 10, 2);
+
+function ebs_custom_checkout_coupon_label($sprintf, $coupon)
+{
+
+    $couponCode = '<strong>' . esc_html__($coupon->get_code()) . '</strong>';
+
+    $sprintf = sprintf(__('Coupon: %s', 'woocommerce'), $couponCode);
+    return $sprintf;
+}
+
+/* CUSTOM COUPON HTML (End) */
+
+
 /* IMAGE SIZES (Start) */
 
 function ebs_custom_image_sizes()
