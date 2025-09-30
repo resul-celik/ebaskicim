@@ -31,7 +31,7 @@ if ($related_products) :
 ?>
 
 		<section class="related products swiper w-full relative flex flex-col gap-30 items-start">
-			<div class="swiper-wrapper w-full flex flex-row items-center justify-between">
+			<div class="swiper-wrapper w-full flex flex-row items-center justify-start">
 				<?php foreach ($related_products as $related_product) : ?>
 					<?php
 					$post_object = get_post($related_product->get_id());

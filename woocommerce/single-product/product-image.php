@@ -69,15 +69,19 @@ function ebs_project_tags()
 		<div class="photo-swiper-wrapper w-full aspect-4/3 relative box-content flex flex-row justify-start items-center">
 			<?php
 			// Display product thumbnail
-			echo '<figure class="photo-swiper-item product-thumbnail shrink-0">';
-			echo woocommerce_get_product_thumbnail('woocommerce_single');
+			echo '<figure class="photo-swiper-item h-full product-thumbnail shrink-0">';
+			echo '<div class="swiper-zoom-container w-full h-full">';
+			echo woocommerce_get_product_thumbnail('woocommerce_single', array('class' => 'w-full h-full object-cover'));
+			echo '</div>';
 			echo '</figure>';
 
 			if ($attachment_ids && is_array($attachment_ids)) {
 				foreach ($attachment_ids as $attachment_id) {
 					$image_url = wp_get_attachment_url($attachment_id);
-					echo '<figure class="photo-swiper-item product-image shrink-0">';
-					echo '<img src="' . esc_url($image_url) . '" alt="">';
+					echo '<figure class="photo-swiper-item h-full product-image shrink-0">';
+					echo '<div class="swiper-zoom-container w-full h-full">';
+					echo '<img src="' . esc_url($image_url) . '" alt="" class="w-full h-full object-cover">';
+					echo '</div>';
 					echo '</figure>';
 				}
 			}
@@ -89,11 +93,15 @@ function ebs_project_tags()
 		<div class="thumb-wrapper w-full flex flex-row justify-start items-center">
 			<?php
 			if ($attachment_ids && is_array($attachment_ids)) {
+				echo '<figure class="photo-swiper-thumb-item !w-60 !h-60 shrink-0 grow-0 rounded-[15px] overflow-hidden">';
+				echo woocommerce_get_product_thumbnail('woocommerce_single', array('class' => 'w-full h-full object-cover'));
+				echo '</figure>';
+
 				foreach ($attachment_ids as $attachment_id) {
 					$image_url = wp_get_attachment_url($attachment_id);
-					echo '<div class="photo-swiper-thumb-item !w-60 !h-60 shrink-0 grow-0 rounded-[15px] overflow-hidden">';
+					echo '<figure class="photo-swiper-thumb-item !w-60 !h-60 shrink-0 grow-0 rounded-[15px] overflow-hidden">';
 					echo '<img src="' . esc_url($image_url) . '" alt="" class="w-full h-full object-cover">';
-					echo '</div>';
+					echo '</figure>';
 				}
 			}
 			?>

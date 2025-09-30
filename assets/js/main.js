@@ -40,13 +40,6 @@ var mainSlider = new Swiper(".main-slider", {
   },
 });
 
-var orderSlider = new Swiper(".order-images", {
-  slidesPerView: 1,
-  spaceBetween: 0,
-  wrapperClass: "order-images-wrapper",
-  slideClass: "order-image",
-});
-
 // Photo Swiper
 
 var swiperThumbs = new Swiper(".swiper-thumbs", {
@@ -65,6 +58,10 @@ var photoSwiper = new Swiper(".photo-swiper", {
   slideClass: "photo-swiper-item",
   thumbs: {
     swiper: swiperThumbs,
+  },
+  grabCursor: true,
+  zoom: {
+    maxRatio: 2,
   },
 });
 
