@@ -20,14 +20,16 @@ if (! defined('ABSPATH')) {
                 </form>
             </div>
             <div class="flex flex-row gap-7">
-                <div class="cart-button relative">
-                    <div class="absolute z-10 top-0 right-0">
-                        <? $badgeText = WC()->cart->get_cart_contents_count() > 99 ? '99+' : WC()->cart->get_cart_contents_count(); ?>
-                        <?php echo ebs_get_badge($badgeText); ?>
-                    </div>
+                <? if (!preg_match('/\/cart/i', $_SERVER['REQUEST_URI'])) : ?>
+                    <div class="cart-button relative">
+                        <div class="absolute z-10 top-0 right-0">
+                            <? $badgeText = WC()->cart->get_cart_contents_count() > 99 ? '99+' : WC()->cart->get_cart_contents_count(); ?>
+                            <?php echo ebs_get_badge($badgeText); ?>
+                        </div>
 
-                    <div class="header-button cursor-pointer"><span class="header-button-text">Sepetim</span><i class="icon icon-cart"></i></div>
-                </div>
+                        <div class="header-button cursor-pointer"><span class="header-button-text">Sepetim</span><i class="icon icon-cart"></i></div>
+                    </div>
+                <? endif; ?>
                 <?php if (is_user_logged_in()) : ?>
                     <div class="account-button w-45 h-45 flex items-center justify-center bg-primary-400 text-xl rounded-full select-none cursor-pointer">
                         <?php
@@ -47,16 +49,18 @@ if (! defined('ABSPATH')) {
     <?php get_template_part('components/main-menu'); ?>
 </header>
 <?php
-$cartArgs = array(
-    'customClass' => 'cart-drawer-menu',
-    'width' => 'w-full md:w-600',
-    'title' => 'Sepetim',
-    'icon' => 'icon-cart',
-    'badgeCount' =>  WC()->cart->get_cart_contents_count()
-)
+if (!preg_match('/\/cart/i', $_SERVER['REQUEST_URI'])) {
+    $cartArgs = array(
+        'customClass' => 'cart-drawer-menu',
+        'width' => 'w-full md:w-600',
+        'title' => 'Sepetim',
+        'icon' => 'icon-cart',
+        'badgeCount' =>  WC()->cart->get_cart_contents_count()
+    );
+    echo get_drawer_menu($cartArgs, "woocommerce_mini_cart");
+}
 ?>
 <?php echo get_drawer_menu(array('customClass' => 'account-drawer-menu', 'width' => 'w-full md:w-470', 'title' => 'Hesabım', 'icon' => 'icon-person'), "account_drawer_menu_content"); ?>
-<?php echo get_drawer_menu($cartArgs, "woocommerce_mini_cart"); ?>
 <div class="dimness w-full h-screen inset-0 fixed bg-black/20 z-998">
 </div>
 <?php // echo get_permalink(get_option("woocommerce_myaccount_page_id")); 

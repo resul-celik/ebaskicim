@@ -535,6 +535,15 @@ body {
   }
 }
 
+/* CART */
+
+#coupon-error-notice {
+  @include typography.text-sm;
+  @extend .paragraph-regular;
+  flex-shrink: 0;
+  color: var(--color-error-500);
+}
+
 /* CHECKOUT */
 
 .ebs-checkout-shipping {

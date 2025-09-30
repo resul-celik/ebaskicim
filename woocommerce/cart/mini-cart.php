@@ -23,6 +23,32 @@ defined('ABSPATH') || exit;
 ?>
 <?php if (WC()->cart->get_cart()) : ?>
     <form class="woocommerce-cart-form shop_table shop_table_responsive cart w-full flex flex-col px-10 stretch grow-1 overflow-y-auto" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post">
+        <?php if (wc_coupons_enabled()) { ?>
+            <details class="w-full flex flex-col gap-10 px-10">
+                <summary class="flex flex-row gap-5 items-center list-none select-none cursor-pointer text-primary-600 paragraph-md paragraph-regular">
+                    <i class="icon icon-gift !w-16 !h-16 before:!w-16 before:!h-16 before:!text-[16px]"></i>
+                    Kupon Kullan
+                </summary>
+                <div class="mini-cart-coupon coupon w-full flex flex-row items-center justify-start gap-10">
+                    <label for="coupon_code" class="screen-reader-text"><?php esc_html_e('Coupon:', 'woocommerce'); ?></label>
+                    <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e('Coupon code', 'woocommerce'); ?>" />
+                    <?
+                    $buttonClass = "grow-0 shrink-0";
+                    $buttonArgs = [
+                        'text' => esc_attr__('Apply coupon', 'woocommerce'),
+                        'classes' => $buttonClass,
+                        'name' => 'apply_coupon',
+                        'value' => esc_attr__('Apply coupon', 'woocommerce'),
+                        'type' => 'submit',
+                        'hierarchy' => 'primary',
+                    ];
+                    echo get_button($buttonArgs);
+                    ?>
+                    <?php do_action('woocommerce_cart_coupon'); ?>
+
+                </div>
+            </details>
+        <?php } ?>
         <?php do_action('woocommerce_before_cart_table'); ?>
         <?php do_action('woocommerce_before_cart_contents'); ?>
         <?php foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) :
@@ -99,10 +125,10 @@ defined('ABSPATH') || exit;
         <!-- cart actions -->
         <?php do_action('woocommerce_after_cart_contents'); ?>
         <?php do_action('woocommerce_after_cart_table'); ?>
+
     </form>
 
     <?php do_action('woocommerce_before_cart_collaterals'); ?>
-
     <div class="cart-collaterals w-full flex flex-col">
         <?php
         /**
