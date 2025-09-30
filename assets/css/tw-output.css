@@ -39,6 +39,7 @@
     --color-primary-50: #fffae8;
     --color-primary-100: #ffefbc;
     --color-primary-200: #ffe48c;
+    --color-primary-300: #ffda52;
     --color-primary-400: #ffd000;
     --color-primary-500: #d5ad00;
     --color-primary-600: #af8e10;
@@ -628,6 +629,9 @@
   .gap-24 {
     gap: calc(var(--spacing) * 24);
   }
+  .gap-25 {
+    gap: calc(var(--spacing) * 25);
+  }
   .gap-30 {
     gap: calc(var(--spacing) * 30);
   }
@@ -862,6 +866,9 @@
   }
   .py-60 {
     padding-block: calc(var(--spacing) * 60);
+  }
+  .py-70 {
+    padding-block: calc(var(--spacing) * 70);
   }
   .py-\[1px\] {
     padding-block: 1px;

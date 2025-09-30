@@ -153,6 +153,8 @@ function ebs_custom_checkout_coupon_label($sprintf, $coupon)
     return $sprintf;
 }
 
+
+
 /* CUSTOM COUPON HTML (End) */
 
 

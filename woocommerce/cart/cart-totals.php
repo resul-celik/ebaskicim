@@ -18,8 +18,10 @@
 
 defined('ABSPATH') || exit;
 
+$wrapperClasses = is_cart() ? 'rounded-[15px] p-25' : 'p-20';
+
 ?>
-<div class="cart_totals w-full flex flex-col gap-23 p-20 bg-gray-100 <?php echo (WC()->customer->has_calculated_shipping()) ? 'calculated_shipping' : ''; ?>">
+<div class="cart_totals w-full flex flex-col gap-23 bg-gray-100 <?php echo esc_attr($wrapperClasses); ?> <?php echo (WC()->customer->has_calculated_shipping()) ? 'calculated_shipping' : ''; ?>">
 	<?php do_action('woocommerce_before_cart_totals'); ?>
 	<div class="shop_table shop_table_responsive w-full flex flex-col gap-23">
 		<div class="cart-subtotal w-full flex flex-row items-center justify-between">
@@ -32,26 +34,28 @@ defined('ABSPATH') || exit;
 				<div class="flex flex-row gap-10 items-center justify-end" data-title="<?php echo esc_attr(wc_cart_totals_coupon_label($coupon, false)); ?>"><?php wc_cart_totals_coupon_html($coupon); ?></div>
 			</div>
 		<?php endforeach; ?>
-		<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()) : ?>
+		<?php if (is_checkout()) : ?>
+			<?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()) : ?>
 
-			<?php do_action('woocommerce_cart_totals_before_shipping'); ?>
+				<?php do_action('woocommerce_cart_totals_before_shipping'); ?>
+				<div class="ebs-checkout-shipping w-full flex flex-col items-start justify-start">
+					<?php wc_cart_totals_shipping_html(); ?>
+				</div>
+				<?php do_action('woocommerce_cart_totals_after_shipping'); ?>
 
-			<?php wc_cart_totals_shipping_html(); ?>
+			<?php elseif (WC()->cart->needs_shipping() && 'yes' === get_option('woocommerce_enable_shipping_calc')) : ?>
 
-			<?php do_action('woocommerce_cart_totals_after_shipping'); ?>
+				<div class="cart-totals-item shipping w-full flex flex-row items-center justify-between">
+					<div class="cart-total-title paragraph-md paragraph-regular text-gray-900"><?php esc_html_e('Shipping', 'woocommerce'); ?></div>
+					<div data-title="<?php esc_attr_e('Shipping', 'woocommerce'); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php woocommerce_shipping_calculator(); ?></div>
+				</div>
 
-		<?php elseif (WC()->cart->needs_shipping() && 'yes' === get_option('woocommerce_enable_shipping_calc')) : ?>
-
-			<div class="cart-totals-item shipping w-full flex flex-row items-center justify-between">
-				<div class="cart-total-title paragraph-md paragraph-regular text-gray-900"><?php esc_html_e('Shipping', 'woocommerce'); ?></div>
-				<div data-title="<?php esc_attr_e('Shipping', 'woocommerce'); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php woocommerce_shipping_calculator(); ?></div>
-			</div>
-
+			<?php endif; ?>
 		<?php endif; ?>
 		<?php foreach (WC()->cart->get_fees() as $fee) : ?>
 			<div class="cart-totals-item fee w-full flex flex-row items-center justify-between">
 				<div class="cart-total-title paragraph-md paragraph-regular text-gray-900"><?php echo esc_html($fee->name); ?></div>
-				<td data-title="<?php echo esc_attr($fee->name); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_fee_html($fee); ?></td>
+				<div data-title="<?php echo esc_attr($fee->name); ?>" class="paragraph-md paragraph-bold text-gray-900"><?php wc_cart_totals_fee_html($fee); ?></div>
 			</div>
 		<?php endforeach; ?>
 

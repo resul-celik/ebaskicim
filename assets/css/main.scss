@@ -599,6 +599,16 @@ body {
       }
     }
   }
+
+  .cart-shipping-method {
+    li {
+      background-color: var(--color-gray-300);
+
+      &:has(.shipping_method:checked) {
+        background-color: var(--color-primary-400);
+      }
+    }
+  }
 }
 
 @include breakpoints.breakpoint-1440;

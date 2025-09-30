@@ -22,7 +22,7 @@ get_template_part("components/header");
 
 do_action('woocommerce_before_cart'); ?>
 
-<section class="w-full max-w-[1920px] flex items-start justify-start flex-row gap-32 py-60">
+<section class="w-full max-w-[1920px] flex items-start justify-start flex-row gap-32 px-20 py-60">
 	<form class="woocommerce-cart-form flex flex-col gap-30 grow-1 shrink-1 shadow-xs rounded-[15px]" action="<?php echo esc_url(wc_get_cart_url()); ?>" method="post">
 		<?php do_action('woocommerce_before_cart_table'); ?>
 		<h1 class="paragraph-2xl paragraph-medium text-gray-900 pt-25 pl-25">Sepet</h1>

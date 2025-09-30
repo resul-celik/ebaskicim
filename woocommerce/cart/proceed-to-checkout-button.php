@@ -31,15 +31,9 @@ $buttonArgs = array(
 	"url" => wc_get_checkout_url()
 );
 
-$cartButtonArgs = array(
-	"text" => "Sepet Detayları",
-	"trailingIcon" => "plus",
-	"url" => wc_get_cart_url(),
-	"hierarchy" => "tertiary"
-);
+
 ?>
 <?php
 echo '<div class="w-full flex flex-col gap-5">';
 echo get_button($buttonArgs);
-echo get_button($cartButtonArgs);
 echo '</div>'; ?>

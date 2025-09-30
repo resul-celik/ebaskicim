@@ -20,7 +20,7 @@ if (! defined('ABSPATH')) {
                 </form>
             </div>
             <div class="flex flex-row gap-7">
-                <? if (!preg_match('/\/cart/i', $_SERVER['REQUEST_URI'])) : ?>
+                <? if (!is_cart()) : ?>
                     <div class="cart-button relative">
                         <div class="absolute z-10 top-0 right-0">
                             <? $badgeText = WC()->cart->get_cart_contents_count() > 99 ? '99+' : WC()->cart->get_cart_contents_count(); ?>
@@ -49,7 +49,7 @@ if (! defined('ABSPATH')) {
     <?php get_template_part('components/main-menu'); ?>
 </header>
 <?php
-if (!preg_match('/\/cart/i', $_SERVER['REQUEST_URI'])) {
+if (!is_cart()) {
     $cartArgs = array(
         'customClass' => 'cart-drawer-menu',
         'width' => 'w-full md:w-600',
