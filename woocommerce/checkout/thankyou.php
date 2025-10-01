@@ -114,7 +114,7 @@ get_template_part('components/header');
 				<?php
 				$order_items = $order->get_items();
 				foreach ($order_items as $item_id => $item) {
-					/** @disregard ignore_get_product_error */
+					/** @disregard P1013 ignore get_product error */
 					$product = $item->get_product();
 				?>
 					<div class="w-full flex flex-row items-center justify-start gap-15">
