@@ -77,7 +77,22 @@ add_filter('woocommerce_get_price_html', 'ebs_price_html', 10, 2);
 /* PRICE HTML (End) */
 
 
+function ebs_get_avatar($args = [])
+{
+    $defaults = [
+        "class" => "w-80 h-80 text-[30px]",
+    ];
 
+    $args = wp_parse_args($args, $defaults);
+    $user = wp_get_current_user();
+
+    // show First Name and Last Name if exists. If not, show display name
+    $name = $user->first_name && $user->last_name ?  mb_substr($user->first_name, 0, 1) . '' . mb_substr($user->last_name, 0, 1) :  mb_substr($user->display_name, 0, 1);
+
+    $classes =  $args["class"] . " flex items-center justify-center bg-primary-400 rounded-full uppercase grow-0 shrink-0 select-none";
+
+    return sprintf('<div class="%s">%s</div>', $classes, $name);
+}
 
 // FUNCTIONS
 function product_status_tag($text, $class)

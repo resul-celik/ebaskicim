@@ -4,14 +4,7 @@ function account_drawer_menu_content()
 { ?>
     <div class="w-full flex items-center justify-center px-20 pb-20">
         <a href="<?php echo get_permalink(get_option("woocommerce_myaccount_page_id")); ?>" class="w-full p-20 flex flex-row items-center justify-start bg-gray-100 rounded-[10px] gap-10 hover:bg-gray-200">
-            <div class="account-button w-[70px] h-[70px] flex items-center justify-center bg-primary-400 text-[30px] rounded-full select-none cursor-pointer shrink-0 grow-0">
-                <?php
-                $user = wp_get_current_user();
-                $display_name = $user->display_name;
-
-                echo mb_substr($display_name, 0, 1);
-                ?>
-            </div>
+            <?php echo ebs_get_avatar(['class' => "w-60 h-60 text-[25px]"]); ?>
             <div class="flex flex-col gap-4 items-start grow-1">
                 <div class="flex flex-row items-center justify-start gap-5">
                     <div class="paragraph-md paragraph-bold text-gray-900"><?php echo wp_get_current_user()->display_name; ?></div>

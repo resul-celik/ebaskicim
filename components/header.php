@@ -31,14 +31,7 @@ if (! defined('ABSPATH')) {
                     </div>
                 <? endif; ?>
                 <?php if (is_user_logged_in()) : ?>
-                    <div class="account-button w-45 h-45 flex items-center justify-center bg-primary-400 text-xl rounded-full select-none cursor-pointer uppercase">
-                        <?php
-                        $user = wp_get_current_user();
-                        $display_name = $user->display_name;
-
-                        echo mb_substr($display_name, 0, 1);
-                        ?>
-                    </div>
+                    <?php echo ebs_get_avatar(['class' => "account-button w-45 h-45 text-xl cursor-pointer"]); ?>
                 <?php else : ?>
                     <a href="<?php echo get_permalink(get_option("woocommerce_myaccount_page_id")); ?>" class="header-button"><span class="header-button-text">Giriş yap / Kaydol</span><i class="icon icon-person"></i></a>
                 <?php endif; ?>

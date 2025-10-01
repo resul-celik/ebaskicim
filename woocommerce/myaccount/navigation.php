@@ -22,14 +22,12 @@ if (! defined('ABSPATH')) {
 
 do_action('woocommerce_before_account_navigation');
 
-$user = wp_get_current_user();
-$display_name = $user->display_name;
 ?>
 
 <nav class="woocommerce-MyAccount-navigation account-nav w-full md:max-w-350 flex flex-col p-25 bg-gray-100 gap-20 rounded-[15px] items-center" aria-label="<?php esc_html_e('Account pages', 'woocommerce'); ?>">
 	<div class="w-full flex flex-col items-center gap-24">
 		<div class="w-80 h-80 flex items-center justify-center bg-primary-400 text-[30px] rounded-full uppercase">
-			<?php echo mb_substr($display_name, 0, 1); ?>
+			<?php echo ebs_get_avatar(); ?>
 		</div>
 		<div class="flex flex-col gap-4 items-center">
 			<div class="flex flex-row items-center justify-center gap-5 paragraph-2xl paragraph-medium text-gray-900">
