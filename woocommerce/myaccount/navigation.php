@@ -21,20 +21,18 @@ if (! defined('ABSPATH')) {
 }
 
 do_action('woocommerce_before_account_navigation');
+
+$user = wp_get_current_user();
+$display_name = $user->display_name;
 ?>
 
 <nav class="woocommerce-MyAccount-navigation account-nav w-full md:max-w-350 flex flex-col p-25 bg-gray-100 gap-20 rounded-[15px] items-center" aria-label="<?php esc_html_e('Account pages', 'woocommerce'); ?>">
 	<div class="w-full flex flex-col items-center gap-24">
-		<div class="w-80 h-80 flex items-center justify-center bg-primary-400 text-[30px] rounded-full">
-			<?php
-			$user = wp_get_current_user();
-			$display_name = $user->display_name;
-
-			echo mb_substr($display_name, 0, 1);
-			?>
+		<div class="w-80 h-80 flex items-center justify-center bg-primary-400 text-[30px] rounded-full uppercase">
+			<?php echo mb_substr($display_name, 0, 1); ?>
 		</div>
 		<div class="flex flex-col gap-4 items-center">
-			<div class="paragraph-2xl paragraph-medium text-gray-900">
+			<div class="flex flex-row items-center justify-center gap-5 paragraph-2xl paragraph-medium text-gray-900">
 				<?php
 				$current_user = wp_get_current_user();
 				if ($current_user->display_name) {
@@ -43,6 +41,9 @@ do_action('woocommerce_before_account_navigation');
 					echo esc_html($current_user->user_login);
 				}
 				?>
+				<?php if (current_user_can('kurumsal')) : ?>
+					<?php echo get_template_part('components/corporate-badge'); ?>
+				<?php endif; ?>
 			</div>
 			<div class="paragraph-md paragraph-regular text-gray-700">
 				<?php
@@ -51,6 +52,9 @@ do_action('woocommerce_before_account_navigation');
 				}
 				?>
 			</div>
+			<?php if (current_user_can('kurumsal')) : ?>
+				<p class="paragraph-xs paragraph-medium text-primary-600">Tüm ürünlerde %<?php echo apply_filters('ebs_kurumsal_discount_percentage', 0); ?> kurumsal indirim</p>
+			<?php endif; ?>
 		</div>
 	</div>
 	<ul class="w-full flex flex-col">

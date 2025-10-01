@@ -14,8 +14,8 @@ function account_drawer_menu_content()
             </div>
             <div class="flex flex-col gap-4 items-start grow-1">
                 <div class="flex flex-row items-center justify-start gap-5">
-                    <div class="paragraph-mg paragraph-bold text-gray-900"><?php echo wp_get_current_user()->display_name; ?></div>
-                    <?php if (current_user_can('kurumsal_uye')) : ?>
+                    <div class="paragraph-md paragraph-bold text-gray-900"><?php echo wp_get_current_user()->display_name; ?></div>
+                    <?php if (current_user_can('kurumsal')) : ?>
                         <?php echo get_template_part('components/corporate-badge'); ?>
                     <?php endif; ?>
                 </div>

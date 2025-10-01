@@ -59,6 +59,15 @@ if (empty($product) || ! $product->is_visible()) {
                     echo product_status_tag("%$discount_percentage indirim", "bg-primary-400 text-gray-900");
                 }
 
+                // Kurumsal tag
+                if (is_user_logged_in()) {
+                    $user = wp_get_current_user();
+
+                    if (in_array('kurumsal', (array) $user->roles)) {
+                        echo product_status_tag("Kurumsal indirim", "bg-primary-400 text-gray-900");
+                    }
+                }
+
                 // Featured tag
                 if ($product->is_featured()) {
                     echo product_status_tag("Çok Satan", "bg-gray-700 text-white");
@@ -76,13 +85,14 @@ if (empty($product) || ! $product->is_visible()) {
         </div>
         <span class="price flex flex-row gap-[8px] justify-start display-sm text-gray-900">
             <?php
-            // get sale price
-            if ($product->is_on_sale()) {
+            // get price html
+            echo $product->get_price_html();
+            /*  if ($product->is_on_sale()) {
                 echo "<del class='old-price'>" . wc_price($product->get_regular_price()) . "</del>";
                 echo wc_price($product->get_sale_price());
             } else {
                 echo wc_price($product->get_regular_price());
-            }
+            } */
             ?>
         </span>
     </div>

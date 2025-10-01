@@ -47,7 +47,6 @@
     --color-error-200: #ffabab;
     --color-error-300: #ff7a88;
     --color-error-500: #e52046;
-    --color-error-600: #c81a3a;
     --color-error-800: #7c0f26;
     --color-error-900: #560a1b;
     --color-success-500: #23e27d;
@@ -361,9 +360,6 @@
   .\!w-60 {
     width: calc(var(--spacing) * 60) !important;
   }
-  .w-1 {
-    width: calc(var(--spacing) * 1);
-  }
   .w-1\/4 {
     width: calc(1/4 * 100%);
   }
@@ -418,9 +414,6 @@
   .max-w-\[400px\] {
     max-width: 400px;
   }
-  .max-w-\[500px\] {
-    max-width: 500px;
-  }
   .max-w-\[540px\] {
     max-width: 540px;
   }
@@ -436,9 +429,6 @@
   .flex-1 {
     flex: 1;
   }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
   .shrink-0 {
     flex-shrink: 0;
   }
@@ -447,9 +437,6 @@
   }
   .\!grow-1 {
     flex-grow: 1 !important;
-  }
-  .flex-grow {
-    flex-grow: 1;
   }
   .grow-0 {
     flex-grow: 0;
@@ -462,9 +449,6 @@
   }
   .basis-\[450px\] {
     flex-basis: 450px;
-  }
-  .border-collapse {
-    border-collapse: collapse;
   }
   .border-separate {
     border-collapse: separate;
@@ -486,9 +470,6 @@
   }
   .cursor-pointer {
     cursor: pointer;
-  }
-  .resize {
-    resize: both;
   }
   .list-none {
     list-style-type: none;
@@ -818,6 +799,9 @@
   .py-\[1px\] {
     padding-block: 1px;
   }
+  .pt-2 {
+    padding-top: calc(var(--spacing) * 2);
+  }
   .pt-10 {
     padding-top: calc(var(--spacing) * 10);
   }
@@ -884,15 +868,16 @@
   .text-\[30px\] {
     font-size: 30px;
   }
+  .\!leading-\[100\%\] {
+    --tw-leading: 100% !important;
+    line-height: 100% !important;
+  }
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
   }
   .text-error-500 {
     color: var(--color-error-500);
-  }
-  .text-error-600 {
-    color: var(--color-error-600);
   }
   .text-gray-500 {
     color: var(--color-gray-500);
@@ -927,9 +912,6 @@
   .uppercase {
     text-transform: uppercase;
   }
-  .underline {
-    text-decoration-line: underline;
-  }
   .shadow-md {
     --tw-shadow: 0 6px 20px var(--tw-shadow-color, rgba(32, 36, 42, 0.14));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -942,10 +924,6 @@
     --tw-shadow: 0 1px 6px var(--tw-shadow-color, rgba(32, 36, 42, 0.12));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
-  }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
@@ -956,6 +934,27 @@
   .select-none {
     -webkit-user-select: none;
     user-select: none;
+  }
+  .group-hover\/kurumsal\:block {
+    &:is(:where(.group\/kurumsal):hover *) {
+      @media (hover: hover) {
+        display: block;
+      }
+    }
+  }
+  .group-hover\/kurumsal\:w-auto {
+    &:is(:where(.group\/kurumsal):hover *) {
+      @media (hover: hover) {
+        width: auto;
+      }
+    }
+  }
+  .group-hover\/kurumsal\:pr-6 {
+    &:is(:where(.group\/kurumsal):hover *) {
+      @media (hover: hover) {
+        padding-right: calc(var(--spacing) * 6);
+      }
+    }
   }
   .placeholder\:text-gray-600 {
     &::placeholder {
@@ -1209,6 +1208,10 @@
   inherits: false;
   initial-value: solid;
 }
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-font-weight {
   syntax: "*";
   inherits: false;
@@ -1277,11 +1280,6 @@
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
-}
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
 }
 @property --tw-blur {
   syntax: "*";
@@ -1359,6 +1357,7 @@
       --tw-skew-x: initial;
       --tw-skew-y: initial;
       --tw-border-style: solid;
+      --tw-leading: initial;
       --tw-font-weight: initial;
       --tw-shadow: 0 0 #0000;
       --tw-shadow-color: initial;
@@ -1374,7 +1373,6 @@
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
-      --tw-outline-style: solid;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;

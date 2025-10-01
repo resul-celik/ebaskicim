@@ -32,6 +32,7 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 			$show_order = false;
 
 			foreach ($items as $item) {
+				/** @disregard P1013 ignore get_product error */
 				$product = $item->get_product();
 				if ($product) {
 					$show_order = true;
@@ -68,6 +69,7 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 							<?php
 							$i = 0;
 							foreach ($items as $item) {
+								/** @disregard P1013 ignore get_product error */
 								$product = $item->get_product();
 								$i++;
 
@@ -140,8 +142,9 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 	<?php endif; ?>
 
 <?php } else { ?>
-	<h1 class="paragraph-2xl paragraph-medium text-gray-900">Siparişler</h1>
+	<h1 class="paragraph-2xl paragraph-medium text-gray-900 pt-25 pl-25">Siparişler</h1>
 	<div class="w-full flex flex-col items-center">
+		<img src="<?php echo get_template_directory_uri(); ?>/assets/images/empty-cart.svg" alt="">
 		<div class="w-full max-w-350 flex flex-col items-center gap-20 py-60">
 			<p>Henüz siparişiniz yok</p>
 			<?

@@ -10,6 +10,75 @@ add_action('after_setup_theme', 'customtheme_add_woocommerce_support');
 add_filter('woocommerce_enqueue_styles', '__return_empty_array');
 add_filter('woocommerce_ship_to_different_address_checked', '__return_true');
 
+/* KURUMSAL DISCOUNT (Start) */
+
+function ebs_default_kurumsal_discount($discount)
+{
+    return 40;
+}
+add_filter('ebs_kurumsal_discount_percentage', 'ebs_default_kurumsal_discount');
+
+// Calculate kurumsal discount on checkout
+function ebs_apply_kurumsal_discount($cart)
+{
+    if (is_admin() && ! defined('DOING_AJAX')) return;
+    if (! is_user_logged_in()) return;
+
+    $user = wp_get_current_user();
+    if (in_array('kurumsal', (array) $user->roles)) {
+        $discount_percentage = apply_filters('ebs_kurumsal_discount_percentage', 0);
+        $discount = $cart->get_subtotal() * ($discount_percentage / 100);
+        $cart->add_fee(sprintf(__('Kurumsal İndirim (%%%s)', 'textdomain'), $discount_percentage), -$discount);
+    }
+}
+add_action('woocommerce_cart_calculate_fees', 'ebs_apply_kurumsal_discount');
+
+/* KURUMSAL DISCOUNT (End) */
+
+/* PRICE HTML (Start) */
+
+function ebs_price_html($price, $product)
+{
+
+    // Price with kurumsal discount
+    if (is_user_logged_in() && in_array('kurumsal', wp_get_current_user()->roles)) {
+        $discount_percentage = apply_filters('ebs_kurumsal_discount_percentage', 0);
+        $regular_price = $product->get_price();
+        $discounted = $regular_price * ((100 - $discount_percentage) / 100);
+
+        $price = sprintf(
+            '<del class="old-price">%s</del><ins class="new-price">%s</ins>',
+            wc_price($regular_price, array('in_span' => false)),
+            wc_price($discounted, array('in_span' => false))
+        );
+    } else {
+
+        // Normal discount
+        $regular_price = $product->get_regular_price();
+        $sale_price = $product->get_sale_price();
+
+        if ($sale_price) {
+            $price = sprintf(
+                '<del class="old-price">%s</del><ins class="new-price">%s</ins>',
+                wc_price($regular_price, array('in_span' => false)),
+                wc_price($sale_price, array('in_span' => false))
+            );
+        } else {
+            $price = sprintf(
+                '<ins class="new-price">%s</ins>',
+                wc_price($regular_price, array('in_span' => false))
+            );
+        }
+    }
+    return $price;
+}
+add_filter('woocommerce_get_price_html', 'ebs_price_html', 10, 2);
+
+/* PRICE HTML (End) */
+
+
+
+
 // FUNCTIONS
 function product_status_tag($text, $class)
 {

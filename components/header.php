@@ -31,7 +31,7 @@ if (! defined('ABSPATH')) {
                     </div>
                 <? endif; ?>
                 <?php if (is_user_logged_in()) : ?>
-                    <div class="account-button w-45 h-45 flex items-center justify-center bg-primary-400 text-xl rounded-full select-none cursor-pointer">
+                    <div class="account-button w-45 h-45 flex items-center justify-center bg-primary-400 text-xl rounded-full select-none cursor-pointer uppercase">
                         <?php
                         $user = wp_get_current_user();
                         $display_name = $user->display_name;

@@ -68,6 +68,34 @@ body {
   overflow: hidden;
 }
 
+/* PRICE (Start) */
+
+.old-price {
+  text-decoration: none;
+  position: relative;
+  color: var(--color-gray-500);
+  letter-spacing: -0.03em;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-primary-400);
+    transform: rotate(-9deg);
+  }
+}
+
+.new-price {
+  text-decoration: none;
+  color: var(--color-gray-900);
+  letter-spacing: -0.03em;
+}
+
+/* PRICE (End) */
+
 /* NOTIFICATION (Start) */
 
 .woocommerce-notices-wrapper {
@@ -223,8 +251,11 @@ body {
     }
   }
 
-  .product-title {
-    @include typography.text-lg;
+  .product-info {
+    .old-price,
+    .new-price {
+      @include typography.display-sm;
+    }
   }
 
   &:hover {
@@ -235,20 +266,14 @@ body {
     }
   }
 }
-.old-price {
-  text-decoration: none;
-  position: relative;
-  color: var(--color-gray-500);
 
-  &::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: var(--color-primary-400);
-    transform: rotate(-5deg);
+.single-product-price {
+  display: flex;
+  gap: calc(var(--spacing) * 10);
+
+  .old-price,
+  .new-price {
+    @include typography.display-md;
   }
 }
 
@@ -273,36 +298,6 @@ body {
         text-decoration: underline;
       }
     }
-  }
-}
-
-.price {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-
-  del {
-    text-decoration: none;
-    position: relative;
-    color: var(--color-gray-500);
-    @include typography.display-md;
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: var(--color-primary-400);
-      transform: rotate(-5deg);
-    }
-  }
-
-  ins {
-    text-decoration: none;
-    color: var(--color-gray-900);
-    @include typography.display-md;
   }
 }
 
@@ -373,26 +368,6 @@ body {
   transition: opacity 0.3s ease-in-out;
   opacity: 1;
   pointer-events: all;
-}
-
-.corporation-badge {
-  .corporation-badge-wrapper {
-    .badge-text {
-      display: none;
-    }
-  }
-
-  &:hover {
-    .corporation-badge-wrapper {
-      width: auto;
-      flex-shrink: 0;
-      padding-right: 6px;
-
-      .badge-text {
-        display: block;
-      }
-    }
-  }
 }
 
 .woocommerce-cart-form__cart-item {
