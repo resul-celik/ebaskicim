@@ -24,22 +24,38 @@ get_header('shop');
 get_template_part('components/header');
 
 $category = get_queried_object();
-//$category_slug = $category->slug;
-
-// category url
+$category_slug = $category->slug;
 $category_url = get_term_link($category);
-$filterSize = isset($_GET['size']) ? $_GET['size'] : '';
-$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : '';
+$currentCat = get_queried_object();
 
-$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+$filters = ebs_get_category_filters($category_slug);
+
+print_r($filters);
+
+
+
+$paged = (get_query_var('paged', 1));
+$tax_queries = array('relation' => 'AND');
+
+foreach ($_GET as $key => $value) {
+	if (strpos($key, 'pa_') === 0 && !empty($value)) {
+		$terms = array_map('sanitize_text_field', explode(',', $value));
+		$tax_queries[] = array(
+			'taxonomy' => $key,
+			'field' => 'slug',
+			'terms' => $terms,
+			'operator' => 'IN',
+		);
+	}
+}
 
 $args = array(
 	'post_type' => 'product',
 	'product_cat' => $category->slug,
 	'orderby' => array(
 		'menu_order' => 'ASC',
-		'meta_value' => 'ASC', // Order by stock status first
-		'date' => 'DESC' // Then order by date
+		'meta_value' => 'ASC',
+		'date' => 'DESC',
 	),
 	'order' => 'DESC',
 	'paged' => $paged,
@@ -48,23 +64,17 @@ $args = array(
 		array(
 			'key' => '_stock_status',
 			'value' => 'instock',
-			'compare' => '='
+			'compare' => '=',
 		),
 		array(
 			'key' => '_stock_status',
 			'value' => 'outofstock',
-			'compare' => '='
-		)
+			'compare' => '=',
+		),
 	),
-	/* 'tax_query' => array(
-				array(
-					'taxonomy' => 'pa_olcu',
-					'field' => 'slug',
-					'terms' => $filterSize,
-					'operator' => $filterSize ? 'IN' : 'NOT IN',
-				),
-			), */
+	'tax_query' => $tax_queries,
 );
+
 
 $products = new WP_Query($args);
 
@@ -79,79 +89,105 @@ do_action('woocommerce_before_main_content'); ?>
 			</div>
 		</div>
 	<?php endif; ?>
+	<div class="w-full flex flex-row gap-30">
+		<div class="w-444 flex flex-col grow-1 shrink-1 basis-1/4 gap-30 px-20 py-20 shadow-xs rounded-[15px] shrink-0">
+			<div class="w-full flex flex-col gap-10">
+				<h2 class="paragraph-lg paragraph-bold text-gray-900">Kelimeye göre filtrele</h2>
+				<?php echo do_shortcode('[woocommerce_product_search]'); ?>
+			</div>
+			<div class="w-full flex flex-col gap-10">
+				<h2 class="paragraph-lg paragraph-bold text-gray-900">Kategoriler</h2>
+				<div class="w-full flex flex-row gap-5 flex-wrap">
+					<?php
 
-	<?php
+					$terms = get_terms(array(
+						'taxonomy' => 'product_cat',
+						'hide_empty' => false,
+					));
 
-	// all product size attribute values
-	/* $size_terms = get_terms(array(
-		'taxonomy' => 'pa_olcu',
-		'hide_empty' => false,
-	));
+					$currentCat = get_queried_object();
 
-	$filters_output = null;
+					foreach ($terms as $term) {
+						$term_link = get_term_link($term);
+						echo '<a href="' . $term_link . '" class="flex flex-row items-center justify-center px-15 py-5 ' . ($currentCat->slug === $term->slug ? 'bg-primary-400' : 'bg-gray-100 hover:bg-gray-200') . ' rounded-full paragraph-sm">' . $term->name . '</a>';
+					}
 
-	foreach ($size_terms as $size_term) {
-		$size = $size_term->name;
-		$size_slug = $size_term->slug;
-		$size_link = get_term_link($size_term);
-		$size_active = isset($_GET['size']) && $_GET['size'] === $size_slug;
-		$size_class = $size_active ? 'active' : '';
+					?>
+				</div>
+			</div>
+			<?php if ($filters["taxonomies"]) : ?>
+				<div class="w-full flex flex-col gap-10">
+					<h2 class="paragraph-lg paragraph-bold text-gray-900">Özellikler</h2>
+					<div class="flex flex-col">
+						<?php foreach ($filters["taxonomies"] as $attribute) : ?>
+							<?php
+							$attributeName = $attribute["name"];
+							$attributeSlug = $attribute["slug"];
+							$getAttribute = @$_GET[$attributeSlug];
+							?>
+							<details class="group/filter-accordion border-b-1 border-gray-200 last:border-none" <?php echo $getAttribute ? "open" : "" ?>>
+								<summary class="flex flex-row items-center justify-between py-15 paragraph-md paragraph-medium text-gray-900 select-none cursor-pointer">
+									<?php echo esc_html($attributeName); ?>
+									<i class="icon icon-chevron-down"></i>
+								</summary>
+								<?php if ($attribute["terms"]) : ?>
+									<div class="w-full flex flex-row gap-5 flex-wrap pb-10">
+										<?php
+										$checkAttribute =  $getAttribute ? 'bg-gray-100 hover:bg-gray-200' : 'bg-primary-400';
+										echo sprintf(
+											'<a href="%s" class="flex flex-row items-center justify-center px-15 py-5 rounded-full paragraph-sm %s">%s</a>',
+											$category_url,
+											$checkAttribute,
+											"Tümü"
+										);
+										?>
+										<?php foreach ($attribute["terms"] as $term) : ?>
+											<?php
+											$filter_url = add_query_arg($attributeSlug, $term["slug"], $category_url);
+											$filter_active = isset($getAttribute) && $getAttribute === $term["slug"];
+											$termClass = $filter_active ? 'bg-primary-400' : 'bg-gray-100 hover:bg-gray-200';
 
-		$current_url = add_query_arg(null, null);
-		$filtered_url = add_query_arg('size', $size_slug, $current_url);
-		$args = array(
-			'post_type' => 'product',
-			'product_cat' => $category->slug,
-			'posts_per_page' => 1,
-			'tax_query' => array(
-				array(
-					'taxonomy' => 'pa_size',
-					'field' => 'slug',
-					'terms' => $size_slug,
-				),
-			),
-		);
+											echo sprintf(
+												'<a href="%s" class="flex flex-row items-center justify-center px-15 py-5 rounded-full paragraph-sm %s">%s</a>',
+												$filter_url,
+												$termClass,
+												$term["name"]
+											);
+											?>
+										<?php endforeach; ?>
+									</div>
+								<?php endif; ?>
+							</details>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			<?php endif; ?>
+		</div>
+		<div class="flex flex-row items-start justify-start grow-1 shrink-1 basis-3/4 gap-y-20 flex-wrap">
+			<?php
 
-		$query = new WP_Query($args);
+			if ($products->have_posts()) :
 
-		if ($query->have_posts()) {
+				if (wc_get_loop_prop('total')) :
+					while ($products->have_posts()) : $products->the_post();
 
-			$filters_output .= "<a href='$filtered_url' class='tag " . ($filterSize === $size_slug ? 'tag-active' : '') . " $size_class' data-size='$size_slug'>$size</a>";
-		}
-		wp_reset_postdata();
-	}
+						do_action('woocommerce_shop_loop');
 
-	if (isset($filters_output)) {
-		$allPosts = "<a href='" . $category_url . "' class='tag " . ($filterSize === '' ? 'tag-active' : '') . "'>" . __('All', 'junobjects') . "</a>";
-		echo '<div class="product-filters">' . $allPosts . $filters_output . '</div>';
-	} */
+						wc_get_template_part('content', 'product');
 
-
-	?>
-	<div class="w-full flex flex-row gap-y-20 flex-wrap">
-		<?php
-
-		if ($products->have_posts()) :
-
-			if (wc_get_loop_prop('total')) :
-				while ($products->have_posts()) : $products->the_post();
-
-					do_action('woocommerce_shop_loop');
-
-					wc_get_template_part('content', 'product');
-
-				endwhile;
-				wp_reset_postdata();
+					endwhile;
+					wp_reset_postdata();
+				endif;
+				if ($products->max_num_pages > 1) :
+					do_action('woocommerce_after_shop_loop');
+				endif;
+			else:
+				do_action('woocommerce_no_products_found');
 			endif;
-			if ($products->max_num_pages > 1) :
-				do_action('woocommerce_after_shop_loop');
-			endif;
-		else:
-			do_action('woocommerce_no_products_found');
-		endif;
-		do_action('woocommerce_after_main_content');
+			do_action('woocommerce_after_main_content');
 
-		?>
+			?>
+		</div>
 	</div>
 </div>
 <?php get_template_part('components/footer');

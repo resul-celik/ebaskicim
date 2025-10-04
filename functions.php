@@ -272,3 +272,115 @@ function misha_redirect_to_orders_from_dashboard()
         exit;
     }
 }
+
+
+function ebs_get_active_attribute_terms_in_category($taxonomy, $category_id)
+{
+    // Kategorideki ürünleri al
+    $products = get_posts([
+        'post_type' => 'product',
+        'numberposts' => -1,
+        'tax_query' => [
+            [
+                'taxonomy' => 'product_cat',
+                'field'    => 'term_id',
+                'terms'    => $category_id,
+            ],
+        ],
+        'fields' => 'ids', // sadece ID'leri al, performans için
+    ]);
+
+    if (empty($products)) return [];
+
+    // Bu ürünlerde kullanılan attribute terimlerini al
+    $terms = wp_get_object_terms($products, $taxonomy);
+
+    return $terms;
+}
+
+function ebs_get_category_filters($category_slug)
+{
+    $category = get_term_by('slug', $category_slug, 'product_cat');
+    if (!$category) return [];
+
+    // Kategorideki ürünleri çek
+    $args = array(
+        'post_type' => 'product',
+        'posts_per_page' => -1,
+        'fields' => 'ids',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => $category_slug,
+            ),
+        ),
+    );
+
+    $product_ids = get_posts($args);
+    if (empty($product_ids)) return [];
+
+    // Tüm ürünlerde geçen attribute'ları bul
+    $attributes = wc_get_attribute_taxonomies();
+    $response = [
+        'categoryName' => $category->name,
+        'slug' => $category->slug,
+        'taxonomies' => []
+    ];
+
+    foreach ($attributes as $attribute) {
+        $taxonomy = 'pa_' . $attribute->attribute_name;
+        if (!taxonomy_exists($taxonomy)) continue;
+
+        $terms = get_terms([
+            'taxonomy' => $taxonomy,
+            'hide_empty' => false
+        ]);
+
+        $term_data = [];
+        foreach ($terms as $term) {
+            // Bu termi içeren ürünleri say
+            $count_args = [
+                'post_type' => 'product',
+                'posts_per_page' => -1,
+                'fields' => 'ids',
+                'tax_query' => [
+                    'relation' => 'AND',
+                    [
+                        'taxonomy' => 'product_cat',
+                        'field'    => 'slug',
+                        'terms'    => $category_slug,
+                    ],
+                    [
+                        'taxonomy' => $taxonomy,
+                        'field'    => 'slug',
+                        'terms'    => $term->slug,
+                    ]
+                ]
+            ];
+
+            $term_products = get_posts($count_args);
+            $product_count = count($term_products);
+
+            // Eğer bu terim kategoride hiç kullanılmamışsa atla
+            if ($product_count > 0) {
+                $term_data[] = [
+                    'name' => $term->name,
+                    'slug' => $term->slug,
+                    'products' => $product_count
+                ];
+            }
+        }
+
+        // Sadece term’leri olan taxonomy’leri ekle
+        if (!empty($term_data)) {
+            $response['taxonomies'][$taxonomy] = [
+                'name' => $attribute->attribute_label,
+                'slug' => $attribute->attribute_name,
+                'terms' => $term_data
+            ];
+        }
+    }
+
+    return $response;
+}

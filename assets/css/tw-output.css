@@ -393,6 +393,9 @@
   .w-150 {
     width: calc(var(--spacing) * 150);
   }
+  .w-444 {
+    width: calc(var(--spacing) * 444);
+  }
   .w-auto {
     width: auto;
   }
@@ -413,9 +416,6 @@
   }
   .max-w-\[540px\] {
     max-width: 540px;
-  }
-  .max-w-\[600px\] {
-    max-width: 600px;
   }
   .max-w-\[690px\] {
     max-width: 690px;
@@ -452,6 +452,18 @@
   }
   .grow-1 {
     flex-grow: 1;
+  }
+  .basis-1 {
+    flex-basis: calc(var(--spacing) * 1);
+  }
+  .basis-1\/4 {
+    flex-basis: calc(1/4 * 100%);
+  }
+  .basis-3 {
+    flex-basis: calc(var(--spacing) * 3);
+  }
+  .basis-3\/4 {
+    flex-basis: calc(3/4 * 100%);
   }
   .basis-50 {
     flex-basis: calc(var(--spacing) * 50);
@@ -672,6 +684,10 @@
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
+  .border-b-1 {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 1px;
+  }
   .border-dashed {
     --tw-border-style: dashed;
     border-style: dashed;
@@ -841,6 +857,9 @@
   .\!pb-25 {
     padding-bottom: calc(var(--spacing) * 25) !important;
   }
+  .pb-10 {
+    padding-bottom: calc(var(--spacing) * 10);
+  }
   .pb-15 {
     padding-bottom: calc(var(--spacing) * 15);
   }
@@ -952,13 +971,15 @@
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
-  .ease-in-out {
-    --tw-ease: var(--ease-in-out);
-    transition-timing-function: var(--ease-in-out);
-  }
   .select-none {
     -webkit-user-select: none;
     user-select: none;
+  }
+  .group-last\/filter-accordion\:border-none {
+    &:is(:where(.group\/filter-accordion):last-child *) {
+      --tw-border-style: none;
+      border-style: none;
+    }
   }
   .group-hover\/kurumsal\:block {
     &:is(:where(.group\/kurumsal):hover *) {
@@ -1020,6 +1041,12 @@
     &:last-child {
       border-bottom-style: var(--tw-border-style);
       border-bottom-width: 0px;
+    }
+  }
+  .last\:border-none {
+    &:last-child {
+      --tw-border-style: none;
+      border-style: none;
     }
   }
   .hover\:border-primary-500 {
@@ -1364,10 +1391,6 @@
   syntax: "*";
   inherits: false;
 }
-@property --tw-ease {
-  syntax: "*";
-  inherits: false;
-}
 @property --tw-content {
   syntax: "*";
   initial-value: "";
@@ -1417,7 +1440,6 @@
       --tw-drop-shadow-color: initial;
       --tw-drop-shadow-alpha: 100%;
       --tw-drop-shadow-size: initial;
-      --tw-ease: initial;
       --tw-content: "";
     }
   }
