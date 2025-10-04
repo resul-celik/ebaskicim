@@ -100,6 +100,8 @@ if (post_password_required()) {
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
+		<?php woocommerce_template_single_meta(); ?>
+
 	</div>
 
 	<?php
@@ -116,26 +118,12 @@ if (post_password_required()) {
 	 * @hooked WC_Structured_Data::generate_product_data() - 60
 	 */
 	//do_action( 'woocommerce_single_product_summary' );
+
+
 	?>
 
 
 </section>
-<?php /* echo get_section('Bunlar da ilginizi çekebilir', null, 1, function () {
-	$id = get_the_ID();
-	$related_products = wc_get_related_products($id, 4);
-	$return = "";
-	$return .= '<div class="swiper w-full"><div class="swiper-wrapper w-full relative box-content flex flex-row justify-start items-center">';
-	foreach ($related_products as $related_product) {
-		$product = wc_get_product($related_product);
-		ob_start();
-		wc_get_template_part('content', 'product');
-		$return .= ob_get_clean();
-	}
-	$return .= '</div></div>';
-	wp_reset_postdata();
-
-	return $return;
-}); */ ?>
 <?php
 /**
  * Hook: woocommerce_after_single_product_summary.

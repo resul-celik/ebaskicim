@@ -1,4 +1,6 @@
 /* SLIDERS (Start) */
+
+// Product item slider
 var swiper = new Swiper(".swiper", {
   slidesPerView: 4,
   spaceBetween: 0,
@@ -26,6 +28,8 @@ var swiper = new Swiper(".swiper", {
   },
 });
 
+// main slider
+
 var mainSlider = new Swiper(".main-slider", {
   slidesPerView: 1,
   spaceBetween: 0,
@@ -40,7 +44,7 @@ var mainSlider = new Swiper(".main-slider", {
   },
 });
 
-// Photo Swiper
+// Product gallery
 
 var swiperThumbs = new Swiper(".swiper-thumbs", {
   slidesPerView: 4,
@@ -65,7 +69,7 @@ var photoSwiper = new Swiper(".photo-swiper", {
   },
 });
 
-// Features Swiper
+// Features slider
 
 var featuresSlider = new Swiper(".features-slider", {
   slidesPerView: 4,
@@ -113,12 +117,14 @@ dimness.addEventListener("click", () => {
   dimness.classList.remove("dimness--active");
 });
 
-accountButton.addEventListener("click", () => {
-  document
-    .querySelector(".account-drawer-menu")
-    .classList.add("drawer--active");
-  dimness.classList.add("dimness--active");
-});
+if (accountButton) {
+  accountButton.addEventListener("click", () => {
+    document
+      .querySelector(".account-drawer-menu")
+      .classList.add("drawer--active");
+    dimness.classList.add("dimness--active");
+  });
+}
 
 cartButton.addEventListener("click", () => {
   document.querySelector(".cart-drawer-menu").classList.add("drawer--active");

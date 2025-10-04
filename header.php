@@ -1,13 +1,3 @@
-<?php global $woocommerce;
-
-$cartcount = count(WC()->cart->get_cart());
-
-if ($cartcount > 9) {
-
-    $cartcount = '9+';
-}
-
-?>
 <!DOCTYPE html>
 <html lang="tr">
 
