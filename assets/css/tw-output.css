@@ -22,6 +22,7 @@
     --text-xs: 1.2rem;
     --text-xs--line-height: calc(1 / 0.75);
     --text-sm: 1.4rem;
+    --text-sm--line-height: calc(1.25 / 0.875);
     --text-lg: 1.8rem;
     --text-lg--line-height: calc(1.75 / 1.125);
     --text-xl: 2rem;
@@ -31,6 +32,7 @@
     --text-4xl: 3.4rem;
     --text-5xl: 4rem;
     --text-6xl: 5.5rem;
+    --font-weight-medium: 500;
     --font-weight-bold: 700;
     --shadow-xs: 0 1px 6px rgba(32, 36, 42, 0.12);
     --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
@@ -782,6 +784,9 @@
   .\!px-25 {
     padding-inline: calc(var(--spacing) * 25) !important;
   }
+  .px-4 {
+    padding-inline: calc(var(--spacing) * 4);
+  }
   .px-5 {
     padding-inline: calc(var(--spacing) * 5);
   }
@@ -802,6 +807,9 @@
   }
   .px-\[8px\] {
     padding-inline: 8px;
+  }
+  .py-3 {
+    padding-block: calc(var(--spacing) * 3);
   }
   .py-5 {
     padding-block: calc(var(--spacing) * 5);
@@ -841,6 +849,9 @@
   }
   .pt-10 {
     padding-top: calc(var(--spacing) * 10);
+  }
+  .pt-20 {
+    padding-top: calc(var(--spacing) * 20);
   }
   .pt-25 {
     padding-top: calc(var(--spacing) * 25);
@@ -897,6 +908,10 @@
     font-size: var(--text-lg);
     line-height: var(--tw-leading, var(--text-lg--line-height));
   }
+  .text-sm {
+    font-size: var(--text-sm);
+    line-height: var(--tw-leading, var(--text-sm--line-height));
+  }
   .text-xl {
     font-size: var(--text-xl);
     line-height: var(--tw-leading, var(--text-xl--line-height));
@@ -918,6 +933,10 @@
   .font-bold {
     --tw-font-weight: var(--font-weight-bold);
     font-weight: var(--font-weight-bold);
+  }
+  .font-medium {
+    --tw-font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium);
   }
   .text-error-500 {
     color: var(--color-error-500);
@@ -1100,6 +1119,31 @@
       @media (hover: hover) {
         text-decoration-line: underline;
       }
+    }
+  }
+  .sm\:flex {
+    @media (width >= 768px) {
+      display: flex;
+    }
+  }
+  .sm\:flex-1 {
+    @media (width >= 768px) {
+      flex: 1;
+    }
+  }
+  .sm\:items-center {
+    @media (width >= 768px) {
+      align-items: center;
+    }
+  }
+  .sm\:justify-between {
+    @media (width >= 768px) {
+      justify-content: space-between;
+    }
+  }
+  .sm\:px-6 {
+    @media (width >= 768px) {
+      padding-inline: calc(var(--spacing) * 6);
     }
   }
   .md\:\!hidden {

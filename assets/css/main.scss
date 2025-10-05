@@ -636,6 +636,52 @@ body {
 }
 /* PAGE (End) */
 
+/* PAGINATION (Start) */
+
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--spacing) * 5);
+
+  .page-numbers {
+    width: auto;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-inline: calc(var(--spacing) * 20);
+    @include typography.text-md;
+    @extend .paragraph-medium;
+    color: var(--color-gray-900);
+    border-radius: calc(var(--spacing) * 5);
+    user-select: none;
+
+    &:hover {
+      background-color: var(--color-gray-100);
+    }
+  }
+
+  .dots {
+    color: var(--color-gray-500);
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .current {
+    background-color: var(--color-gray-100);
+
+    &:hover {
+      background-color: var(--color-gray-100);
+    }
+  }
+}
+
+/* PAGINATION (End) */
+
 @include breakpoints.breakpoint-1440;
 @include breakpoints.breakpoint-1024;
 @include breakpoints.breakpoint-768;

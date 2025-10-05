@@ -122,7 +122,8 @@ do_action('woocommerce_before_main_content'); ?>
 			<?php get_template_part('components/category-filters', "category_filters", [
 				"taxonomies" => $filters["taxonomies"],
 				"base_url" => $base_url
-			]); ?>
+			]);
+			?>
 		</aside>
 		<?php echo get_drawer_menu([
 			'wrapperClass' => 'category-filters-drawer-menu',

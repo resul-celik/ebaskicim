@@ -190,19 +190,6 @@ if (function_exists('register_sidebar')) {
         )
     );
 }
-// Register Menus
-/* function register_my_menus()
-{
-    register_nav_menus(
-        array(
-            'header' => __('Header Menu'),
-            'footer' => __('Footer Menu'),
-            'footer2' => __('Footer Menu 2'),
-            'footer3' => __('Footer Menu 3'),
-        )
-    );
-}
-add_action('init', 'register_my_menus'); */
 
 
 
@@ -379,4 +366,13 @@ function ebs_get_category_filters($category_slug)
     }
 
     return $response;
+}
+
+
+add_filter('navigation_markup_template', 'ebs_product_pagination', 10, 2);
+
+function ebs_product_pagination($template, $output)
+{
+    $template = '<div class="w-full flex flex-row items-center justify-center pt-20"><nav class="pagination" role="navigation" aria-label="Pagination">%3$s</nav></div>';
+    return $template;
 }

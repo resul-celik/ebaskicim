@@ -10,14 +10,7 @@ if (! defined('ABSPATH')) {
                 <a href="<?php echo site_url(); ?>" role="logo">
                     <?php get_template_part('components/logo'); ?>
                 </a>
-                <form method="get" action="<?php echo esc_url(home_url('/')); ?>" class="search-field hidden md:flex flex-row bg-gray-100 rounded-full items-center pl-20 pr-15 h-45" role="search">
-                    <input type="text" name="s" class="block grow-1 shrink-1 placeholder:text-gray-600" placeholder="Ara" />
-                    <input type="hidden" value="submit" />
-                    <input type="hidden" name="post_type" value="product" />
-                    <button class="flex items-center justify-center text-gray-600" type="submit">
-                        <i class="icon icon-search"></i>
-                    </button>
-                </form>
+                <?php get_product_search_form(); ?>
             </div>
             <div class="flex flex-row gap-7">
                 <? if (!is_cart()) : ?>
