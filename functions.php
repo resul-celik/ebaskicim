@@ -180,7 +180,7 @@ if (function_exists('register_sidebar')) {
 
     register_sidebar(
         array(
-            'name' => 'Footer Menus',
+            'name' => 'Footer Menüleri',
             'id' => 'footer-menus',
             'description' => '+ butonuyla yeni footer menüsü ekleyin',
             'before_widget' => '<div class="footer-menu col-span-2 flex-1 flex flex-col gap-4">',
@@ -203,6 +203,7 @@ if (function_exists('register_sidebar')) {
     );
 }
 add_action('init', 'register_my_menus'); */
+
 
 
 /* CUSTOM COUPON HTML FOR CHECKOUT (Start) */
@@ -254,12 +255,6 @@ function ebs_custom_image_sizes()
     add_image_size('product_gallery_large', 1440, 1080, false);
 }
 add_action('after_setup_theme', 'ebs_custom_image_sizes');
-
-add_action('wp_footer', function () {
-    global $_wp_additional_image_sizes;
-    echo '<!-- product_small? ' . (isset($_wp_additional_image_sizes['product_small']) ? 'yes' : 'NO') . ' -->';
-});
-
 
 
 /* IMAGE SIZES (End) */

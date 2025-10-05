@@ -60,7 +60,6 @@ if (!is_cart()) {
     'title'        => 'Hesabım',
     'icon'         => 'person'
 ], "account_drawer_menu_content"); ?>
-<div class="dimness w-full h-screen inset-0 fixed bg-black/20 z-998">
-</div>
+<div class="dimness w-full h-screen inset-0 fixed bg-black/20 z-998" onclick="close_drawer()"></div>
 <?php // echo get_permalink(get_option("woocommerce_myaccount_page_id")); 
 ?>
