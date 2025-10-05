@@ -98,38 +98,17 @@ var featuresSlider = new Swiper(".features-slider", {
 
 /* SLIDERS (End) */
 
-var drawers = document.querySelectorAll(".drawer-menu");
-var dimness = document.querySelector(".dimness");
-var accountButton = document.querySelector(".account-button");
-var cartButton = document.querySelector(".cart-button");
+const drawers = document.querySelectorAll(".drawer-menu");
+const dimness = document.querySelector(".dimness");
 
-drawers.forEach((drawer) => {
-  drawer.querySelector(".close-drawer").addEventListener("click", () => {
-    drawer.classList.remove("drawer--active");
-    dimness.classList.remove("dimness--active");
-  });
-});
+function close_drawer() {
+  console.log("test");
 
-dimness.addEventListener("click", () => {
   drawers.forEach((drawer) => {
     drawer.classList.remove("drawer--active");
   });
   dimness.classList.remove("dimness--active");
-});
-
-if (accountButton) {
-  accountButton.addEventListener("click", () => {
-    document
-      .querySelector(".account-drawer-menu")
-      .classList.add("drawer--active");
-    dimness.classList.add("dimness--active");
-  });
 }
-
-cartButton.addEventListener("click", () => {
-  document.querySelector(".cart-drawer-menu").classList.add("drawer--active");
-  dimness.classList.add("dimness--active");
-});
 
 // Menu
 

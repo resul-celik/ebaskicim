@@ -43,17 +43,23 @@ if (! defined('ABSPATH')) {
 </header>
 <?php
 if (!is_cart()) {
-    $cartArgs = array(
-        'customClass' => 'cart-drawer-menu',
-        'width' => 'w-full md:w-600',
-        'title' => 'Sepetim',
-        'icon' => 'icon-cart',
-        'badgeCount' =>  WC()->cart->get_cart_contents_count()
-    );
-    echo get_drawer_menu($cartArgs, "woocommerce_mini_cart");
+    echo get_drawer_menu([
+        'wrapperClass' => 'cart-drawer-menu',
+        'buttonClass'  => 'cart-button',
+        'width'        => 'w-full md:w-600',
+        'title'        => 'Sepetim',
+        'icon'         => 'cart',
+        'badgeCount'   =>  WC()->cart->get_cart_contents_count()
+    ], "woocommerce_mini_cart");
 }
 ?>
-<?php echo get_drawer_menu(array('customClass' => 'account-drawer-menu', 'width' => 'w-full md:w-470', 'title' => 'Hesabım', 'icon' => 'icon-person'), "account_drawer_menu_content"); ?>
+<?php echo get_drawer_menu([
+    'wrapperClass' => 'account-drawer-menu',
+    'buttonClass'  => 'account-button',
+    'width'        => 'w-full md:w-470',
+    'title'        => 'Hesabım',
+    'icon'         => 'person'
+], "account_drawer_menu_content"); ?>
 <div class="dimness w-full h-screen inset-0 fixed bg-black/20 z-998">
 </div>
 <?php // echo get_permalink(get_option("woocommerce_myaccount_page_id")); 

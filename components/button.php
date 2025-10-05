@@ -13,13 +13,14 @@ function get_button($args)
         'leadingIcon' => '',
         'trailingIcon' => '',
         'icon' => '',
-        'type' => '',
+        'type' => 'button',
         'value' => '',
         'name' => '',
         'target' => '_self',
         'theme' => 'light',
         'attributes' => [],
-        'destructive' => false
+        'destructive' => false,
+        'onclick' => '',
     ];
 
     // Merge defaults and args (use default if it isn't set)
@@ -65,6 +66,12 @@ function get_button($args)
         $attr_str .= sprintf(' %s="%s"', htmlspecialchars($key), htmlspecialchars($value));
     }
 
+    // other attributes
+
+    $args["onclick"] = $args["onclick"] ? 'onclick="' . esc_attr($args["onclick"]) . '"' : "";
+    $args["name"] = $args["name"] ? 'name="' . esc_attr($args["name"]) . '"' : "";
+    $args["value"] = $args["value"] ? 'value="' . esc_attr($args["value"]) . '"' : "";
+
     // returns
 
     if (!empty($args['url'])) {
@@ -78,12 +85,13 @@ function get_button($args)
         );
     } else {
         return sprintf(
-            '<button type="%s" class="%s" value="%s" name="%s"%s>%s</button>',
+            '<button type="%s" class="%s" %s %s %s %s>%s</button>',
             esc_attr($args['type']),
             esc_attr(implode(' ', $classes)),
-            esc_attr($args["value"]),
-            esc_attr($args["name"]),
+            $args["value"],
+            $args["name"],
             $attr_str,
+            $args["onclick"],
             $content
         );
     }
