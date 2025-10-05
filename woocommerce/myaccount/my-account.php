@@ -23,7 +23,6 @@ defined('ABSPATH') || exit;
  * @since 2.6.0
  */
 
-get_template_part("components/header");
 ?>
 
 <main class="w-full h-full grow-1 flex flex-col items-center justify-start overflow-hidden">
@@ -42,5 +41,3 @@ get_template_part("components/header");
 		</div>
 	</div>
 </main>
-
-<?php get_template_part("components/footer");

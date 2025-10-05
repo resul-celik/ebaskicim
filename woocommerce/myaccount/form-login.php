@@ -21,7 +21,7 @@ if (! defined('ABSPATH')) {
 }
 
 get_header();
-get_template_part('components/header');
+
 
 //do_action('woocommerce_before_customer_login_form');
 $page = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'login';

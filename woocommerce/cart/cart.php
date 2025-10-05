@@ -18,8 +18,6 @@
 
 defined('ABSPATH') || exit;
 
-get_template_part("components/header");
-
 do_action('woocommerce_before_cart'); ?>
 
 <section class="w-full max-w-[1920px] flex items-start justify-start flex-row gap-32 px-20 py-60">

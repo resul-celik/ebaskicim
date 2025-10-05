@@ -21,7 +21,7 @@ defined('ABSPATH') || exit;
 /*
  * @hooked wc_empty_cart_message - 10
  */
-get_template_part('components/header'); ?>
+?>
 
 <section class="w-full flex flex-col items-center justify-center py-70 gap-30">
 	<img src="<?php echo get_template_directory_uri(); ?>/assets/images/empty-cart.svg" alt="">

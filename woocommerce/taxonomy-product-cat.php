@@ -25,17 +25,12 @@ get_template_part('components/header');
 
 $category = get_queried_object();
 $category_slug = $category->slug;
-$category_url = get_term_link($category);
+$base_url = get_term_link($category);
 $currentCat = get_queried_object();
-
 $filters = ebs_get_category_filters($category_slug);
-
-print_r($filters);
-
-
-
 $paged = (get_query_var('paged', 1));
 $tax_queries = array('relation' => 'AND');
+$productOrder = @$_GET["order"] ? $_GET["order"] : "DESC";
 
 foreach ($_GET as $key => $value) {
 	if (strpos($key, 'pa_') === 0 && !empty($value)) {
@@ -55,9 +50,8 @@ $args = array(
 	'orderby' => array(
 		'menu_order' => 'ASC',
 		'meta_value' => 'ASC',
-		'date' => 'DESC',
+		'date' => $productOrder,
 	),
-	'order' => 'DESC',
 	'paged' => $paged,
 	'meta_query' => array(
 		'relation' => 'OR',
@@ -80,21 +74,17 @@ $products = new WP_Query($args);
 
 
 do_action('woocommerce_before_main_content'); ?>
-<div class="results-page w-full max-w-[1920px] flex flex-col items-center justify-start px-20 pt-30 pb-100 gap-30 grow-1">
+<section class="results-page w-full max-w-[1920px] flex flex-col items-center justify-start px-20 pt-30 pb-100 gap-30 grow-1">
 	<?php if (apply_filters('woocommerce_show_page_title', true)) : ?>
-		<div class="w-full flex flex-row items-center justify-between">
+		<header class="w-full flex flex-row items-center justify-between">
 			<div class="w-full flex flex-col gap-15">
 				<h1 class="display-lg text-gray-900"><?php woocommerce_page_title(); ?></h1>
 				<div class="w-full flex flex-row items-center justify-between"><? do_action('woocommerce_before_shop_loop'); ?></div>
 			</div>
-		</div>
+		</header>
 	<?php endif; ?>
-	<div class="w-full flex flex-row gap-30">
-		<div class="w-444 flex flex-col grow-1 shrink-1 basis-1/4 gap-30 px-20 py-20 shadow-xs rounded-[15px] shrink-0">
-			<div class="w-full flex flex-col gap-10">
-				<h2 class="paragraph-lg paragraph-bold text-gray-900">Kelimeye göre filtrele</h2>
-				<?php echo do_shortcode('[woocommerce_product_search]'); ?>
-			</div>
+	<section class="w-full flex flex-row gap-30">
+		<aside class="w-444 flex flex-col grow-1 shrink-1 basis-1/4 gap-30 px-20 py-20 shadow-xs rounded-[15px] shrink-0">
 			<div class="w-full flex flex-col gap-10">
 				<h2 class="paragraph-lg paragraph-bold text-gray-900">Kategoriler</h2>
 				<div class="w-full flex flex-row gap-5 flex-wrap">
@@ -108,14 +98,19 @@ do_action('woocommerce_before_main_content'); ?>
 					$currentCat = get_queried_object();
 
 					foreach ($terms as $term) {
+						if ($term->slug === "uncategorized") continue;
 						$term_link = get_term_link($term);
-						echo '<a href="' . $term_link . '" class="flex flex-row items-center justify-center px-15 py-5 ' . ($currentCat->slug === $term->slug ? 'bg-primary-400' : 'bg-gray-100 hover:bg-gray-200') . ' rounded-full paragraph-sm">' . $term->name . '</a>';
+						echo ebs_get_filter_tag([
+							"text" => $term->name,
+							"active" => $currentCat->slug === $term->slug,
+							"url" => $term_link
+						]);
 					}
 
 					?>
 				</div>
 			</div>
-			<?php if ($filters["taxonomies"]) : ?>
+			<?php if (@$filters["taxonomies"]) : ?>
 				<div class="w-full flex flex-col gap-10">
 					<h2 class="paragraph-lg paragraph-bold text-gray-900">Özellikler</h2>
 					<div class="flex flex-col">
@@ -133,26 +128,23 @@ do_action('woocommerce_before_main_content'); ?>
 								<?php if ($attribute["terms"]) : ?>
 									<div class="w-full flex flex-row gap-5 flex-wrap pb-10">
 										<?php
-										$checkAttribute =  $getAttribute ? 'bg-gray-100 hover:bg-gray-200' : 'bg-primary-400';
-										echo sprintf(
-											'<a href="%s" class="flex flex-row items-center justify-center px-15 py-5 rounded-full paragraph-sm %s">%s</a>',
-											$category_url,
-											$checkAttribute,
-											"Tümü"
-										);
+										echo ebs_get_filter_tag([
+											"text" => "Tümü",
+											"active" => $getAttribute ? false : true,
+											"url" => $base_url
+										]);
 										?>
 										<?php foreach ($attribute["terms"] as $term) : ?>
 											<?php
-											$filter_url = add_query_arg($attributeSlug, $term["slug"], $category_url);
+											$filter_url = add_query_arg($attributeSlug, $term["slug"], $base_url);
 											$filter_active = isset($getAttribute) && $getAttribute === $term["slug"];
 											$termClass = $filter_active ? 'bg-primary-400' : 'bg-gray-100 hover:bg-gray-200';
 
-											echo sprintf(
-												'<a href="%s" class="flex flex-row items-center justify-center px-15 py-5 rounded-full paragraph-sm %s">%s</a>',
-												$filter_url,
-												$termClass,
-												$term["name"]
-											);
+											echo ebs_get_filter_tag([
+												"text" => $term["name"],
+												"active" => $filter_active,
+												"url" => $filter_url
+											]);
 											?>
 										<?php endforeach; ?>
 									</div>
@@ -162,8 +154,26 @@ do_action('woocommerce_before_main_content'); ?>
 					</div>
 				</div>
 			<?php endif; ?>
-		</div>
-		<div class="flex flex-row items-start justify-start grow-1 shrink-1 basis-3/4 gap-y-20 flex-wrap">
+			<div class="w-full flex flex-col gap-10">
+				<h2 class="paragraph-lg paragraph-bold text-gray-900">Sıralama</h2>
+				<div class="w-full flex flex-row gap-5 flex-wrap pb-10">
+					<?php
+					$ascUrl = add_query_arg("order", "ASC", $base_url);
+					echo ebs_get_filter_tag([
+						"text" => "Yeniden Eskiye",
+						"active" => @$_GET["order"] ? false : true,
+						"url" => $base_url
+					]);
+					echo ebs_get_filter_tag([
+						"text" => "Eskiden Yeniye",
+						"active" => @$_GET["order"] === "ASC",
+						"url" => $ascUrl
+					]);
+					?>
+				</div>
+			</div>
+		</aside>
+		<article class="flex flex-row items-start justify-start grow-1 shrink-1 basis-3/4 gap-y-20 flex-wrap">
 			<?php
 
 			if ($products->have_posts()) :
@@ -187,8 +197,8 @@ do_action('woocommerce_before_main_content'); ?>
 			do_action('woocommerce_after_main_content');
 
 			?>
-		</div>
-	</div>
-</div>
+		</article>
+	</section>
+</section>
 <?php get_template_part('components/footer');
 get_footer('shop');

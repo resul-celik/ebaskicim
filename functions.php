@@ -160,6 +160,7 @@ include get_template_directory() . '/components/drawer-menu.php';
 include get_template_directory() . '/components/products.php';
 include get_template_directory() . '/components/section.php';
 include get_template_directory() . '/components/account-drawer.php';
+include get_template_directory() . '/components/filter-tag.php';
 
 
 // Register sidebar

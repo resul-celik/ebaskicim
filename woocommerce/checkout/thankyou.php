@@ -19,7 +19,6 @@
  */
 
 defined('ABSPATH') || exit;
-get_template_part('components/header');
 //$order = wc_get_order(121);
 ?>
 
