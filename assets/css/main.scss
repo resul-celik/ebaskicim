@@ -682,6 +682,23 @@ body {
 
 /* PAGINATION (End) */
 
+/* MAIN NAV DRAG SCROLL (Start) */
+
+#main-nav-list {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.is-dragging {
+    cursor: grabbing;
+  }
+}
+
+/* MAIN NAV DRAG SCROLL (End) */
+
 @include breakpoints.breakpoint-1440;
 @include breakpoints.breakpoint-1024;
 @include breakpoints.breakpoint-768;

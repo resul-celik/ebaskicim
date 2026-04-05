@@ -28,7 +28,7 @@
     </div>
     <div class="w-full flex flex-col items-center justify-center border-t border-gray-200 py-15">
         <div class="w-full max-w-[1920px] flex flex-row items-center justify-between px-20">
-            <div class="paragraph-xs text-gray-500">&copy; 2021 Ebaskıcım</div>
+            <div class="paragraph-xs text-gray-500">&copy; 2026 Ebaskıcım</div>
             <div class="flex flex-row gap-10">
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/iyzico.svg" />
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/mastercard.svg" />

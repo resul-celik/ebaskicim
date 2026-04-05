@@ -8,9 +8,9 @@ get_template_part('components/header');
 <main class="w-full flex flex-col items-center justify-start overflow-hidden">
     <?php get_template_part('components/main-slider'); ?>
     <?php get_template_part('components/features'); ?>
-    <?php $neonCat = get_term_by("slug", 'neon-led', 'product_cat'); ?>
-    <?php $posterCat = get_term_by("slug", 'poster', 'product_cat'); ?>
-    <?php $kanvasCat = get_term_by("slug", 'kanvas-tablo', 'product_cat'); ?>
+    <?php $neonCat = get_term_by("slug", 'dijital-baski', 'product_cat'); ?>
+    <?php $posterCat = get_term_by("slug", 'promosyon', 'product_cat'); ?>
+    <?php $kanvasCat = get_term_by("slug", 'tablolar', 'product_cat'); ?>
     <?
     $neonLed = [
         "title" => "Neon Led",
@@ -29,13 +29,13 @@ get_template_part('components/header');
     ];
     ?>
     <?php get_section($neonLed, function () {
-        echo get_products("neon-led");
+        echo get_products("dijital-baski");
     }); ?>
     <?php get_section($poster, function () {
-        echo get_products("poster");
+        echo get_products("display-urunler");
     }); ?>
     <?php get_section($kanvas, function () {
-        echo get_products("kanvas-tablo");
+        echo get_products("tablolar");
     }); ?>
 </main>
 <?php get_template_part('components/footer');

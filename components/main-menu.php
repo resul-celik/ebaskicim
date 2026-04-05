@@ -1,17 +1,17 @@
 <?php $menu_items = wp_get_nav_menu_items('header'); ?>
 
-<nav class="w-full hidden md:flex fle-row justify-center items-center border-b border-gray-200 px-20 relative" role="menu">
-    <ul class="w-full max-w-[1920px] flex flex-row justify-start relative z-100 bg-white gap-4">
+<nav class="w-full hidden md:flex fle-row justify-center items-center border-b border-gray-200 px-20 relative overflow-x-hidden" role="menu">
+    <div id="main-nav-list" class="w-full max-w-[1920px] flex flex-row justify-start relative z-100 bg-white gap-4 overflow-x-auto cursor-grab select-none">
         <?php if ($menu_items) : ?>
             <?php foreach ($menu_items as $menu_item) : ?>
                 <?php if ($menu_item->menu_item_parent) continue; ?>
-                <li data-item-id="<?php echo $menu_item->ID; ?>" class="main-menu-item flex flex-row px-20 py-15 gap-6 text-lg select-none cursor-pointer relative">
+                <a href="<?php echo $menu_item->url; ?>" data-item-id="<?php echo $menu_item->ID; ?>" class="main-menu-item flex flex-row px-20 py-15 gap-6 shrink-0 text-md select-none cursor-pointer relative">
                     <?php echo esc_html($menu_item->title); ?>
-                </li>
+                </a>
             <?php endforeach; ?>
         <?php endif; ?>
-    </ul>
-    <?
+    </div>
+    <?php
 
     function get_child_menus($menu_items, $parent_id = 0)
     {
@@ -46,7 +46,7 @@
                         wp_reset_postdata();
                         ?>
                     </div>
-                    <?
+                    <?php
                     $buttonArgs = array(
                         "text" => "Tümünü Gör",
                         "url" => esc_url($menu->url),

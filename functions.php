@@ -376,3 +376,28 @@ function ebs_product_pagination($template, $output)
     $template = '<div class="w-full flex flex-row items-center justify-center pt-20"><nav class="pagination" role="navigation" aria-label="Pagination">%3$s</nav></div>';
     return $template;
 }
+
+
+add_action('wp_ajax_ebs_category_filter_action', 'ebs_ajax_query');
+add_action('wp_ajax_nopriv_ebs_category_filter_action', 'ebs_ajax_query');
+
+function ebs_ajax_query()
+{
+
+    $query = $_POST["ajax_data"];
+
+    if ($query["query"] !== "") {
+
+        $args = [
+            'post_type' => 'product',
+            'posts_per_page' => -1,
+            's' => $query["query"]
+        ];
+
+        $products = get_posts($args);
+
+        wp_send_json_success($products);
+    } else {
+        wp_send_json_error("product not found");
+    }
+}

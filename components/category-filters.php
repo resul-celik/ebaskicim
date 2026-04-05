@@ -1,4 +1,5 @@
-<?php $base_url = $args["base_url"]; ?>
+<?php $base_url = $args["base_url"] ?? '/'; ?>
+
 
 <div class="w-full flex flex-col gap-10">
     <h2 class="paragraph-lg paragraph-bold text-gray-900">Kategoriler</h2>
@@ -11,13 +12,14 @@
         ));
 
         $currentCat = get_queried_object();
+        $currentCatSlug = ($currentCat instanceof WP_Term) ? $currentCat->slug : '';
 
         foreach ($terms as $term) {
             if ($term->slug === "uncategorized") continue;
             $term_link = get_term_link($term);
             echo ebs_get_filter_tag([
                 "text" => $term->name,
-                "active" => $currentCat->slug === $term->slug,
+                "active" => $currentCatSlug === $term->slug,
                 "url" => $term_link
             ]);
         }
@@ -25,7 +27,7 @@
         ?>
     </div>
 </div>
-<?php if (@$args["taxonomies"]) : ?>
+<?php if (!empty($args["taxonomies"])) : ?>
     <div class="w-full flex flex-col gap-10">
         <h2 class="paragraph-lg paragraph-bold text-gray-900">Özellikler</h2>
         <div class="flex flex-col">
@@ -33,27 +35,26 @@
                 <?php
                 $attributeName = $attribute["name"];
                 $attributeSlug = $attribute["slug"];
-                $getAttribute = @$_GET[$attributeSlug];
+                $getAttribute = isset($_GET[$attributeSlug]) ? sanitize_text_field($_GET[$attributeSlug]) : '';
                 ?>
                 <details class="group/filter-accordion border-b-1 border-gray-200 last:border-none" <?php echo $getAttribute ? "open" : "" ?>>
                     <summary class="flex flex-row items-center justify-between py-15 paragraph-md paragraph-medium text-gray-900 select-none cursor-pointer">
                         <?php echo esc_html($attributeName); ?>
                         <i class="icon icon-chevron-down"></i>
                     </summary>
-                    <?php if ($attribute["terms"]) : ?>
+                    <?php if (!empty($attribute["terms"])) : ?>
                         <div class="w-full flex flex-row gap-5 flex-wrap pb-10">
                             <?php
                             echo ebs_get_filter_tag([
                                 "text" => "Tümü",
-                                "active" => $getAttribute ? false : true,
+                                "active" => !$getAttribute,
                                 "url" => $base_url
                             ]);
                             ?>
                             <?php foreach ($attribute["terms"] as $term) : ?>
                                 <?php
                                 $filter_url = add_query_arg($attributeSlug, $term["slug"]);
-                                $filter_active = isset($getAttribute) && $getAttribute === $term["slug"];
-                                $termClass = $filter_active ? 'bg-primary-400' : 'bg-gray-100 hover:bg-gray-200';
+                                $filter_active = $getAttribute === $term["slug"];
 
                                 echo ebs_get_filter_tag([
                                     "text" => $term["name"],
@@ -73,33 +74,34 @@
     <h2 class="paragraph-lg paragraph-bold text-gray-900">Sıralama</h2>
     <div class="w-full flex flex-row gap-5 flex-wrap pb-10">
         <?php
+        $currentOrder = isset($_GET["order"]) ? sanitize_text_field($_GET["order"]) : '';
         $ascUrl = add_query_arg("order", "ASC");
         $bestUrl = add_query_arg("order", "best_seller");
         $priceAscUrl = add_query_arg("order", "price_asc");
         $priceDescUrl = add_query_arg("order", "price_desc");
         echo ebs_get_filter_tag([
             "text" => "Yeniden Eskiye",
-            "active" => @$_GET["order"] ? false : true,
+            "active" => !$currentOrder,
             "url" => $base_url
         ]);
         echo ebs_get_filter_tag([
             "text" => "Eskiden Yeniye",
-            "active" => @$_GET["order"] === "ASC",
+            "active" => $currentOrder === "ASC",
             "url" => $ascUrl
         ]);
         echo ebs_get_filter_tag([
             "text" => "Çok Satan",
-            "active" => @$_GET["order"] === "best_seller",
+            "active" => $currentOrder === "best_seller",
             "url" => $bestUrl
         ]);
         echo ebs_get_filter_tag([
             "text" => "Artan Fiyat",
-            "active" => @$_GET["order"] === "price_asc",
+            "active" => $currentOrder === "price_asc",
             "url" => $priceAscUrl
         ]);
         echo ebs_get_filter_tag([
             "text" => "Azalan Fiyat",
-            "active" => @$_GET["order"] === "price_desc",
+            "active" => $currentOrder === "price_desc",
             "url" => $priceDescUrl
         ]);
         ?>

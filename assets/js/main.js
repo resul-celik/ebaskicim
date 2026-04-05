@@ -1,3 +1,52 @@
+/* MAIN NAV DRAG SCROLL (Start) */
+
+jQuery(function ($) {
+  var $nav = $("#main-nav-list");
+  if (!$nav.length) return;
+
+  var isDown = false;
+  var startX, scrollLeft;
+
+  $nav.on("mousedown", function (e) {
+    isDown = true;
+    $nav.addClass("is-dragging");
+    startX = e.pageX - $nav.offset().left;
+    scrollLeft = $nav.scrollLeft();
+  });
+
+  $(document).on("mouseup mouseleave", function () {
+    if (!isDown) return;
+    isDown = false;
+    $nav.removeClass("is-dragging");
+  });
+
+  $nav.on("mousemove", function (e) {
+    if (!isDown) return;
+    e.preventDefault();
+    var x = e.pageX - $nav.offset().left;
+    var walk = (x - startX) * 1.5;
+    $nav.scrollLeft(scrollLeft - walk);
+  });
+
+  // Sürükleme sırasında link tıklamalarını engelle
+  $nav.on("click", "li", function (e) {
+    if ($nav.data("dragged")) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
+
+  $nav.on("mousedown", function () {
+    $nav.data("dragged", false);
+  });
+
+  $nav.on("mousemove", function () {
+    if (isDown) $nav.data("dragged", true);
+  });
+});
+
+/* MAIN NAV DRAG SCROLL (End) */
+
 /* SLIDERS (Start) */
 
 // Product item slider
@@ -145,3 +194,38 @@ maniMenuItems.forEach((item) => {
     item.classList.remove("main-menu-item--active");
   });
 });
+
+/* const searchFilter = document.querySelector(".search-filter");
+const resultList = document.querySelector(".results");
+
+searchFilter.addEventListener("keyup", function (e) {
+  const inputText = e.target.value;
+  if (inputText.length == 0) {
+    resultList.innerHTML = `<li>Product not found</li>`;
+  } else {
+    const dataText = {
+      query: inputText,
+    };
+
+    jQuery.ajax({
+      type: "post",
+      url: `${window.location.origin}/wp-admin/admin-ajax.php`,
+      data: {
+        action: "ebs_category_filter_action",
+        ajax_data: dataText,
+      },
+      complete: function (response) {
+        const responseData = response.responseJSON.data;
+        let products = "";
+
+        document.location.search = "?order=ASC";
+
+        for (let i = 0; i < responseData.length; i++) {
+          products += `<li>${responseData[i].post_title}</li>`;
+        }
+
+        resultList.innerHTML = products;
+      },
+    });
+  }
+}); */
