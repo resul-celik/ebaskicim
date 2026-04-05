@@ -12,7 +12,7 @@ add_filter('woocommerce_ship_to_different_address_checked', '__return_true');
 
 /* KURUMSAL DISCOUNT (Start) */
 
-function ebs_default_kurumsal_discount($discount)
+function ebs_default_kurumsal_discount()
 {
     return 40;
 }
@@ -164,18 +164,7 @@ include get_template_directory() . '/components/filter-tag.php';
 
 
 // Register sidebar
-if (function_exists('register_sidebar')) {
 
-    register_sidebar(
-        array(
-            'name' => 'Slider',
-            'id' => 'slider',
-            'description' => '+ butonuyla slider öğesi ekleyin',
-            'before_widget' => '<div class="main-slider-item w-full h-full shrink-0">',
-            'after_widget' => '</div>',
-        )
-    );
-}
 if (function_exists('register_sidebar')) {
 
     register_sidebar(
@@ -196,7 +185,7 @@ if (function_exists('register_sidebar')) {
 /* CUSTOM COUPON HTML FOR CHECKOUT (Start) */
 add_filter('woocommerce_cart_totals_coupon_html', 'ebs_custom_checkout_coupon', 10, 3);
 
-function ebs_custom_checkout_coupon($coupon_html, $coupon, $discount_amount_html)
+function ebs_custom_checkout_coupon($_coupon_html, $coupon, $discount_amount_html)
 {
     $remove_url = esc_url(add_query_arg(
         'remove_coupon',
@@ -359,7 +348,7 @@ function ebs_get_category_filters($category_slug)
         if (!empty($term_data)) {
             $response['taxonomies'][$taxonomy] = [
                 'name' => $attribute->attribute_label,
-                'slug' => $attribute->attribute_name,
+                'slug' => 'pa_' . $attribute->attribute_name,
                 'terms' => $term_data
             ];
         }
@@ -371,10 +360,77 @@ function ebs_get_category_filters($category_slug)
 
 add_filter('navigation_markup_template', 'ebs_product_pagination', 10, 2);
 
-function ebs_product_pagination($template, $output)
+function ebs_product_pagination($template, $_output)
 {
     $template = '<div class="w-full flex flex-row items-center justify-center pt-20"><nav class="pagination" role="navigation" aria-label="Pagination">%3$s</nav></div>';
     return $template;
+}
+
+
+/* ============================================================
+   CUSTOMIZER — Öne Çıkan Kategoriler
+   ============================================================ */
+
+add_action('customize_register', 'ebs_customize_slider');
+
+function ebs_customize_slider(WP_Customize_Manager $wp_customize)
+{
+    $wp_customize->add_section('ebs_slider', [
+        'title'       => 'Ana Slider',
+        'description' => 'Her slayt için görsel ve link belirleyin. Görseli boş bırakılan slaytlar gösterilmez.',
+        'priority'    => 20,
+    ]);
+
+    for ($i = 1; $i <= 5; $i++) {
+        $wp_customize->add_setting("ebs_slider_{$i}_image", [
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ]);
+        $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, "ebs_slider_{$i}_image", [
+            'label'   => "{$i}. Slayt — Görsel",
+            'section' => 'ebs_slider',
+        ]));
+
+        $wp_customize->add_setting("ebs_slider_{$i}_url", [
+            'default'           => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ]);
+        $wp_customize->add_control("ebs_slider_{$i}_url", [
+            'label'   => "{$i}. Slayt — Link",
+            'section' => 'ebs_slider',
+            'type'    => 'url',
+        ]);
+    }
+}
+
+add_action('customize_register', 'ebs_customize_featured_sections');
+
+function ebs_customize_featured_sections(WP_Customize_Manager $wp_customize)
+{
+    $wp_customize->add_section('ebs_featured_sections', [
+        'title'       => 'Öne Çıkan Kategoriler',
+        'description' => 'Anasayfada gösterilecek 3 bölümü buradan yönetebilirsiniz.',
+        'priority'    => 30,
+    ]);
+
+    $cats = get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]);
+    $cat_choices = ['' => '— Seçiniz —'];
+    foreach ($cats as $cat) {
+        $cat_choices[$cat->slug] = $cat->name;
+    }
+
+    for ($i = 1; $i <= 3; $i++) {
+        $wp_customize->add_setting("ebs_featured_{$i}_cat", [
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ]);
+        $wp_customize->add_control("ebs_featured_{$i}_cat", [
+            'label'   => "{$i}. Bölüm",
+            'section' => 'ebs_featured_sections',
+            'type'    => 'select',
+            'choices' => $cat_choices,
+        ]);
+    }
 }
 
 

@@ -5,16 +5,24 @@ jQuery(function ($) {
   if (!$nav.length) return;
 
   var isDown = false;
+  var hasDragged = false;
   var startX, scrollLeft;
+  var DRAG_THRESHOLD = 5;
+
+  // Tarayıcının native link/element sürükleme davranışını engelle
+  $nav.on("dragstart", "a, img", function (e) {
+    e.preventDefault();
+  });
 
   $nav.on("mousedown", function (e) {
     isDown = true;
+    hasDragged = false;
     $nav.addClass("is-dragging");
     startX = e.pageX - $nav.offset().left;
     scrollLeft = $nav.scrollLeft();
   });
 
-  $(document).on("mouseup mouseleave", function () {
+  $(document).on("mouseup", function () {
     if (!isDown) return;
     isDown = false;
     $nav.removeClass("is-dragging");
@@ -22,26 +30,21 @@ jQuery(function ($) {
 
   $nav.on("mousemove", function (e) {
     if (!isDown) return;
-    e.preventDefault();
     var x = e.pageX - $nav.offset().left;
-    var walk = (x - startX) * 1.5;
-    $nav.scrollLeft(scrollLeft - walk);
-  });
-
-  // Sürükleme sırasında link tıklamalarını engelle
-  $nav.on("click", "li", function (e) {
-    if ($nav.data("dragged")) {
+    var walk = x - startX;
+    if (Math.abs(walk) > DRAG_THRESHOLD) {
       e.preventDefault();
-      e.stopPropagation();
+      hasDragged = true;
+      $nav.scrollLeft(scrollLeft - walk * 1.5);
     }
   });
 
-  $nav.on("mousedown", function () {
-    $nav.data("dragged", false);
-  });
-
-  $nav.on("mousemove", function () {
-    if (isDown) $nav.data("dragged", true);
+  // Sürükleme olduysa link tıklamasını engelle
+  $nav.on("click", "a", function (e) {
+    if (hasDragged) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
   });
 });
 

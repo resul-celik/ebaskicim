@@ -1,15 +1,19 @@
 <?php $menu_items = wp_get_nav_menu_items('header'); ?>
 
 <nav class="w-full hidden md:flex fle-row justify-center items-center border-b border-gray-200 px-20 relative overflow-x-hidden" role="menu">
-    <div id="main-nav-list" class="w-full max-w-[1920px] flex flex-row justify-start relative z-100 bg-white gap-4 overflow-x-auto cursor-grab select-none">
-        <?php if ($menu_items) : ?>
-            <?php foreach ($menu_items as $menu_item) : ?>
-                <?php if ($menu_item->menu_item_parent) continue; ?>
-                <a href="<?php echo $menu_item->url; ?>" data-item-id="<?php echo $menu_item->ID; ?>" class="main-menu-item flex flex-row px-20 py-15 gap-6 shrink-0 text-md select-none cursor-pointer relative">
-                    <?php echo esc_html($menu_item->title); ?>
-                </a>
-            <?php endforeach; ?>
-        <?php endif; ?>
+    <div class="w-full max-w-[1920px] relative">
+        <div class="w-100 h-[100%] absolute right-0 top-0 bg-linear-to-r from-transparent to-white z-999"></div>
+        <div class="w-100 h-[100%] absolute left-0 top-0 bg-linear-to-r from-white to-transparent z-999"></div>
+        <div id="main-nav-list" class="w-full flex flex-row justify-start relative z-100 bg-white gap-4 overflow-x-auto overflow-y-hidden cursor-grab select-none">
+            <?php if ($menu_items) : ?>
+                <?php foreach ($menu_items as $menu_item) : ?>
+                    <?php if ($menu_item->menu_item_parent) continue; ?>
+                    <a href="<?php echo $menu_item->url; ?>" data-item-id="<?php echo $menu_item->ID; ?>" class="main-menu-item flex flex-row px-20 py-15 gap-6 cursor-grab shrink-0 text-md select-none cursor-pointer relative">
+                        <?php echo esc_html($menu_item->title); ?>
+                    </a>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
     </div>
     <?php
 
