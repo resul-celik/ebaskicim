@@ -32,7 +32,7 @@ $notes = $order->get_customer_order_notes();
 			<span class="paragraph-2xl paragraph-medium text-gray-500">></span>
 			<h1 class="paragraph-2xl paragraph-medium text-gray-900 order-number">#<?php echo $order->get_order_number(); ?></h1>
 		</div>
-		<div class="pragraph-md paragraph-regular text-gray-600 order-date">Sipariş tarihi: <? echo wc_format_datetime($order->get_date_created()); ?></div>
+		<div class="pragraph-md paragraph-regular text-gray-600 order-date">Sipariş tarihi: <?php echo wc_format_datetime($order->get_date_created()); ?></div>
 	</div>
 	<div class="order-status flex flex-row gap-10 shrink-0">
 		<?php if ($order->has_status('on-hold')) : ?>

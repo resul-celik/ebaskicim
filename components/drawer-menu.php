@@ -15,7 +15,7 @@ function get_drawer_menu($args, $content)
     $args = wp_parse_args($args, $defaults);
 ?>
 
-    <div class="<?php echo $args["wrapperClass"] . " "; ?><?php echo $args["class"] ? $args["class"] . " " : ''; ?>drawer-menu <?php echo $args["width"]; ?> h-screen top-0 right-0 bottom-0 fixed z-999 flex flex-col p-0 md:p-20<?php echo is_user_logged_in() ? ' pt-66 md:pt-52' : ''; ?>">
+    <div class="<?php echo $args["wrapperClass"] . " "; ?><?php echo $args["class"] ? $args["class"] . " " : ''; ?>drawer-menu <?php echo $args["width"]; ?> h-screen top-0 right-0 bottom-0 fixed z-999 flex flex-col p-0 md:p-20<?php echo is_user_logged_in() ? ' pt-66 md:pt-52' : ''; ?>" data-trigger="<?php echo esc_attr($args["buttonClass"]); ?>">
         <div class="w-full h-full flex flex-col bg-white rounded-0 md:rounded-[15px] items-start justify-start shadow-md overflow-hidden">
             <header class="w-full flex flex-row items-center justify-between p-20 grow-0 shrink-0">
                 <div class="flex flex-row gap-10 items-center justify-start">
@@ -39,19 +39,4 @@ function get_drawer_menu($args, $content)
             <?php echo $content ? $content() : ''; ?>
         </div>
     </div>
-    <?php
-    echo '
-        <script>
-        var accountButton = document.querySelector(".' . $args["buttonClass"] . '");
-        if (accountButton) {
-            accountButton.addEventListener("click", () => {
-                document
-                .querySelector(".' . $args["wrapperClass"] . '")
-                .classList.add("drawer--active");
-                dimness.classList.add("dimness--active");
-            });
-        }
-        </script>
-        ';
-    ?>
-<? }
+<?php }

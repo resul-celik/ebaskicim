@@ -9,7 +9,6 @@ jQuery(function ($) {
   var startX, scrollLeft;
   var DRAG_THRESHOLD = 5;
 
-  // Tarayıcının native link/element sürükleme davranışını engelle
   $nav.on("dragstart", "a, img", function (e) {
     e.preventDefault();
   });
@@ -39,7 +38,6 @@ jQuery(function ($) {
     }
   });
 
-  // Sürükleme olduysa link tıklamasını engelle
   $nav.on("click", "a", function (e) {
     if (hasDragged) {
       e.preventDefault();
@@ -154,13 +152,24 @@ const drawers = document.querySelectorAll(".drawer-menu");
 const dimness = document.querySelector(".dimness");
 
 function close_drawer() {
-  console.log("test");
-
   drawers.forEach((drawer) => {
     drawer.classList.remove("drawer--active");
   });
-  dimness.classList.remove("dimness--active");
+  if (dimness) dimness.classList.remove("dimness--active");
 }
+
+drawers.forEach((drawer) => {
+  const triggerClass = drawer.dataset.trigger;
+  if (!triggerClass) return;
+
+  const trigger = document.querySelector("." + triggerClass);
+  if (!trigger) return;
+
+  trigger.addEventListener("click", () => {
+    drawer.classList.add("drawer--active");
+    if (dimness) dimness.classList.add("dimness--active");
+  });
+});
 
 // Menu
 

@@ -29,13 +29,13 @@ defined('ABSPATH') || exit;
 	<?php do_action('woocommerce_before_checkout_billing_form', $checkout); ?>
 
 	<div class="woocommerce-billing-fields__field-wrapper input-field-wrapper">
-		<? $fields = $checkout->get_checkout_fields('billing'); ?>
-		<? foreach ($fields as $key => $field) : ?>
+		<?php $fields = $checkout->get_checkout_fields('billing'); ?>
+		<?php foreach ($fields as $key => $field) : ?>
 			<?
 			$field["class"] 	= array("input-field");
 			?>
-			<? woocommerce_form_field($key, $field, $checkout->get_value($key)); ?>
-		<? endforeach; ?>
+			<?php woocommerce_form_field($key, $field, $checkout->get_value($key)); ?>
+		<?php endforeach; ?>
 	</div>
 
 	<?php do_action('woocommerce_after_checkout_billing_form', $checkout); ?>

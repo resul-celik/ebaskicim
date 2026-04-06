@@ -26,7 +26,7 @@ do_action('woocommerce_before_edit_account_address_form'); ?>
 	<?php wc_get_template('myaccount/my-address.php'); ?>
 <?php else : ?>
 	<div class="paragraph-2xl paragraph-medium text-gray-900 order-number flex flex-row gap-5 pt-25 px-25">
-		<?
+		<?php
 		$addressPageUrl = wc_get_account_endpoint_url('edit-address');
 		?>
 		<a href="<?php echo $addressPageUrl; ?>" class="paragraph-2xl paragraph-medium text-gray-900 hover:underline">Adresler</a>
@@ -51,7 +51,7 @@ do_action('woocommerce_before_edit_account_address_form'); ?>
 			<?php do_action("woocommerce_after_edit_address_form_{$load_address}"); ?>
 
 			<p>
-				<?
+				<?php
 				$buttonArgs = array(
 					"text" =>  esc_html__('Save address', 'woocommerce'),
 					"value" =>  esc_html__('Save address', 'woocommerce'),

@@ -36,12 +36,12 @@ defined('ABSPATH') || exit;
 				<?php
 				$fields = $checkout->get_checkout_fields('shipping');
 				?>
-				<? foreach ($fields as $key => $field) : ?>
+				<?php foreach ($fields as $key => $field) : ?>
 					<?
 					$field["class"] 	= array("input-field");
 					?>
-					<? woocommerce_form_field($key, $field, $checkout->get_value($key)); ?>
-				<? endforeach; ?>
+					<?php woocommerce_form_field($key, $field, $checkout->get_value($key)); ?>
+				<?php endforeach; ?>
 			</div>
 
 			<?php do_action('woocommerce_after_checkout_shipping_form', $checkout); ?>

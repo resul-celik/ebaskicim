@@ -22,19 +22,20 @@ defined('ABSPATH') || exit;
 
 do_action('woocommerce_before_account_orders', $has_orders); ?>
 
-<? if ($has_orders) { ?>
-	<h1 class="paragraph-2xl paragraph-medium text-gray-900 pt-25 pl-25">Siparişler</h1>
+<h1 class="paragraph-2xl paragraph-medium text-gray-900 pt-25 pl-25">Siparişler</h1>
+
+<?php if ($has_orders) : ?>
 	<div class="w-full flex flex-row flex-wrap md:gap-y-10 md:pl-25 md:pr-15 pb-25">
 		<?php foreach ($customer_orders->orders as $customer_order) : ?>
 			<?php
-			$order = wc_get_order($customer_order);
-			$items = $order->get_items();
+			$order      = wc_get_order($customer_order);
+			$items      = $order->get_items();
+			$itemCount  = count($items);
 			$show_order = false;
 
 			foreach ($items as $item) {
 				/** @disregard P1013 ignore get_product error */
-				$product = $item->get_product();
-				if ($product) {
+				if ($item->get_product()) {
 					$show_order = true;
 					break;
 				}
@@ -46,22 +47,21 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 							<div class="flex flex-col gap-1">
 								<div class="flex flex-row gap-2">
 									<p class="paragraph-md paragraph-regular text-gray-900">Sipariş</p>
-									<p class="paragraph-md paragraph-bold text-gray-900">#<?php echo $order->get_order_number(); ?></p>
+									<p class="paragraph-md paragraph-bold text-gray-900">#<?php echo esc_html($order->get_order_number()); ?></p>
 								</div>
 								<div class="flex flex-row gap-2">
-									<p class="paragraph-sm paragraph-regular text-gray-600"><?php echo wc_format_datetime($order->get_date_created()); ?></p>
+									<p class="paragraph-sm paragraph-regular text-gray-600"><?php echo esc_html(wc_format_datetime($order->get_date_created())); ?></p>
 									<p class="paragraph-sm paragraph-regular text-gray-600">—</p>
-									<p class="paragraph-sm paragraph-regular text-gray-600"><?php echo sprintf(__('%d ürün'), count($items)); ?></p>
+									<p class="paragraph-sm paragraph-regular text-gray-600"><?php echo esc_html(sprintf(__('%d ürün', 'woocommerce'), $itemCount)); ?></p>
 								</div>
 							</div>
-							<?
-							$buttonArgs = array(
-								"text" => "Detayları Gör",
-								"url" => esc_url($order->get_view_order_url()),
-								"hierarchy" => "link",
+							<?php
+							echo get_button([
+								"text"         => "Detayları Gör",
+								"url"          => esc_url($order->get_view_order_url()),
+								"hierarchy"    => "link",
 								"trailingIcon" => "arrow-right",
-							);
-							echo get_button($buttonArgs);
+							]);
 							?>
 						</div>
 						<div class="w-full h-[1px] border-b border-gray-300 border-dashed"></div>
@@ -71,17 +71,16 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 							foreach ($items as $item) {
 								/** @disregard P1013 ignore get_product error */
 								$product = $item->get_product();
+								if (!$product) continue;
 								$i++;
-
-								if ($product && $i <= 5) {
-									echo '<figure class="w-40 h-40 grow-0 shrink-0 rounded-[5px] overflow-hidden">';
-									echo $product->get_image('product_thubmbnail_small', array('class' => 'w-full h-full object-cover'));
-									echo '</figure>';
-								}
+								if ($i > 5) break;
+								echo '<figure class="w-40 h-40 grow-0 shrink-0 rounded-[5px] overflow-hidden">';
+								echo $product->get_image('product_thubmbnail_small', ['class' => 'w-full h-full object-cover']);
+								echo '</figure>';
 							}
 
-							if (count($items) > 5) {
-								echo '<div class="w-40 h-40 flex flex-row items-center justify-center grow-0 shrink-0 rounded-[5px] bg-gray-100 paragraph-sm paragraph-regular text-gray-600 hover:bg-gray-200">+ ' . (count($items) - 5) . '</div>';
+							if ($itemCount > 5) {
+								echo '<div class="w-40 h-40 flex flex-row items-center justify-center grow-0 shrink-0 rounded-[5px] bg-gray-100 paragraph-sm paragraph-regular text-gray-600 hover:bg-gray-200">+' . esc_html($itemCount - 5) . '</div>';
 							}
 							?>
 						</a>
@@ -95,23 +94,17 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 								<p class="paragraph-md paragraph-medium text-gray-900">
 									<?php if ($order->has_status('on-hold')) : ?>
 										<span class="flex flex-row text-gray-600">Beklemede</span>
-									<?php endif; ?>
-									<?php if ($order->has_status('pending')) : ?>
+									<?php elseif ($order->has_status('pending')) : ?>
 										<span class="flex flex-row text-gray-600">Ödeme Bekleniyor</span>
-									<?php endif; ?>
-									<?php if ($order->has_status('failed')) : ?>
+									<?php elseif ($order->has_status('failed')) : ?>
 										<span class="flex flex-row text-error-500">Başarısız</span>
-									<?php endif; ?>
-									<?php if ($order->has_status('refunded')) : ?>
+									<?php elseif ($order->has_status('refunded')) : ?>
 										<span class="flex flex-row text-primary-600">İade Edildi</span>
-									<?php endif; ?>
-									<?php if ($order->has_status('cancelled')) : ?>
+									<?php elseif ($order->has_status('cancelled')) : ?>
 										<span class="flex flex-row text-error-500">İptal Edildi</span>
-									<?php endif; ?>
-									<?php if ($order->has_status('completed')) : ?>
+									<?php elseif ($order->has_status('completed')) : ?>
 										<span class="flex flex-row text-success-600">Teslim Edildi</span>
-									<?php endif; ?>
-									<?php if ($order->has_status('processing')) : ?>
+									<?php elseif ($order->has_status('processing')) : ?>
 										<span class="flex flex-row text-gray-600">İşleniyor</span>
 									<?php endif; ?>
 								</p>
@@ -136,29 +129,26 @@ do_action('woocommerce_before_account_orders', $has_orders); ?>
 			<?php if (intval($customer_orders->max_num_pages) !== $current_page) : ?>
 				<a class="woocommerce-button woocommerce-button--next woocommerce-Button woocommerce-Button--next flex flex-row items center justify-center gap-10 paragraph-md paragraph-medium text-gray-900 button<?php echo esc_attr($wp_button_class); ?>" href="<?php echo esc_url(wc_get_endpoint_url('orders', $current_page + 1)); ?>">
 					<?php esc_html_e('Next', 'woocommerce'); ?>
-					<i class="icon icon-arrow-right"></i></a>
+					<i class="icon icon-arrow-right"></i>
+				</a>
 			<?php endif; ?>
 		</div>
 	<?php endif; ?>
 
-<?php } else { ?>
-	<h1 class="paragraph-2xl paragraph-medium text-gray-900 pt-25 pl-25">Siparişler</h1>
+<?php else : ?>
 	<div class="w-full flex flex-col items-center">
-		<img src="<?php echo get_template_directory_uri(); ?>/assets/images/empty-cart.svg" alt="">
+		<img src="<?php echo esc_url(get_template_directory_uri()); ?>/assets/images/empty-cart.svg" alt="">
 		<div class="w-full max-w-350 flex flex-col items-center gap-20 py-60">
 			<p>Henüz siparişiniz yok</p>
-			<?
-			$btnArgs = array(
-				'text' => 'Sipariş ver',
+			<?php
+			echo get_button([
+				'text'      => 'Sipariş ver',
 				'hierarchy' => 'primary',
-				'url' => esc_url(apply_filters('woocommerce_return_to_shop_redirect', wc_get_page_permalink('shop'))),
-			);
-			echo get_button($btnArgs);
+				'url'       => esc_url(apply_filters('woocommerce_return_to_shop_redirect', wc_get_page_permalink('shop'))),
+			]);
 			?>
 		</div>
 	</div>
-<?php } ?>
-
-
+<?php endif; ?>
 
 <?php do_action('woocommerce_after_account_orders', $has_orders); ?>

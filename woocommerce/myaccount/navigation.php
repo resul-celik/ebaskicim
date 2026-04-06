@@ -22,6 +22,10 @@ if (! defined('ABSPATH')) {
 
 do_action('woocommerce_before_account_navigation');
 
+$current_user = wp_get_current_user();
+$display_name = $current_user->display_name ?: $current_user->user_login;
+$is_kurumsal  = current_user_can('kurumsal');
+
 ?>
 
 <nav class="woocommerce-MyAccount-navigation account-nav w-full md:max-w-350 flex flex-col p-25 bg-gray-100 gap-20 rounded-[15px] items-center" aria-label="<?php esc_html_e('Account pages', 'woocommerce'); ?>">
@@ -31,35 +35,26 @@ do_action('woocommerce_before_account_navigation');
 		</div>
 		<div class="flex flex-col gap-4 items-center">
 			<div class="flex flex-row items-center justify-center gap-5 paragraph-2xl paragraph-medium text-gray-900">
-				<?php
-				$current_user = wp_get_current_user();
-				if ($current_user->display_name) {
-					echo esc_html($current_user->display_name);
-				} else {
-					echo esc_html($current_user->user_login);
-				}
-				?>
-				<?php if (current_user_can('kurumsal')) : ?>
-					<?php echo get_template_part('components/corporate-badge'); ?>
+				<?php echo esc_html($display_name); ?>
+				<?php if ($is_kurumsal) : ?>
+					<?php get_template_part('components/corporate-badge'); ?>
 				<?php endif; ?>
 			</div>
-			<div class="paragraph-md paragraph-regular text-gray-700">
-				<?php
-				if ($current_user->user_email) {
-					echo esc_html($current_user->user_email);
-				}
-				?>
-			</div>
-			<?php if (current_user_can('kurumsal')) : ?>
-				<p class="paragraph-xs paragraph-medium text-primary-600">Tüm ürünlerde %<?php echo apply_filters('ebs_kurumsal_discount_percentage', 0); ?> kurumsal indirim</p>
+			<?php if ($current_user->user_email) : ?>
+				<div class="paragraph-md paragraph-regular text-gray-700">
+					<?php echo esc_html($current_user->user_email); ?>
+				</div>
+			<?php endif; ?>
+			<?php if ($is_kurumsal) : ?>
+				<p class="paragraph-xs paragraph-medium text-primary-600">Tüm ürünlerde %<?php echo esc_html(apply_filters('ebs_kurumsal_discount_percentage', 0)); ?> kurumsal indirim</p>
 			<?php endif; ?>
 		</div>
 	</div>
 	<ul class="w-full flex flex-col">
 		<?php foreach (wc_get_account_menu_items() as $endpoint => $label) : ?>
 			<?php if ($endpoint !== 'customer-logout' && $endpoint !== 'dashboard' && $endpoint !== 'downloads') : ?>
-				<li class="w-full flex border-b border-gray-400 last:border-0 hover:border-primary-500 <?php echo wc_get_account_menu_item_classes($endpoint); ?>">
-					<a href="<?php echo esc_url(wc_get_account_endpoint_url($endpoint)); ?>" class="w-full flex flex-row py-12 justify-between items-center paragraph-lg paragraph-medium text-gray-900 hover:text-primary-500 " <?php echo is_wc_endpoint_url($endpoint) ? 'aria-current="page"' : ''; ?>>
+				<li class="w-full flex border-b border-gray-400 last:border-0 hover:border-primary-500 <?php echo esc_attr(wc_get_account_menu_item_classes($endpoint)); ?>">
+					<a href="<?php echo esc_url(wc_get_account_endpoint_url($endpoint)); ?>" class="w-full flex flex-row py-12 justify-between items-center paragraph-lg paragraph-medium text-gray-900 hover:text-primary-500" <?php echo is_wc_endpoint_url($endpoint) ? 'aria-current="page"' : ''; ?>>
 						<?php echo esc_html($label); ?>
 						<i class="icon icon-arrow-right"></i>
 					</a>
@@ -67,19 +62,16 @@ do_action('woocommerce_before_account_navigation');
 			<?php endif; ?>
 		<?php endforeach; ?>
 	</ul>
-	<a href="<?php echo esc_url(wc_get_account_endpoint_url('customer-logout')); ?>" class="<?php echo wc_get_account_menu_item_classes('customer-logout'); ?>" <?php echo is_wc_endpoint_url('customer-logout') ? 'aria-current="page"' : ''; ?>>
-		<?
-		$buttonArgs = array(
-			"text" => "Çıkış Yap",
-			"type" => "submit",
-			"name" => "customer-logout",
-			"value" => "Çıkış Yap",
-			"hierarchy" => "link",
+	<a href="<?php echo esc_url(wc_get_account_endpoint_url('customer-logout')); ?>" class="<?php echo esc_attr(wc_get_account_menu_item_classes('customer-logout')); ?>" <?php echo is_wc_endpoint_url('customer-logout') ? 'aria-current="page"' : ''; ?>>
+		<?php echo get_button([
+			"text"        => "Çıkış Yap",
+			"type"        => "submit",
+			"name"        => "customer-logout",
+			"value"       => "Çıkış Yap",
+			"hierarchy"   => "link",
 			"leadingIcon" => "logout",
-			"destructive" => true
-		);
-		?>
-		<?php echo get_button($buttonArgs); ?>
+			"destructive" => true,
+		]); ?>
 	</a>
 </nav>
 

@@ -80,20 +80,20 @@ do_action('woocommerce_before_edit_account_form'); ?>
 	do_action('woocommerce_edit_account_form');
 	?>
 
-	<p>
+	<div>
 		<?php wp_nonce_field('save_account_details', 'save-account-details-nonce'); ?>
-		<?
-		$buttonArgs = array(
-			"text" =>  esc_html__('Save changes', 'woocommerce'),
-			"value" =>  esc_html__('Save changes', 'woocommerce'),
-			"name" =>  "save_account_details",
-			"classes" => esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''),
-			"type" => "submit"
-		);
-		echo get_button($buttonArgs);
+		<?php
+		$themeClass = wc_wp_theme_get_element_class_name('button');
+		echo get_button([
+			"text"    => esc_html__('Save changes', 'woocommerce'),
+			"value"   => esc_html__('Save changes', 'woocommerce'),
+			"name"    => "save_account_details",
+			"classes" => $themeClass ? esc_attr(' ' . $themeClass) : '',
+			"type"    => "submit",
+		]);
 		?>
 		<input type="hidden" name="action" value="save_account_details" />
-	</p>
+	</div>
 
 	<?php do_action('woocommerce_edit_account_form_end'); ?>
 </form>

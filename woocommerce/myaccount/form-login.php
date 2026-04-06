@@ -22,13 +22,9 @@ if (! defined('ABSPATH')) {
 
 get_header();
 
-
-//do_action('woocommerce_before_customer_login_form');
 $page = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'login';
 
-/* <?php if ('yes' === get_option('woocommerce_enable_myaccount_registration')) : ?><?php endif; ?> */
 ?>
-
 
 <main class="w-full flex flex-col items-center justify-start overflow-hidden grow-1">
 	<div class="w-full flex flex-col px-20 py-60 justify-center items-center" id="customer_login">
@@ -39,8 +35,7 @@ $page = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'l
 					<?php do_action('woocommerce_login_form_start'); ?>
 					<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide input-field">
 						<label for="username"><?php esc_html_e('Username or email address', 'woocommerce'); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e('Required', 'woocommerce'); ?></span></label>
-						<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="<?php echo (! empty($_POST['username'])) ? esc_attr(wp_unslash($_POST['username'])) : ''; ?>" required aria-required="true" /><?php // @codingStandardsIgnoreLine 																																																																	
-																																																																									?>
+						<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="<?php echo (! empty($_POST['username'])) ? esc_attr(wp_unslash($_POST['username'])) : ''; ?>" required aria-required="true" /><?php // @codingStandardsIgnoreLine ?>
 					</p>
 					<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide input-field">
 						<label for="password"><?php esc_html_e('Password', 'woocommerce'); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e('Required', 'woocommerce'); ?></span></label>
@@ -58,22 +53,18 @@ $page = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'l
 						<?php wp_nonce_field('woocommerce-login', 'woocommerce-login-nonce'); ?>
 					</p>
 					<div class="w-full flex flex-col gap-4">
-						<?
-						$buttonArgs = array(
-							"text" => "Giriş Yap",
-							"type" => "submit",
-							"name" => "login",
-							"value" => "Log in"
-						)
-						?>
-						<? echo get_button($buttonArgs); ?>
+						<?php echo get_button([
+							"text"  => "Giriş Yap",
+							"type"  => "submit",
+							"name"  => "login",
+							"value" => "Log in",
+						]); ?>
 					</div>
 					<p class="flex flex-row gap-4">
 						Hesabın yok mu?
 						<a href="?tab=register" class="text-primary-600 paragraph-md hover:text-gray-900">Kaydol</a>
 					</p>
 					<?php do_action('woocommerce_login_form_end'); ?>
-
 				</form>
 			</div>
 		<?php endif; ?>
@@ -85,59 +76,45 @@ $page = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'l
 					<?php do_action('woocommerce_register_form_start'); ?>
 
 					<?php if ('no' === get_option('woocommerce_registration_generate_username')) : ?>
-
 						<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide input-field">
 							<label for="reg_username"><?php esc_html_e('Username', 'woocommerce'); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e('Required', 'woocommerce'); ?></span></label>
-							<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="reg_username" autocomplete="username" value="<?php echo (! empty($_POST['username'])) ? esc_attr(wp_unslash($_POST['username'])) : ''; ?>" required aria-required="true" /><?php // @codingStandardsIgnoreLine 
-																																																																											?>
+							<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="reg_username" autocomplete="username" value="<?php echo (! empty($_POST['username'])) ? esc_attr(wp_unslash($_POST['username'])) : ''; ?>" required aria-required="true" /><?php // @codingStandardsIgnoreLine ?>
 						</p>
-
 					<?php endif; ?>
 
 					<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide input-field">
 						<label for="reg_email"><?php esc_html_e('Email address', 'woocommerce'); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e('Required', 'woocommerce'); ?></span></label>
-
-						<input type="email" class="woocommerce-Input woocommerce-Input--text input-text" name="email" id="reg_email" autocomplete="email" value="<?php echo (! empty($_POST['email'])) ? esc_attr(wp_unslash($_POST['email'])) : ''; ?>" required aria-required="true" />
-						<?php // @codingStandardsIgnoreLine 
-						?>
+						<input type="email" class="woocommerce-Input woocommerce-Input--text input-text" name="email" id="reg_email" autocomplete="email" value="<?php echo (! empty($_POST['email'])) ? esc_attr(wp_unslash($_POST['email'])) : ''; ?>" required aria-required="true" /><?php // @codingStandardsIgnoreLine ?>
 						<?php if ('no' !== get_option('woocommerce_registration_generate_password')) : ?>
 							<span class="supporting-text"><?php esc_html_e('A link to set a new password will be sent to your email address.', 'woocommerce'); ?></span>
 						<?php endif; ?>
 					</p>
 
 					<?php if ('no' === get_option('woocommerce_registration_generate_password')) : ?>
-
 						<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
 							<label for="reg_password"><?php esc_html_e('Password', 'woocommerce'); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e('Required', 'woocommerce'); ?></span></label>
 							<input type="password" class="woocommerce-Input woocommerce-Input--text input-text" name="password" id="reg_password" autocomplete="new-password" required aria-required="true" />
 						</p>
-
 					<?php endif; ?>
 
 					<?php do_action('woocommerce_register_form'); ?>
 
-					<p class="w-full flex flex-col gap-4">
+					<div class="w-full flex flex-col gap-4">
 						<?php wp_nonce_field('woocommerce-register', 'woocommerce-register-nonce'); ?>
-						<?
-						$buttonArgs = array(
-							"text" => "Kaydol",
-							"type" => "submit",
-							"name" => "register",
-							"value" => "Register"
-						)
-						?>
-						<? echo get_button($buttonArgs); ?></p>
+						<?php echo get_button([
+							"text"  => "Kaydol",
+							"type"  => "submit",
+							"name"  => "register",
+							"value" => "Register",
+						]); ?>
+					</div>
 					<p class="login-suggestions">
 						Hesabın var mı?
 						<a href="?tab=login" class="text-primary-600 paragraph-md hover:text-gray-900"><?php esc_html_e('Login', 'woocommerce'); ?></a>
 					</p>
 					<?php do_action('woocommerce_register_form_end'); ?>
-
 				</form>
 			</div>
 		<?php endif; ?>
 	</div>
 </main>
-
-<?php // do_action('woocommerce_after_customer_login_form'); 
-?>

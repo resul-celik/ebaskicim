@@ -78,7 +78,7 @@ $col    = 1;
 					do_action('woocommerce_my_account_after_my_address', $name);
 					?>
 				</address>
-				<?
+				<?php
 
 				$buttonName = $address ? "Adresi düzenle" : "Adres ekle";
 

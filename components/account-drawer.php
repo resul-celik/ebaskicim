@@ -40,7 +40,7 @@ function account_drawer_menu_content()
         <?php endforeach; ?>
     </nav>
     <div class="w-full p-20 flex items-center justify-start border-t border-gray-200 gap-10">
-        <?
+        <?php
         $buttonArgs = array(
             "text" => "Çıkış yap",
             "leadingIcon" => "logout",

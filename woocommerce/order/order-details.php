@@ -80,7 +80,7 @@ if ($show_downloads) {
 		<?php if ($order->get_customer_note()) : ?>
 			<div class="woocommerce-table__total w-full flex flex-row items-center justify-between">
 				<div class="paragraph-md paragraph-regular text-gray-900">Sipariş Notunuz:</div>
-				<strong class="paragraph-sm paragraph-medium text-gray-900 px-15 py-10 bg-gray-100 rounded-tl-[15px] rounded-tr-[15px] rounded-br-[5px] rounded-bl-[15px]"><?php echo wp_kses(nl2br(wptexturize($order->get_customer_note())), array()); ?></strong>
+				<strong class="paragraph-sm paragraph-medium text-gray-900 px-15 py-10 bg-gray-100 rounded-tl-[15px] rounded-tr-[15px] rounded-br-[5px] rounded-bl-[15px]"><?php echo nl2br(esc_html(wptexturize($order->get_customer_note()))); ?></strong>
 			</div>
 		<?php endif; ?>
 	</div>

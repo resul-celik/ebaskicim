@@ -26,5 +26,5 @@ $args = array(
 ?>
 
 <p class="order-again w-full flex flex-row items-center justify-start">
-	<? echo get_button($args); ?>
+	<?php echo get_button($args); ?>
 </p>
