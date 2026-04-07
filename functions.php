@@ -180,7 +180,18 @@ if (function_exists('register_sidebar')) {
     );
 }
 
-
+function register_eb_menus()
+{
+    register_nav_menus(
+        array(
+            'header' => __('Header Menu'),
+            'footer' => __('Footer Menu'),
+            'footer2' => __('Footer Menu 2'),
+            'footer3' => __('Footer Menu 3'),
+        )
+    );
+}
+add_action('init', 'register_eb_menus');
 
 /* CUSTOM COUPON HTML FOR CHECKOUT (Start) */
 add_filter('woocommerce_cart_totals_coupon_html', 'ebs_custom_checkout_coupon', 10, 3);
@@ -429,6 +440,41 @@ function ebs_customize_featured_sections(WP_Customize_Manager $wp_customize)
             'section' => 'ebs_featured_sections',
             'type'    => 'select',
             'choices' => $cat_choices,
+        ]);
+    }
+}
+
+// Social Media Username Fields
+
+add_action('customize_register', 'eb_social_media_links');
+
+function eb_social_media_links(WP_Customize_Manager $wp_customize)
+{
+    $wp_customize->add_section('eb_social_media_sections', [
+        'title'       => 'Sosyal Medya',
+        'description' => 'Sosyal medya hesaplarınızın kullanıcı adını giriniz.',
+        'priority'    => 40,
+    ]);
+
+    $platforms = [
+        'eb_instagram'  => 'Instagram',
+        'eb_facebook'   => 'Facebook',
+        'eb_youtube'    => 'YouTube',
+        'eb_twitter'    => 'X (Twitter)',
+        'eb_pinterest'  => 'Pinterest',
+    ];
+
+    foreach ($platforms as $key => $label) {
+        $wp_customize->add_setting($key, [
+            'default'           => ''
+        ]);
+        $wp_customize->add_control($key, [
+            'label'       => $label,
+            'section'     => 'eb_social_media_sections',
+            'type'        => 'text',
+            'input_attrs' => [
+                'placeholder' => 'kullaniciadi',
+            ],
         ]);
     }
 }

@@ -37,9 +37,7 @@ defined('ABSPATH') || exit;
 				$fields = $checkout->get_checkout_fields('shipping');
 				?>
 				<?php foreach ($fields as $key => $field) : ?>
-					<?
-					$field["class"] 	= array("input-field");
-					?>
+					<?php $field['class'] = ['input-field']; ?>
 					<?php woocommerce_form_field($key, $field, $checkout->get_value($key)); ?>
 				<?php endforeach; ?>
 			</div>
@@ -61,11 +59,11 @@ defined('ABSPATH') || exit;
 		<?php endif; ?>
 
 		<div class="woocommerce-additional-fields__field-wrapper input-field-wrapper">
-			<?php foreach ($checkout->get_checkout_fields('order') as $key => $field) {
-				$field["class"] 	= array("input-field");
-				$field["input_class"] 	= array("input-text-multiline");
+			<?php foreach ($checkout->get_checkout_fields('order') as $key => $field) :
+				$field['class']       = ['input-field'];
+				$field['input_class'] = ['input-text-multiline'];
 				woocommerce_form_field($key, $field, $checkout->get_value($key));
-			} ?>
+			endforeach; ?>
 		</div>
 
 	<?php endif; ?>

@@ -31,9 +31,7 @@ defined('ABSPATH') || exit;
 	<div class="woocommerce-billing-fields__field-wrapper input-field-wrapper">
 		<?php $fields = $checkout->get_checkout_fields('billing'); ?>
 		<?php foreach ($fields as $key => $field) : ?>
-			<?
-			$field["class"] 	= array("input-field");
-			?>
+			<?php $field['class'] = ['input-field']; ?>
 			<?php woocommerce_form_field($key, $field, $checkout->get_value($key)); ?>
 		<?php endforeach; ?>
 	</div>
