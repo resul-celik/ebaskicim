@@ -16,9 +16,6 @@
                     <div class="w-40 h-40 flex items-center justify-center bg-gray-200 rounded-full">
                         <?php echo ebs_get_icon('facebook'); ?>
                     </div>
-                    <div class="w-40 h-40 flex items-center justify-center bg-gray-200 rounded-full">
-                        <?php echo ebs_get_icon('youtube'); ?>
-                    </div>
                 </div>
                 <div class="safety-shopping-badge">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/ssl.svg" />
