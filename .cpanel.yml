@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/u2410780/ebaskicim.com/wp-content/themes/ebaskicim/
+    - /bin/cp -R . $DEPLOYPATH
