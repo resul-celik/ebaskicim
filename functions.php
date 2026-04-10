@@ -503,3 +503,122 @@ function ebs_ajax_query()
         wp_send_json_error("product not found");
     }
 }
+
+/* ATTRIBUTE TERM FIELDS (Start) */
+
+/**
+ * Register color + image fields on every pa_* attribute taxonomy term.
+ * Hooks must be added at init after WooCommerce has registered the taxonomies.
+ */
+function ebs_register_attribute_term_fields()
+{
+    $attribute_taxonomies = wc_get_attribute_taxonomies();
+    if (!$attribute_taxonomies) return;
+
+    foreach ($attribute_taxonomies as $tax) {
+        $taxonomy = wc_attribute_taxonomy_name($tax->attribute_name);
+        add_action("{$taxonomy}_add_form_fields",  'ebs_attribute_term_add_fields');
+        add_action("{$taxonomy}_edit_form_fields", 'ebs_attribute_term_edit_fields', 10, 2);
+        add_action("created_{$taxonomy}",          'ebs_attribute_term_save_fields');
+        add_action("edited_{$taxonomy}",           'ebs_attribute_term_save_fields');
+    }
+}
+add_action('init', 'ebs_register_attribute_term_fields', 20);
+
+/** Render fields on the "Add new term" form */
+function ebs_attribute_term_add_fields()
+{
+    ?>
+    <div class="form-field">
+        <label for="ebs_term_color"><?php esc_html_e('Renk', 'ebaskicim'); ?></label>
+        <input type="text" name="ebs_term_color" id="ebs_term_color" value="" class="ebs-color-picker" />
+        <p class="description"><?php esc_html_e('Chip içinde gösterilecek renk. Görsel de seçildiyse renk gösterilmez.', 'ebaskicim'); ?></p>
+    </div>
+    <div class="form-field">
+        <label><?php esc_html_e('Görsel', 'ebaskicim'); ?></label>
+        <div class="ebs-term-image-wrap">
+            <img id="ebs_term_image_preview" src="" style="display:none;width:60px;height:60px;object-fit:cover;border-radius:6px;margin-bottom:6px;" />
+            <br>
+            <input type="hidden" name="ebs_term_image" id="ebs_term_image" value="" />
+            <button type="button" class="button ebs-upload-image-btn"><?php esc_html_e('Görsel Seç', 'ebaskicim'); ?></button>
+            <button type="button" class="button ebs-remove-image-btn" style="display:none;"><?php esc_html_e('Kaldır', 'ebaskicim'); ?></button>
+        </div>
+        <p class="description"><?php esc_html_e('Chip içinde gösterilecek görsel (doku, malzeme vb.). Dolu ise renk alanı göz ardı edilir.', 'ebaskicim'); ?></p>
+    </div>
+    <?php
+}
+
+/** Render fields on the "Edit term" form */
+function ebs_attribute_term_edit_fields($term, $_taxonomy)
+{
+    $color     = get_term_meta($term->term_id, 'ebs_term_color', true);
+    $image_id  = (int) get_term_meta($term->term_id, 'ebs_term_image', true);
+    $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'thumbnail') : '';
+    ?>
+    <tr class="form-field">
+        <th><label for="ebs_term_color"><?php esc_html_e('Renk', 'ebaskicim'); ?></label></th>
+        <td>
+            <input type="text" name="ebs_term_color" id="ebs_term_color" value="<?php echo esc_attr($color); ?>" class="ebs-color-picker" />
+            <p class="description"><?php esc_html_e('Chip içinde gösterilecek renk. Görsel de seçildiyse renk gösterilmez.', 'ebaskicim'); ?></p>
+        </td>
+    </tr>
+    <tr class="form-field">
+        <th><label><?php esc_html_e('Görsel', 'ebaskicim'); ?></label></th>
+        <td>
+            <div class="ebs-term-image-wrap">
+                <img id="ebs_term_image_preview" src="<?php echo esc_url($image_url); ?>" style="<?php echo $image_url ? '' : 'display:none;'; ?>width:60px;height:60px;object-fit:cover;border-radius:6px;margin-bottom:6px;" />
+                <br>
+                <input type="hidden" name="ebs_term_image" id="ebs_term_image" value="<?php echo esc_attr($image_id ?: ''); ?>" />
+                <button type="button" class="button ebs-upload-image-btn"><?php esc_html_e('Görsel Seç', 'ebaskicim'); ?></button>
+                <button type="button" class="button ebs-remove-image-btn" <?php echo $image_url ? '' : 'style="display:none;"'; ?>><?php esc_html_e('Kaldır', 'ebaskicim'); ?></button>
+            </div>
+            <p class="description"><?php esc_html_e('Chip içinde gösterilecek görsel (doku, malzeme vb.). Dolu ise renk alanı göz ardı edilir.', 'ebaskicim'); ?></p>
+        </td>
+    </tr>
+    <?php
+}
+
+/** Save term meta */
+function ebs_attribute_term_save_fields($term_id)
+{
+    if (isset($_POST['ebs_term_color'])) {
+        $color = sanitize_hex_color($_POST['ebs_term_color']);
+        if ($color) {
+            update_term_meta($term_id, 'ebs_term_color', $color);
+        } else {
+            delete_term_meta($term_id, 'ebs_term_color');
+        }
+    }
+
+    if (isset($_POST['ebs_term_image'])) {
+        $image_id = absint($_POST['ebs_term_image']);
+        if ($image_id) {
+            update_term_meta($term_id, 'ebs_term_image', $image_id);
+        } else {
+            delete_term_meta($term_id, 'ebs_term_image');
+        }
+    }
+}
+
+/** Enqueue color picker + media uploader on attribute term pages */
+function ebs_enqueue_attribute_term_scripts($hook)
+{
+    if (!in_array($hook, ['edit-tags.php', 'term.php'], true)) return;
+
+    $screen = get_current_screen();
+    if (!$screen || strpos($screen->taxonomy, 'pa_') !== 0) return;
+
+    wp_enqueue_media();
+    wp_enqueue_style('wp-color-picker');
+    wp_enqueue_script('wp-color-picker');
+    wp_enqueue_script(
+        'ebs-attribute-term-fields',
+        get_template_directory_uri() . '/assets/js/admin-term-fields.js',
+        ['jquery', 'wp-color-picker'],
+        wp_get_theme()->get('Version'),
+        true
+    );
+}
+add_action('admin_enqueue_scripts', 'ebs_enqueue_attribute_term_scripts');
+
+/* ATTRIBUTE TERM FIELDS (End) */

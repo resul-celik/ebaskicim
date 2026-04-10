@@ -207,6 +207,43 @@ maniMenuItems.forEach((item) => {
   });
 });
 
+/* VARIATION CHIPS (Start) */
+
+jQuery(function ($) {
+  var $form = $(".variations_form");
+  if (!$form.length) return;
+
+  // Click a chip: mark it active and sync the hidden <select>
+  $form.on("click", ".variation-chip", function () {
+    var $chip = $(this);
+    if ($chip.hasClass("variation-chip--disabled")) return;
+
+    var $chips = $chip.closest(".variation-chips");
+    var attribute = $chips.data("attribute");
+    var value = $chip.data("value");
+
+    $chips.find(".variation-chip").removeClass("variation-chip--active");
+    $chip.addClass("variation-chip--active");
+
+    $form
+      .find('select[name="attribute_' + attribute + '"]')
+      .val(value)
+      .trigger("change");
+  });
+
+  // Auto-select the first chip of every attribute on page load
+  $form.find(".variation-chips").each(function () {
+    $(this).find(".variation-chip").first().trigger("click");
+  });
+
+  // When WooCommerce resets variations, deactivate all chips
+  $form.on("reset_data", function () {
+    $form.find(".variation-chip").removeClass("variation-chip--active");
+  });
+});
+
+/* VARIATION CHIPS (End) */
+
 /* const searchFilter = document.querySelector(".search-filter");
 const resultList = document.querySelector(".results");
 

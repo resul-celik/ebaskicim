@@ -34,7 +34,7 @@ if (post_password_required()) {
 		<?php do_action('woocommerce_template_single_rating'); ?>
 		<?php woocommerce_template_single_excerpt(); ?>
 		<div class="flex flex-col gap-18">
-			<?php woocommerce_template_single_price(); ?>
+			<?php if (!$product->is_type('variable')) woocommerce_template_single_price(); ?>
 			<?php woocommerce_template_single_add_to_cart(); ?>
 		</div>
 		<?php
