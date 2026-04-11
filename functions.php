@@ -39,37 +39,44 @@ add_action('woocommerce_cart_calculate_fees', 'ebs_apply_kurumsal_discount');
 
 function ebs_price_html($price, $product)
 {
+    // For variable products, resolve to the cheapest variation's prices
+    if ($product->is_type('variable')) {
+        $variation_prices = $product->get_variation_prices();
+        if (empty($variation_prices['price'])) {
+            return $price;
+        }
+        $min_id        = key($variation_prices['price']);
+        $regular_price = $variation_prices['regular_price'][$min_id] ?? '';
+        $sale_price    = $variation_prices['sale_price'][$min_id] ?? '';
+    } else {
+        $regular_price = $product->get_regular_price();
+        $sale_price    = $product->get_sale_price();
+    }
 
     // Price with kurumsal discount
     if (is_user_logged_in() && in_array('kurumsal', wp_get_current_user()->roles)) {
         $discount_percentage = apply_filters('ebs_kurumsal_discount_percentage', 0);
-        $regular_price = $product->get_price();
-        $discounted = $regular_price * ((100 - $discount_percentage) / 100);
+        $base_price  = $sale_price ?: $regular_price;
+        $discounted  = $base_price * ((100 - $discount_percentage) / 100);
 
         $price = sprintf(
             '<del class="old-price">%s</del><ins class="new-price">%s</ins>',
-            wc_price($regular_price, array('in_span' => false)),
+            wc_price($base_price, array('in_span' => false)),
             wc_price($discounted, array('in_span' => false))
         );
+    } elseif ($sale_price) {
+        $price = sprintf(
+            '<del class="old-price">%s</del><ins class="new-price">%s</ins>',
+            wc_price($regular_price, array('in_span' => false)),
+            wc_price($sale_price, array('in_span' => false))
+        );
     } else {
-
-        // Normal discount
-        $regular_price = $product->get_regular_price();
-        $sale_price = $product->get_sale_price();
-
-        if ($sale_price) {
-            $price = sprintf(
-                '<del class="old-price">%s</del><ins class="new-price">%s</ins>',
-                wc_price($regular_price, array('in_span' => false)),
-                wc_price($sale_price, array('in_span' => false))
-            );
-        } else {
-            $price = sprintf(
-                '<ins class="new-price">%s</ins>',
-                wc_price($regular_price, array('in_span' => false))
-            );
-        }
+        $price = sprintf(
+            '<ins class="new-price">%s</ins>',
+            wc_price($regular_price, array('in_span' => false))
+        );
     }
+
     return $price;
 }
 add_filter('woocommerce_get_price_html', 'ebs_price_html', 10, 2);
@@ -140,11 +147,11 @@ function ebs_get_badge($text, $args = array())
 // REGISTER CUSTOM CSS & JS
 function ebaskicim_custom_css()
 {
-    wp_enqueue_style('ebaskicim-styles', get_stylesheet_directory_uri() . '/assets/css/main.css', array(), '1.0', 'all');
-    wp_enqueue_style('ebaskicim-tailwind', get_stylesheet_directory_uri() . '/assets/css/tw-output.css', array(), '1.0', 'all');
-    wp_enqueue_style('ebaskicim-main-style', get_stylesheet_directory_uri() . '/style.css', array(), '1.0', 'all');
+    wp_enqueue_style('ebaskicim-styles', get_stylesheet_directory_uri() . '/assets/css/main.css', array(), '1.1', 'all');
+    wp_enqueue_style('ebaskicim-tailwind', get_stylesheet_directory_uri() . '/assets/css/tw-output.css', array(), '1.1', 'all');
+    wp_enqueue_style('ebaskicim-main-style', get_stylesheet_directory_uri() . '/style.css', array(), '1.1', 'all');
     wp_enqueue_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js', array(), false, true);
-    wp_enqueue_script('ebaskicim-main', get_stylesheet_directory_uri() . '/assets/js/main.js', array('jquery'), '1.0', true);
+    wp_enqueue_script('ebaskicim-main', get_stylesheet_directory_uri() . '/assets/js/main.js', array('jquery'), '1.1', true);
 }
 add_action('wp_enqueue_scripts', 'ebaskicim_custom_css', 20);
 
@@ -528,7 +535,7 @@ add_action('init', 'ebs_register_attribute_term_fields', 20);
 /** Render fields on the "Add new term" form */
 function ebs_attribute_term_add_fields()
 {
-    ?>
+?>
     <div class="form-field">
         <label for="ebs_term_color"><?php esc_html_e('Renk', 'ebaskicim'); ?></label>
         <input type="text" name="ebs_term_color" id="ebs_term_color" value="" class="ebs-color-picker" />
@@ -545,7 +552,7 @@ function ebs_attribute_term_add_fields()
         </div>
         <p class="description"><?php esc_html_e('Chip içinde gösterilecek görsel (doku, malzeme vb.). Dolu ise renk alanı göz ardı edilir.', 'ebaskicim'); ?></p>
     </div>
-    <?php
+<?php
 }
 
 /** Render fields on the "Edit term" form */
@@ -554,7 +561,7 @@ function ebs_attribute_term_edit_fields($term, $_taxonomy)
     $color     = get_term_meta($term->term_id, 'ebs_term_color', true);
     $image_id  = (int) get_term_meta($term->term_id, 'ebs_term_image', true);
     $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'thumbnail') : '';
-    ?>
+?>
     <tr class="form-field">
         <th><label for="ebs_term_color"><?php esc_html_e('Renk', 'ebaskicim'); ?></label></th>
         <td>
@@ -575,7 +582,7 @@ function ebs_attribute_term_edit_fields($term, $_taxonomy)
             <p class="description"><?php esc_html_e('Chip içinde gösterilecek görsel (doku, malzeme vb.). Dolu ise renk alanı göz ardı edilir.', 'ebaskicim'); ?></p>
         </td>
     </tr>
-    <?php
+<?php
 }
 
 /** Save term meta */
