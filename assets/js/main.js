@@ -213,7 +213,7 @@ jQuery(function ($) {
   var $form = $(".variations_form");
   if (!$form.length) return;
 
-  // Click a chip: mark it active and sync the hidden <select>
+  // Click a chip: mark it active, sync the hidden <select>, update swatch label
   $form.on("click", ".variation-chip", function () {
     var $chip = $(this);
     if ($chip.hasClass("variation-chip--disabled")) return;
@@ -224,6 +224,12 @@ jQuery(function ($) {
 
     $chips.find(".variation-chip").removeClass("variation-chip--active");
     $chip.addClass("variation-chip--active");
+
+    // Update label name for swatch groups (color / image chips)
+    if ($chips.data("swatch")) {
+      var label = $chip.data("label") || "";
+      $chip.closest(".variation-group").find(".chip-label-name").text(label ? "— " + label : "");
+    }
 
     $form
       .find('select[name="attribute_' + attribute + '"]')
@@ -240,6 +246,19 @@ jQuery(function ($) {
   $form.on("reset_data", function () {
     $form.find(".variation-chip").removeClass("variation-chip--active");
   });
+
+  // Sync variation price to the display container above the title
+  var $priceDisplay = $(".variation-price-display");
+  if ($priceDisplay.length) {
+    $form.on("found_variation", function (_e, variation) {
+      if (variation.price_html) {
+        $priceDisplay.html(variation.price_html);
+      }
+    });
+    $form.on("reset_data", function () {
+      $priceDisplay.html("");
+    });
+  }
 });
 
 /* VARIATION CHIPS (End) */

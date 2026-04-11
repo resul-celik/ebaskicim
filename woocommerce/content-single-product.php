@@ -31,10 +31,15 @@ if (post_password_required()) {
 
 	<div class="flex flex-col gap-38 flex-1">
 		<h1 class="display-sm text-gray-900"><?php the_title(); ?></h1>
+		<?php if ($product->is_type('variable')) : ?>
+			<div class="variation-price-display single-product-price"></div>
+		<?php else : ?>
+			<?php woocommerce_template_single_price(); ?>
+		<?php endif; ?>
 		<?php do_action('woocommerce_template_single_rating'); ?>
 		<?php woocommerce_template_single_excerpt(); ?>
 		<div class="flex flex-col gap-18">
-			<?php if (!$product->is_type('variable')) woocommerce_template_single_price(); ?>
+			
 			<?php woocommerce_template_single_add_to_cart(); ?>
 		</div>
 		<?php
