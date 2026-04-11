@@ -255,10 +255,48 @@ jQuery(function ($) {
         $priceDisplay.html(variation.price_html);
       }
     });
-    $form.on("reset_data", function () {
-      $priceDisplay.html("");
-    });
   }
+
+  // Sync variation image to the main product photo swiper
+  var $mainSlide = $(".photo-swiper .photo-swiper-item").first();
+  var $thumbSlide = $(".swiper-thumbs .photo-swiper-thumb-item").first();
+
+  $form.on("found_variation", function (_e, variation) {
+    var img = variation.image;
+    if (!img || !img.src || img.src.indexOf("woocommerce-placeholder") !== -1) return;
+
+    var $mainImg = $mainSlide.find("img");
+    var $thumbImg = $thumbSlide.find("img");
+
+    // Store originals once
+    if (!$mainImg.data("orig-src")) {
+      $mainImg.data("orig-src", $mainImg.attr("src"));
+      $mainImg.data("orig-srcset", $mainImg.attr("srcset") || "");
+    }
+    if (!$thumbImg.data("orig-src")) {
+      $thumbImg.data("orig-src", $thumbImg.attr("src"));
+    }
+
+    $mainImg.attr("src", img.src).attr("srcset", img.srcset || "");
+    $thumbImg.attr("src", img.gallery_thumbnail_src || img.src);
+
+    // Go to first slide so the updated image is visible
+    if (typeof photoSwiper !== "undefined") {
+      photoSwiper.slideTo(0, 0);
+    }
+  });
+
+  $form.on("reset_data", function () {
+    var $mainImg = $mainSlide.find("img");
+    var $thumbImg = $thumbSlide.find("img");
+
+    if ($mainImg.data("orig-src")) {
+      $mainImg.attr("src", $mainImg.data("orig-src")).attr("srcset", $mainImg.data("orig-srcset"));
+    }
+    if ($thumbImg.data("orig-src")) {
+      $thumbImg.attr("src", $thumbImg.data("orig-src"));
+    }
+  });
 });
 
 /* VARIATION CHIPS (End) */

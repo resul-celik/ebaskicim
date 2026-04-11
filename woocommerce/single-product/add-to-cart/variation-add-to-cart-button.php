@@ -31,7 +31,7 @@ global $product;
 		'type'         => 'submit',
 		'hierarchy'    => 'primary',
 		'size'         => 'large',
-		'classes'      => 'single_add_to_cart_button' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''),
+		'classes'      => 'grow-1 single_add_to_cart_button' . esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : ''),
 		'trailingIcon' => 'cart',
 	]);
 	?>

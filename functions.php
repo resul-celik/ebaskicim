@@ -56,7 +56,7 @@ function ebs_price_html($price, $product)
     // Price with kurumsal discount
     if (is_user_logged_in() && in_array('kurumsal', wp_get_current_user()->roles)) {
         $discount_percentage = apply_filters('ebs_kurumsal_discount_percentage', 0);
-        $base_price  = $sale_price ?: $regular_price;
+        $base_price  = ($sale_price && (float) $sale_price < (float) $regular_price) ? $sale_price : $regular_price;
         $discounted  = $base_price * ((100 - $discount_percentage) / 100);
 
         $price = sprintf(
@@ -64,7 +64,7 @@ function ebs_price_html($price, $product)
             wc_price($base_price, array('in_span' => false)),
             wc_price($discounted, array('in_span' => false))
         );
-    } elseif ($sale_price) {
+    } elseif ($sale_price && (float) $sale_price < (float) $regular_price) {
         $price = sprintf(
             '<del class="old-price">%s</del><ins class="new-price">%s</ins>',
             wc_price($regular_price, array('in_span' => false)),
@@ -147,11 +147,11 @@ function ebs_get_badge($text, $args = array())
 // REGISTER CUSTOM CSS & JS
 function ebaskicim_custom_css()
 {
-    wp_enqueue_style('ebaskicim-styles', get_stylesheet_directory_uri() . '/assets/css/main.css', array(), '1.1', 'all');
-    wp_enqueue_style('ebaskicim-tailwind', get_stylesheet_directory_uri() . '/assets/css/tw-output.css', array(), '1.1', 'all');
-    wp_enqueue_style('ebaskicim-main-style', get_stylesheet_directory_uri() . '/style.css', array(), '1.1', 'all');
+    wp_enqueue_style('ebaskicim-styles', get_stylesheet_directory_uri() . '/assets/css/main.css', array(), '1.2', 'all');
+    wp_enqueue_style('ebaskicim-tailwind', get_stylesheet_directory_uri() . '/assets/css/tw-output.css', array(), '1.2', 'all');
+    wp_enqueue_style('ebaskicim-main-style', get_stylesheet_directory_uri() . '/style.css', array(), '1.2', 'all');
     wp_enqueue_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js', array(), false, true);
-    wp_enqueue_script('ebaskicim-main', get_stylesheet_directory_uri() . '/assets/js/main.js', array('jquery'), '1.1', true);
+    wp_enqueue_script('ebaskicim-main', get_stylesheet_directory_uri() . '/assets/js/main.js', array('jquery'), '1.2', true);
 }
 add_action('wp_enqueue_scripts', 'ebaskicim_custom_css', 20);
 
