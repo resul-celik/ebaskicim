@@ -63,11 +63,12 @@ foreach ($_GET as $key => $value) {
 }
 
 $args = array(
-	'post_type' => 'product',
-	'paged'     => $paged,
-	'orderby'   => $isMetaOrder ? array('meta_value_num' => $orderConfig["orderby"]) : array('date' => $orderConfig["orderby"]),
-	'meta_key'  => $isMetaOrder ? $orderConfig["key"] : '',
-	'tax_query' => $tax_queries,
+	'post_type'      => 'product',
+	'paged'          => $paged,
+	'posts_per_page' => wc_get_default_products_per_row() * wc_get_default_product_rows_per_page(),
+	'orderby'        => $isMetaOrder ? array('meta_value_num' => $orderConfig["orderby"]) : array('date' => $orderConfig["orderby"]),
+	'meta_key'       => $isMetaOrder ? $orderConfig["key"] : '',
+	'tax_query'      => $tax_queries,
 );
 
 
@@ -136,6 +137,8 @@ do_action('woocommerce_before_main_content'); ?>
 				wp_reset_postdata();
 
 				if ($products->max_num_pages > 1) :
+					wc_set_loop_prop('total_pages', $products->max_num_pages);
+					wc_set_loop_prop('current_page', $paged);
 					do_action('woocommerce_after_shop_loop');
 				endif;
 			else:

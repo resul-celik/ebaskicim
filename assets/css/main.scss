@@ -650,14 +650,16 @@ body {
 
 /* PAGINATION (Start) */
 
-.pagination {
+.pagination,
+.page-numbers {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: calc(var(--spacing) * 5);
 
-  .page-numbers {
+  .page-numbers li a,
+  .page-numbers li span {
     width: auto;
     height: 42px;
     display: flex;
