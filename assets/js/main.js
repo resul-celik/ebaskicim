@@ -207,6 +207,113 @@ maniMenuItems.forEach((item) => {
   });
 });
 
+/* DESIGN UPLOAD (Start) */
+
+jQuery(function ($) {
+  var $dropzone = $(".design-dropzone");
+  if (!$dropzone.length) return;
+
+  var $area      = $dropzone.find(".design-dropzone__area");
+  var $fileInput = $dropzone.find(".design-file-input");
+  var $progress  = $dropzone.find(".design-upload-progress");
+  var $progBar   = $dropzone.find(".design-progress-bar");
+  var $progName  = $dropzone.find(".design-progress-filename");
+  var $fileInfo  = $dropzone.find(".design-file-info");
+  var $fileName  = $dropzone.find(".design-file-name");
+  var $removeBtn = $dropzone.find(".design-remove-btn");
+  var nonce      = $dropzone.data("nonce");
+
+  // "Dosya Seç" button opens the hidden file input
+  $dropzone.on("click", ".design-select-btn", function () {
+    $fileInput.trigger("click");
+  });
+
+  // File selected via browse
+  $fileInput.on("change", function () {
+    if (this.files.length) handleFile(this.files[0]);
+  });
+
+  // Drag over — highlight zone
+  $area.on("dragover dragenter", function (e) {
+    e.preventDefault();
+    $area.addClass("design-dropzone__area--active");
+  });
+
+  $area.on("dragleave dragend", function () {
+    $area.removeClass("design-dropzone__area--active");
+  });
+
+  // Drop
+  $area.on("drop", function (e) {
+    e.preventDefault();
+    $area.removeClass("design-dropzone__area--active");
+    var files = e.originalEvent.dataTransfer.files;
+    if (files.length) handleFile(files[0]);
+  });
+
+  // Remove uploaded file
+  $removeBtn.on("click", function () {
+    resetUpload();
+  });
+
+  function resetUpload() {
+    $(".ebs-design-file-key").val("");
+    $(".ebs-design-file-name").val("");
+    $fileInput.val("");
+    $fileInfo.prop("hidden", true);
+    $area.prop("hidden", false);
+  }
+
+  function handleFile(file) {
+    var formData = new FormData();
+    formData.append("action", "ebs_upload_design");
+    formData.append("nonce", nonce);
+    formData.append("design_file", file);
+
+    $area.prop("hidden", true);
+    $fileInfo.prop("hidden", true);
+    $progName.text(file.name);
+    $progBar.css("width", "0%");
+    $progress.prop("hidden", false);
+
+    $.ajax({
+      url: window.ebs_ajax.ajax_url,
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      xhr: function () {
+        var xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener("progress", function (e) {
+          if (e.lengthComputable) {
+            $progBar.css("width", (e.loaded / e.total) * 100 + "%");
+          }
+        });
+        return xhr;
+      },
+      success: function (res) {
+        $progress.prop("hidden", true);
+        if (res.success) {
+          $(".ebs-design-file-key").val(res.data.file_key);
+          $(".ebs-design-file-name").val(res.data.file_name); // display name only
+          $fileName.text(res.data.file_name);
+          $fileInfo.prop("hidden", false);
+        } else {
+          $area.prop("hidden", false);
+          alert("Yükleme hatası: " + res.data);
+        }
+      },
+      error: function () {
+        $progress.prop("hidden", true);
+        $area.prop("hidden", false);
+        alert("Dosya yüklenemedi. Lütfen tekrar deneyin.");
+      },
+    });
+  }
+});
+
+/* DESIGN UPLOAD (End) */
+
 /* VARIATION CHIPS (Start) */
 
 jQuery(function ($) {

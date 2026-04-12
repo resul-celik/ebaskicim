@@ -152,6 +152,9 @@ function ebaskicim_custom_css()
     wp_enqueue_style('ebaskicim-main-style', get_stylesheet_directory_uri() . '/style.css', array(), '1.2', 'all');
     wp_enqueue_script('swiper', 'https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js', array(), false, true);
     wp_enqueue_script('ebaskicim-main', get_stylesheet_directory_uri() . '/assets/js/main.js', array('jquery'), '1.2', true);
+    wp_localize_script('ebaskicim-main', 'ebs_ajax', [
+        'ajax_url' => admin_url('admin-ajax.php'),
+    ]);
 }
 add_action('wp_enqueue_scripts', 'ebaskicim_custom_css', 20);
 
@@ -629,3 +632,164 @@ function ebs_enqueue_attribute_term_scripts($hook)
 add_action('admin_enqueue_scripts', 'ebs_enqueue_attribute_term_scripts');
 
 /* ATTRIBUTE TERM FIELDS (End) */
+
+/* DESIGN UPLOAD (Start) */
+
+/**
+ * AJAX: upload a design file to /uploads/design-uploads/
+ *
+ * Security measures:
+ *  - Nonce verification
+ *  - PHP upload error check
+ *  - 20 MB size cap
+ *  - wp_check_filetype_and_ext() validates BOTH extension AND actual file signature
+ *  - SVG/AI/EPS excluded (script injection risk)
+ *  - Randomised filename — original name never hits the filesystem
+ *  - .htaccess blocks PHP execution and directory listing in the target dir
+ *  - file_url NOT returned to the client (no roadmap to the file)
+ */
+function ebs_upload_design()
+{
+    check_ajax_referer('ebs_upload_design', 'nonce');
+
+    // Basic upload sanity check
+    if (empty($_FILES['design_file']) || $_FILES['design_file']['error'] !== UPLOAD_ERR_OK) {
+        wp_send_json_error('Dosya bulunamadı veya yükleme hatası oluştu.');
+    }
+
+    $file = $_FILES['design_file'];
+
+    // 1. File size cap (20 MB)
+    $max_bytes = 20 * 1024 * 1024;
+    if ($file['size'] > $max_bytes) {
+        wp_send_json_error('Dosya boyutu 20 MB\'ı geçemez.');
+    }
+
+    // 2. Validate extension AND actual file content signature
+    //    SVG, AI, EPS are intentionally excluded: SVG can embed <script>,
+    //    PostScript can trigger code execution in some interpreters.
+    $allowed = [
+        'jpg|jpeg' => 'image/jpeg',
+        'png'      => 'image/png',
+        'pdf'      => 'application/pdf',
+        'psd'      => 'image/vnd.adobe.photoshop',
+        'zip'      => 'application/zip',
+    ];
+
+    $checked = wp_check_filetype_and_ext($file['tmp_name'], $file['name'], $allowed);
+    if (!$checked['type'] || !$checked['ext']) {
+        wp_send_json_error('Desteklenmeyen dosya türü. İzin verilenler: JPG, PNG, PDF, PSD, ZIP.');
+    }
+
+    // 3. Prepare target directory
+    $upload_dir = wp_upload_dir();
+    $design_dir = trailingslashit($upload_dir['basedir']) . 'design-uploads/';
+
+    wp_mkdir_p($design_dir);
+
+    // Block PHP execution and directory listing via .htaccess (Apache)
+    $htaccess = $design_dir . '.htaccess';
+    if (!file_exists($htaccess)) {
+        file_put_contents(
+            $htaccess,
+            "Options -Indexes\n" .
+                "<FilesMatch \"\\.ph(p[2-9]?|tml|ar|ps)$\">\n" .
+                "  Order Allow,Deny\n" .
+                "  Deny from all\n" .
+                "</FilesMatch>\n"
+        );
+    }
+
+    // index.php fallback for servers without mod_autoindex control
+    $index = $design_dir . 'index.php';
+    if (!file_exists($index)) {
+        file_put_contents($index, '<?php // Silence is golden.');
+    }
+
+    // 4. Store with a fully randomised name — original filename never touches disk
+    $file_key = wp_generate_password(32, false) . '.' . $checked['ext'];
+    $dest     = $design_dir . $file_key;
+
+    if (!move_uploaded_file($file['tmp_name'], $dest)) {
+        wp_send_json_error('Dosya kaydedilemedi.');
+    }
+
+    // Return the display name (original) and the opaque server key only
+    wp_send_json_success([
+        'file_key'  => $file_key,
+        'file_name' => sanitize_text_field($file['name']), // display only, never used as path
+    ]);
+}
+add_action('wp_ajax_ebs_upload_design',        'ebs_upload_design');
+add_action('wp_ajax_nopriv_ebs_upload_design', 'ebs_upload_design');
+
+/** Add a hidden input inside every add-to-cart form to carry the uploaded file key */
+function ebs_design_hidden_input()
+{
+    echo '<input type="hidden" name="ebs_design_file_key" class="ebs-design-file-key" value="" />';
+    echo '<input type="hidden" name="ebs_design_file_name" class="ebs-design-file-name" value="" />';
+}
+add_action('woocommerce_before_add_to_cart_button', 'ebs_design_hidden_input');
+
+/** Attach the design file data to the cart item */
+function ebs_add_design_to_cart_item($cart_item_data, $_product_id, $_variation_id)
+{
+    $file_key  = isset($_POST['ebs_design_file_key'])  ? sanitize_text_field($_POST['ebs_design_file_key'])  : '';
+    $file_name = isset($_POST['ebs_design_file_name']) ? sanitize_text_field($_POST['ebs_design_file_name']) : '';
+
+    if ($file_key) {
+        $cart_item_data['ebs_design_file_key']  = $file_key;
+        $cart_item_data['ebs_design_file_name'] = $file_name;
+        $cart_item_data['unique_key']           = md5(microtime() . $file_key);
+    }
+
+    return $cart_item_data;
+}
+add_filter('woocommerce_add_cart_item_data', 'ebs_add_design_to_cart_item', 10, 3);
+
+/** Show design file name in the cart and checkout summary */
+function ebs_display_design_in_cart($item_data, $cart_item)
+{
+    if (!empty($cart_item['ebs_design_file_name'])) {
+        $item_data[] = [
+            'key'   => 'Tasarım Dosyası',
+            'value' => esc_html($cart_item['ebs_design_file_name']),
+        ];
+    }
+    return $item_data;
+}
+add_filter('woocommerce_get_item_data', 'ebs_display_design_in_cart', 10, 2);
+
+/** Save design file data to the order line item meta */
+function ebs_save_design_to_order_item($item, $_cart_item_key, $values, $_order)
+{
+    if (!empty($values['ebs_design_file_key'])) {
+        $item->add_meta_data('_ebs_design_file_key',  $values['ebs_design_file_key'], true);
+        $item->add_meta_data('Tasarım Dosyası', $values['ebs_design_file_name'], true);
+    }
+}
+add_action('woocommerce_checkout_create_order_line_item', 'ebs_save_design_to_order_item', 10, 4);
+
+/** Show a download link for the uploaded design file in the admin order detail */
+function ebs_admin_order_item_design_link($_item_id, $item, $_product)
+{
+    $file_key = $item->get_meta('_ebs_design_file_key');
+    if (!$file_key) return;
+
+    $display_name = $item->get_meta('Tasarım Dosyası') ?: $file_key;
+    $upload_dir   = wp_upload_dir();
+    $file_url     = trailingslashit($upload_dir['baseurl']) . 'design-uploads/' . rawurlencode($file_key);
+
+    printf(
+        '<div class="ebs-design-download" style="margin-top:8px;">
+            <strong>Tasarım Dosyası:</strong>
+            <a href="%s" download="%s" target="_blank" style="margin-left:6px;">%s ↓</a>
+        </div>',
+        esc_url($file_url),
+        esc_attr($display_name),
+        esc_html($display_name)
+    );
+}
+add_action('woocommerce_after_order_itemmeta', 'ebs_admin_order_item_design_link', 10, 3);
+
+/* DESIGN UPLOAD (End) */

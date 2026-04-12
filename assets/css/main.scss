@@ -307,10 +307,22 @@ body {
   summary {
     .icon-minus {
       display: none !important;
+      width: 20px;
+      height: 20px;
+
+      &:before {
+        font-size: 20px;
+      }
     }
 
     .icon-plus {
       display: block !important;
+      width: 20px;
+      height: 20px;
+
+      &:before {
+        font-size: 20px;
+      }
     }
   }
 
@@ -681,6 +693,109 @@ body {
 }
 
 /* PAGINATION (End) */
+
+/* DESIGN UPLOAD (Start) */
+
+.design-dropzone {
+  width: 100%;
+}
+
+.design-dropzone__area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--spacing) * 15);
+  width: 100%;
+  padding: calc(var(--spacing) * 35) calc(var(--spacing) * 20);
+  border: 1px dashed var(--color-gray-500);
+  border-radius: 10px;
+  background: var(--color-white);
+  text-align: center;
+  transition:
+    border-color 0.15s ease-in-out,
+    background 0.15s ease-in-out;
+  cursor: default;
+
+  .icon {
+    font-size: 3.2rem;
+  }
+
+  &--active {
+    border-color: var(--color-primary-400);
+    background: var(--color-primary-50);
+  }
+
+  // Hide the native file input visually but keep it accessible
+  .design-file-input {
+    display: none;
+  }
+}
+
+.design-upload-progress {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 8);
+  padding: calc(var(--spacing) * 16) calc(var(--spacing) * 20);
+  background: var(--color-white);
+  border-radius: 10px;
+}
+
+.design-progress-track {
+  width: 100%;
+  height: 10px;
+  background: var(--color-gray-200);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.design-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--color-primary-400);
+  border-radius: 99px;
+  transition: width 0.2s ease-out;
+}
+
+.design-file-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: calc(var(--spacing) * 10);
+  padding: calc(var(--spacing) * 12) calc(var(--spacing) * 16);
+  background: var(--color-primary-50);
+  border: 1px solid var(--color-primary-200);
+  border-radius: 12px;
+
+  .icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+
+  .design-file-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.design-remove-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--color-gray-500);
+  cursor: pointer;
+  padding: 0 calc(var(--spacing) * 4);
+  flex-shrink: 0;
+
+  &:hover {
+    color: var(--color-gray-900);
+  }
+}
+
+/* DESIGN UPLOAD (End) */
 
 /* VARIATION CHIPS (Start) */
 
