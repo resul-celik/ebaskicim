@@ -9,14 +9,30 @@
                 <?php dynamic_sidebar('footer-menus'); ?>
             </div>
             <div class="col-span-2 flex flex-col items-end justify-start gap-20">
-                <div class="flex flex-row gap-10">
-                    <div class="w-40 h-40 flex items-center justify-center bg-gray-200 rounded-full">
-                        <?php echo ebs_get_icon('instagram'); ?>
+                <?php
+                $social_platforms = [
+                    'instagram' => 'https://www.instagram.com/',
+                    'facebook'  => 'https://www.facebook.com/',
+                    'youtube'   => 'https://www.youtube.com/@',
+                    'twitter'   => 'https://x.com/',
+                    'linkedin'  => 'https://www.linkedin.com/in/',
+                    'pinterest' => 'https://www.pinterest.com/',
+                ];
+                $social_links = array_filter(array_map(function ($icon, $base_url) {
+                    $username = get_theme_mod('eb_' . $icon, '');
+                    if (empty($username)) return null;
+                    return ['icon' => $icon, 'url' => $base_url . ltrim($username, '/')];
+                }, array_keys($social_platforms), array_values($social_platforms)));
+                ?>
+                <?php if (!empty($social_links)) : ?>
+                    <div class="flex flex-row gap-10">
+                        <?php foreach ($social_links as $social) : ?>
+                            <a href="<?php echo esc_url($social['url']); ?>" target="_blank" rel="noopener noreferrer" class="w-40 h-40 flex items-center justify-center bg-gray-200 rounded-full">
+                                <?php echo ebs_get_icon($social['icon']); ?>
+                            </a>
+                        <?php endforeach; ?>
                     </div>
-                    <div class="w-40 h-40 flex items-center justify-center bg-gray-200 rounded-full">
-                        <?php echo ebs_get_icon('facebook'); ?>
-                    </div>
-                </div>
+                <?php endif; ?>
                 <div class="safety-shopping-badge">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/ssl.svg" />
                 </div>
@@ -26,8 +42,8 @@
     <div class="w-full flex flex-col items-center justify-center border-t border-gray-200 py-15">
         <div class="w-full max-w-[1920px] flex flex-row items-center justify-between px-20">
             <div class="paragraph-xs text-gray-500">&copy; 2026 Ebaskıcım</div>
-            <div class="flex flex-row gap-10">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/iyzico.svg" />
+            <div class="flex flex-row gap-20">
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/paytr.svg" />
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/mastercard.svg" />
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/visa.svg" />
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/troy.svg" />

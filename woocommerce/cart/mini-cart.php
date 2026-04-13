@@ -42,7 +42,7 @@ defined('ABSPATH') || exit;
                     <div class="mini-cart-coupon coupon w-full flex flex-row items-center justify-start gap-10 pt-10">
                         <label for="coupon_code" class="screen-reader-text"><?php esc_html_e('Coupon:', 'woocommerce'); ?></label>
                         <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e('Coupon code', 'woocommerce'); ?>" />
-                        <?
+                        <?php
                         $buttonClass = "grow-0 shrink-0";
                         $buttonArgs = [
                             'text' => esc_attr__('Apply coupon', 'woocommerce'),

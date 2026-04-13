@@ -181,7 +181,7 @@ do_action('woocommerce_before_cart'); ?>
 							<?php esc_html_e('Coupon:', 'woocommerce'); ?>
 						</label>
 						<input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="<?php esc_attr_e('Coupon code', 'woocommerce'); ?>" />
-						<?
+						<?php
 						$buttonArgs = [
 							'text' => esc_attr__('Apply coupon', 'woocommerce'),
 							'classes' => "grow-0 shrink-0",
@@ -196,7 +196,7 @@ do_action('woocommerce_before_cart'); ?>
 						<?php do_action('woocommerce_cart_coupon'); ?>
 					</div>
 				<?php } ?>
-				<?
+				<?php
 				$updateButton = [
 					'text' => esc_attr__('Update cart', 'woocommerce'),
 					'classes' => "grow-0 shrink-0",

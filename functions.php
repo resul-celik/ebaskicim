@@ -472,6 +472,7 @@ function eb_social_media_links(WP_Customize_Manager $wp_customize)
         'eb_youtube'    => 'YouTube',
         'eb_twitter'    => 'X (Twitter)',
         'eb_pinterest'  => 'Pinterest',
+        'eb_linkedin'   => 'LinkedIn',
     ];
 
     foreach ($platforms as $key => $label) {
