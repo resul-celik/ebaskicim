@@ -1,52 +1,36 @@
-/* MAIN NAV DRAG SCROLL (Start) */
+/* MAIN NAV SCROLL BUTTONS (Start) */
 
 jQuery(function ($) {
-  var $nav = $("#main-nav-list");
+  var $nav      = $("#main-nav-list");
   if (!$nav.length) return;
 
-  var isDown = false;
-  var hasDragged = false;
-  var startX, scrollLeft;
-  var DRAG_THRESHOLD = 5;
+  var $btnLeft  = $("#nav-scroll-left");
+  var $btnRight = $("#nav-scroll-right");
+  var STEP      = 240;
 
-  $nav.on("dragstart", "a, img", function (e) {
-    e.preventDefault();
+  function updateButtons() {
+    var el       = $nav[0];
+    var atStart  = el.scrollLeft <= 0;
+    var atEnd    = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
+
+    $btnLeft.prop("hidden", atStart);
+    $btnRight.prop("hidden", atEnd);
+  }
+
+  $nav.on("scroll", updateButtons);
+  $(window).on("resize", updateButtons);
+  updateButtons();
+
+  $btnLeft.on("click", function () {
+    $nav.animate({ scrollLeft: $nav.scrollLeft() - STEP }, 250);
   });
 
-  $nav.on("mousedown", function (e) {
-    isDown = true;
-    hasDragged = false;
-    $nav.addClass("is-dragging");
-    startX = e.pageX - $nav.offset().left;
-    scrollLeft = $nav.scrollLeft();
-  });
-
-  $(document).on("mouseup", function () {
-    if (!isDown) return;
-    isDown = false;
-    $nav.removeClass("is-dragging");
-  });
-
-  $nav.on("mousemove", function (e) {
-    if (!isDown) return;
-    var x = e.pageX - $nav.offset().left;
-    var walk = x - startX;
-    if (Math.abs(walk) > DRAG_THRESHOLD) {
-      e.preventDefault();
-      hasDragged = true;
-      $nav.scrollLeft(scrollLeft - walk * 1.5);
-    }
-  });
-
-  $nav.on("click", "a", function (e) {
-    if (hasDragged) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
+  $btnRight.on("click", function () {
+    $nav.animate({ scrollLeft: $nav.scrollLeft() + STEP }, 250);
   });
 });
 
-/* MAIN NAV DRAG SCROLL (End) */
+/* MAIN NAV SCROLL BUTTONS (End) */
 
 /* SLIDERS (Start) */
 
@@ -171,41 +155,45 @@ drawers.forEach((drawer) => {
   });
 });
 
-// Menu
+// Menu — dropdown hover with gap-bridging delay
 
-var maniMenuItems = document.querySelectorAll(".main-menu-item");
+(function () {
+  var hideTimer = null;
+  var activeContent = null;
+  var activeItem = null;
 
-maniMenuItems.forEach((item) => {
-  item.addEventListener("mouseover", () => {
-    var dataItemId = item.getAttribute("data-item-id");
-    var menuContent = document.querySelector(".menu-content-" + dataItemId);
-
-    if (menuContent) {
-      menuContent.addEventListener("mouseover", () => {
-        menuContent.style.display = "flex";
-        item.classList.add("main-menu-item--active");
-      });
-      menuContent.style.display = "flex";
+  function showDropdown(content, item) {
+    clearTimeout(hideTimer);
+    if (activeContent && activeContent !== content) {
+      activeContent.style.display = "none";
+      if (activeItem) activeItem.classList.remove("main-menu-item--active");
     }
-
+    content.style.display = "flex";
     item.classList.add("main-menu-item--active");
+    activeContent = content;
+    activeItem = item;
+  }
+
+  function scheduleHide() {
+    hideTimer = setTimeout(function () {
+      if (activeContent) activeContent.style.display = "none";
+      if (activeItem) activeItem.classList.remove("main-menu-item--active");
+      activeContent = null;
+      activeItem = null;
+    }, 120);
+  }
+
+  document.querySelectorAll(".main-menu-item").forEach(function (item) {
+    var id = item.getAttribute("data-item-id");
+    var content = document.querySelector(".menu-content-" + id);
+    if (!content) return;
+
+    item.addEventListener("mouseenter", function () { showDropdown(content, item); });
+    item.addEventListener("mouseleave", scheduleHide);
+    content.addEventListener("mouseenter", function () { clearTimeout(hideTimer); });
+    content.addEventListener("mouseleave", scheduleHide);
   });
-
-  item.addEventListener("mouseout", () => {
-    var dataItemId = item.getAttribute("data-item-id");
-    var menuContent = document.querySelector(".menu-content-" + dataItemId);
-
-    if (menuContent) {
-      menuContent.addEventListener("mouseout", () => {
-        menuContent.style.display = "none";
-        item.classList.remove("main-menu-item--active");
-      });
-      menuContent.style.display = "none";
-    }
-
-    item.classList.remove("main-menu-item--active");
-  });
-});
+})();
 
 /* DESIGN UPLOAD (Start) */
 
