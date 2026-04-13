@@ -76,6 +76,14 @@ var mainSlider = new Swiper(".main-slider", {
     delay: 5000,
     disableOnInteraction: false,
   },
+  pagination: {
+    el: ".main-slider-pagination",
+    clickable: true,
+  },
+  navigation: {
+    prevEl: ".main-slider-nav-btn--prev",
+    nextEl: ".main-slider-nav-btn--next",
+  },
 });
 
 // Product gallery

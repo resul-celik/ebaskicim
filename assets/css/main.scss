@@ -278,6 +278,76 @@ body {
   }
 }
 
+/* MAIN SLIDER CONTROLS (Start) */
+
+.main-slider-pagination {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: none;
+
+  .swiper-pagination-bullet {
+    pointer-events: all;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.45);
+    opacity: 1;
+    transition: background 0.2s;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    flex-shrink: 0;
+
+    &.swiper-pagination-bullet-active {
+      background: rgba(255, 255, 255, 1);
+    }
+  }
+}
+
+.main-slider-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s;
+
+  .icon {
+    font-size: 20px;
+    color: #111;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 1);
+  }
+
+  &--prev { left: 16px; }
+  &--next { right: 16px; }
+}
+
+.main-slider.group:hover .main-slider-nav-btn {
+  opacity: 1;
+}
+
+/* MAIN SLIDER CONTROLS (End) */
+
 .main-slider-item,
 .product-thumbnail {
   figure,
