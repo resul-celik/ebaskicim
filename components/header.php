@@ -12,9 +12,11 @@ $badgeText = $cartCount > 99 ? '99+' : $cartCount;
                 <a href="<?php echo esc_url(site_url()); ?>" aria-label="Ana Sayfa">
                     <?php get_template_part('components/logo'); ?>
                 </a>
-                <?php get_product_search_form(); ?>
+                <div class="hidden md:flex">
+                    <?php get_product_search_form(); ?>
+                </div>
             </div>
-            <div class="flex flex-row gap-7">
+            <div class="hidden md:flex flex-row gap-7">
                 <?php if (!is_cart()) : ?>
                     <div class="cart-button relative">
                         <div class="absolute z-10 top-0 right-0">
@@ -52,4 +54,5 @@ echo get_drawer_menu([
     'icon'         => 'person',
 ], "account_drawer_menu_content");
 ?>
+<?php get_template_part('components/bottom-nav'); ?>
 <div class="dimness w-full h-screen inset-0 fixed bg-black/20 z-998" onclick="close_drawer()"></div>

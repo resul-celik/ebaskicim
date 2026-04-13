@@ -154,12 +154,14 @@ drawers.forEach((drawer) => {
   const triggerClass = drawer.dataset.trigger;
   if (!triggerClass) return;
 
-  const trigger = document.querySelector("." + triggerClass);
-  if (!trigger) return;
+  const triggers = document.querySelectorAll("." + triggerClass);
+  if (!triggers.length) return;
 
-  trigger.addEventListener("click", () => {
-    drawer.classList.add("drawer--active");
-    if (dimness) dimness.classList.add("dimness--active");
+  triggers.forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      drawer.classList.add("drawer--active");
+      if (dimness) dimness.classList.add("dimness--active");
+    });
   });
 });
 

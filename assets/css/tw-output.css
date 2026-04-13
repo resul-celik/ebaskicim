@@ -717,6 +717,9 @@
     --tw-border-style: dashed;
     border-style: dashed;
   }
+  .border-gray-100 {
+    border-color: var(--color-gray-100);
+  }
   .border-gray-200 {
     border-color: var(--color-gray-200);
   }
@@ -951,6 +954,9 @@
   .text-error-500 {
     color: var(--color-error-500);
   }
+  .text-gray-400 {
+    color: var(--color-gray-400);
+  }
   .text-gray-500 {
     color: var(--color-gray-500);
   }
@@ -983,6 +989,9 @@
   }
   .uppercase {
     text-transform: uppercase;
+  }
+  .no-underline {
+    text-decoration-line: none;
   }
   .underline {
     text-decoration-line: underline;
@@ -1149,6 +1158,11 @@
   .md\:flex {
     @media (width >= 1024px) {
       display: flex;
+    }
+  }
+  .md\:hidden {
+    @media (width >= 1024px) {
+      display: none;
     }
   }
   .md\:w-1\/2 {
@@ -1502,3 +1516,4 @@
     }
   }
 }
+
