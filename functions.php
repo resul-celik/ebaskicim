@@ -173,23 +173,6 @@ include get_template_directory() . '/components/account-drawer.php';
 include get_template_directory() . '/components/filter-tag.php';
 
 
-// Register sidebar
-
-if (function_exists('register_sidebar')) {
-
-    register_sidebar(
-        array(
-            'name' => 'Footer Menüleri',
-            'id' => 'footer-menus',
-            'description' => '+ butonuyla yeni footer menüsü ekleyin',
-            'before_widget' => '<div class="footer-menu col-span-2 flex-1 flex flex-col gap-4">',
-            'after_widget' => '</div>',
-            'before_title' => '<h2 class="paragraph-md paragraph-bold text-gray-900">',
-            'after_title' => '</h2>',
-        )
-    );
-}
-
 function register_eb_menus()
 {
     register_nav_menus(
@@ -450,6 +433,31 @@ function ebs_customize_featured_sections(WP_Customize_Manager $wp_customize)
             'section' => 'ebs_featured_sections',
             'type'    => 'select',
             'choices' => $cat_choices,
+        ]);
+    }
+}
+
+// Footer Column Titles
+
+add_action('customize_register', 'eb_customize_footer_columns');
+
+function eb_customize_footer_columns(WP_Customize_Manager $wp_customize)
+{
+    $wp_customize->add_section('eb_footer_columns', [
+        'title'       => 'Footer Sütun Başlıkları',
+        'description' => 'Her sütunun başlığını girin. Menü içerikleri için Görünüm → Menüler bölümünü kullanın.',
+        'priority'    => 35,
+    ]);
+
+    for ($i = 1; $i <= 3; $i++) {
+        $wp_customize->add_setting("eb_footer_col_{$i}_title", [
+            'default'           => '',
+            'sanitize_callback' => 'sanitize_text_field',
+        ]);
+        $wp_customize->add_control("eb_footer_col_{$i}_title", [
+            'label'   => "{$i}. Sütun Başlığı",
+            'section' => 'eb_footer_columns',
+            'type'    => 'text',
         ]);
     }
 }
