@@ -394,6 +394,25 @@ body {
   }
 }
 
+.footer-mobile-accordion {
+  &[open] {
+    .footer-accordion-icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  summary {
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  .footer-accordion-icon {
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+}
+
 .accordion {
   summary {
     .icon-minus {
