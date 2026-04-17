@@ -20,6 +20,11 @@ $bn_badge_text = $bn_cart_count > 99 ? '99+' : (string) $bn_cart_count;
             <span class="bottom-nav-label">Kategoriler</span>
         </button>
 
+        <button type="button" class="bottom-nav-item mobile-search-btn" aria-label="Arama">
+            <i class="icon icon-search"></i>
+            <span class="bottom-nav-label">Arama</span>
+        </button>
+
         <?php if (!is_cart()) : ?>
             <button type="button" class="bottom-nav-item cart-button" aria-label="Sepetim">
                 <span class="bottom-nav-icon-wrap">
@@ -57,6 +62,30 @@ echo get_drawer_menu([
     'title'        => 'Kategoriler',
     'icon'         => 'grid',
 ], 'ebs_categories_drawer_content');
+
+// Mobile search overlay
+?>
+<div class="mobile-search-overlay" id="mobile-search-overlay" hidden aria-modal="true" role="dialog">
+    <div class="mobile-search-header">
+        <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>" class="mobile-search-form">
+            <i class="icon icon-search text-gray-400 flex-shrink-0"></i>
+            <input
+                type="search"
+                name="s"
+                id="mobile-search-input"
+                class="mobile-search-input"
+                placeholder="Ürün, kategori ara..."
+                autocomplete="off"
+                enterkeyhint="search"
+            >
+            <input type="hidden" name="post_type" value="product">
+        </form>
+        <button type="button" class="mobile-search-close" id="mobile-search-close" aria-label="Kapat">
+            <i class="icon icon-close"></i>
+        </button>
+    </div>
+</div>
+<?php
 
 function ebs_categories_drawer_content()
 {

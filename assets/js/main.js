@@ -205,6 +205,37 @@ drawers.forEach((drawer) => {
   });
 })();
 
+/* MOBILE SEARCH OVERLAY (Start) */
+
+(function () {
+  var overlay   = document.getElementById("mobile-search-overlay");
+  var input     = document.getElementById("mobile-search-input");
+  var openBtn   = document.querySelector(".mobile-search-btn");
+  var closeBtn  = document.getElementById("mobile-search-close");
+
+  if (!overlay || !openBtn) return;
+
+  function openSearch() {
+    overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+    setTimeout(function () { input && input.focus(); }, 50);
+  }
+
+  function closeSearch() {
+    overlay.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  openBtn.addEventListener("click", openSearch);
+  closeBtn && closeBtn.addEventListener("click", closeSearch);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !overlay.hidden) closeSearch();
+  });
+})();
+
+/* MOBILE SEARCH OVERLAY (End) */
+
 /* DESIGN UPLOAD (Start) */
 
 jQuery(function ($) {
