@@ -499,6 +499,26 @@ function eb_social_media_links(WP_Customize_Manager $wp_customize)
 }
 
 
+// Block BeRocket subscribe/promo admin notices (stored in DB options)
+add_filter('pre_option_berocket_admin_notices', function () {
+    return [];
+});
+add_filter('pre_option_berocket_information_notices', function () {
+    return [];
+});
+
+// Block update checks for modified third-party plugins
+add_filter('site_transient_update_plugins', function ($transient) {
+    $blocked = [
+        'product-watermark-for-woocommerce/woocommerce-products-image-watermark.php',
+    ];
+    foreach ($blocked as $plugin) {
+        unset($transient->response[$plugin]);
+        unset($transient->checked[$plugin]);
+    }
+    return $transient;
+});
+
 add_action('wp_ajax_ebs_category_filter_action', 'ebs_ajax_query');
 add_action('wp_ajax_nopriv_ebs_category_filter_action', 'ebs_ajax_query');
 
