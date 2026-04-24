@@ -327,7 +327,9 @@ body {
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.2s, background 0.2s;
+  transition:
+    opacity 0.2s,
+    background 0.2s;
 
   .icon {
     font-size: 20px;
@@ -338,8 +340,12 @@ body {
     background: rgba(255, 255, 255, 1);
   }
 
-  &--prev { left: 16px; }
-  &--next { right: 16px; }
+  &--prev {
+    left: 16px;
+  }
+  &--next {
+    right: 16px;
+  }
 }
 
 .main-slider.group:hover .main-slider-nav-btn {
@@ -1083,7 +1089,7 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--color-gray-500);
+  color: var(--color-gray-950);
   text-decoration: none;
 
   .icon {
@@ -1103,7 +1109,7 @@ body {
 }
 
 .bottom-nav-label {
-  font-size: 1rem;
+  font-size: 1.1rem;
   line-height: 1.2;
   font-weight: 500;
   color: inherit;

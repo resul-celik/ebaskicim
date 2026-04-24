@@ -16,6 +16,7 @@
     --color-gray-600: #868e96;
     --color-gray-700: #495058;
     --color-gray-900: #20242a;
+    --color-gray-950: oklch(13% 0.028 261.692);
     --color-black: #000;
     --color-white: #fff;
     --spacing: 1px;
@@ -262,9 +263,6 @@
   .z-999 {
     z-index: 999;
   }
-  .order-last {
-    order: 9999;
-  }
   .col-1 {
     grid-column: 1;
   }
@@ -336,12 +334,6 @@
   }
   .\!h-60 {
     height: calc(var(--spacing) * 60) !important;
-  }
-  .h-10 {
-    height: calc(var(--spacing) * 10);
-  }
-  .h-12 {
-    height: calc(var(--spacing) * 12);
   }
   .h-13 {
     height: calc(var(--spacing) * 13);
@@ -879,6 +871,9 @@
   .pt-30 {
     padding-top: calc(var(--spacing) * 30);
   }
+  .pt-46 {
+    padding-top: calc(var(--spacing) * 46);
+  }
   .pt-66 {
     padding-top: calc(var(--spacing) * 66);
   }
@@ -1159,11 +1154,6 @@
       }
     }
   }
-  .md\:order-none {
-    @media (width >= 1024px) {
-      order: 0;
-    }
-  }
   .md\:col-span-2 {
     @media (width >= 1024px) {
       grid-column: span 2 / span 2;
@@ -1197,6 +1187,11 @@
   .md\:hidden {
     @media (width >= 1024px) {
       display: none;
+    }
+  }
+  .md\:h-19 {
+    @media (width >= 1024px) {
+      height: calc(var(--spacing) * 19);
     }
   }
   .md\:h-20 {

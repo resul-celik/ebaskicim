@@ -87,9 +87,8 @@ $locations = get_nav_menu_locations();
         <div class="w-full max-w-[1920px] flex flex-row items-center justify-between gap-12 px-20">
             <div class="paragraph-xs text-gray-500">&copy; 2026 Ebaskıcım</div>
             <div class="flex flex-row items-center gap-20">
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/paytr.svg" class="h-12 md:h-20" />
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/mastercard.svg" class="h-15 md:h-20" />
-                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/visa.svg" class="h-13 md:h-20" />
+                <img src="<?php echo get_template_directory_uri(); ?>/assets/images/visa.svg" class="h-13 md:h-19" />
                 <img src="<?php echo get_template_directory_uri(); ?>/assets/images/troy.svg" class="h-15 md:h-20" />
             </div>
         </div>
