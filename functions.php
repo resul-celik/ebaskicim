@@ -822,3 +822,37 @@ function ebs_admin_order_item_design_link($_item_id, $item, $_product)
 add_action('woocommerce_after_order_itemmeta', 'ebs_admin_order_item_design_link', 10, 3);
 
 /* DESIGN UPLOAD (End) */
+
+// COMING SOON MODE
+add_filter('woocommerce_coming_soon_enabled', '__return_false');
+
+add_action('customize_register', 'eb_customize_coming_soon');
+function eb_customize_coming_soon(WP_Customize_Manager $wp_customize)
+{
+    $wp_customize->add_section('eb_coming_soon', [
+        'title'    => 'Yakında Açılıyor',
+        'priority' => 200,
+    ]);
+    $wp_customize->add_setting('eb_coming_soon_active', [
+        'default'           => false,
+        'sanitize_callback' => 'rest_sanitize_boolean',
+    ]);
+    $wp_customize->add_control('eb_coming_soon_active', [
+        'label'   => 'Siteyi yayından kaldır (Coming Soon göster)',
+        'section' => 'eb_coming_soon',
+        'type'    => 'checkbox',
+    ]);
+}
+
+add_action('template_redirect', 'eb_coming_soon_redirect', 1);
+function eb_coming_soon_redirect()
+{
+    if (! get_theme_mod('eb_coming_soon_active', false)) return;
+    if (current_user_can('manage_options')) return;
+    $template = get_theme_file_path('coming-soon.php');
+    if (file_exists($template)) {
+        status_header(200);
+        include $template;
+        exit;
+    }
+}

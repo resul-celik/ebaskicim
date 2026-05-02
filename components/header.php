@@ -2,7 +2,7 @@
 if (! defined('ABSPATH')) {
     exit;
 }
-$cartCount = WC()->cart->get_cart_contents_count();
+$cartCount = WC()->cart ? WC()->cart->get_cart_contents_count() : 0;
 $badgeText = $cartCount > 99 ? '99+' : $cartCount;
 ?>
 <header class="w-full flex flex-col bg-white" role="banner">
